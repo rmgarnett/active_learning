@@ -14,7 +14,7 @@ function [expected_proportion proportion_variance] = ...
   
   trial_probabilities = normcdf(latent_samples);
   
-  expected_proportion = mean(mean(trial_probabilities));
-  proportion_variance = mean(mean(trial_probabilities .* (1 - trial_probabilities), 2));
+  expected_proportion = mean(trial_probabilities(:));
+  proportion_variance = var(mean(trial_probabilities, 2));
 
 end
