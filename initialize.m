@@ -1,6 +1,9 @@
 if (~exist('initialized', 'var'))
   try
-    matlabpool open;
+    matlabpool close force local;
+  end
+  try
+    matlabpool open 4;
   end
 
   addpath(genpath('~/work/dependencies/bmc'));
