@@ -1,5 +1,7 @@
 initialize;
 
+results_directory = 'results/2';
+
 num_experiments = 200;
 
 num_observations = 250;
@@ -19,9 +21,8 @@ for count = 1:num_experiments
   radii = rand(num_circles) / 2;
   responses = false(num_observations, 1);
   for i = 1:num_circles
-    responses = responses | ...
-                (sum((data - repmat(centers(i, :), num_observations, 1)).^2, 2) < ...
-                 radii(i).^2);
+    responses = responses | (sum((data - repmat(centers(i, :), ...
+            num_observations, 1)).^2, 2) < radii(i).^2);
   end
 
   actual_proportion = mean(responses);
@@ -35,5 +36,5 @@ for count = 1:num_experiments
   
   active_estimation_discrete;
 
-  save(['results/2/' num2str(count)]);
+  save([results_directory '/' num2str(count)]);
 end
