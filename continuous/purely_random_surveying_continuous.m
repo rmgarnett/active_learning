@@ -1,10 +1,10 @@
-function [estimated_proportion proportion_variance chosen_points] = ...
-      purely_random_sampling_estimate(sampling_function, response_function, ...
-      num_evaluations)
+function [estimated_proportion proportion_variance chosen_points responses] = ...
+      purely_random_surveying_continuous(sampling_function, response_function, ...
+          num_evaluations)
 
   chosen_points = sampling_function(num_evaluations);
-  
-  estimated_proportion = mean((response_function(chosen_points) + ...
-                               1) / 2);
+  responses = response_function(chosen_points);
+
+  estimated_proportion = mean(responses);
   proportion_variance = 0;
 end
