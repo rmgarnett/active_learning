@@ -1,27 +1,29 @@
 function [estimated_proportions proportion_variances in_train] = ...
-      iterative_surveying_variance_target(data, responses, in_train, ...
-          utility_function, proportion_estimation_function, ...
-          variance_target, options)
+      iterative_surveying(data, responses, in_train, utility_function, ...
+                          proportion_estimation_function, options)
   
-  if (nargin < 7)
-    verbose = false;
-    actual_proportion = 0;
-  else
-    if (~ismember(options, 'verbose'))
-      verbose = false;
-    end
-    if (~ismember(options, 'actual_proportion'))
-      actual_proportion = 0;
-    end
+  if (~isfield(options, 'verbose'))
+    options.verbose = false;
   end
+  if (~isfield(options, 'actual_proportion'))
+    options.actual_proportion = 0;
+  end
+  
+  variance_target = (isfield(options, 'variance_target'));
+  evaluation_limit = (isfield(options, 'evaluation_limit'));
 
   estimated_proportions = [];
   proportion_variances = [];
 
+  done = @(num_evaluations, variance) ...
+         (variance_target && (variance < options.variance_target)) || ... 
+         (evaluation_limit && (num_evaluations > options.evaluation_limit));
+
   num_evaluations = 1;
   while ((num_evaluations == 1) || ...
-         (proportion_variances(end) > variance_target))
-    if (verbose)
+         ~done(num_evaluations, proportion_variances(end)))
+    
+    if (options.verbose)
       tic;
     end
     
@@ -46,7 +48,7 @@ function [estimated_proportions proportion_variances in_train] = ...
     estimated_proportions(end + 1) = this_mean;
     proportion_variances(end + 1) = this_variance;
 
-    if (verbose)
+    if (options.verbose)
       elapsed = toc;
       to_print = ['point ' num2str(num_evaluations) ...
                   ', utility: ' num2str(best_utility) ...
@@ -54,9 +56,10 @@ function [estimated_proportions proportion_variances in_train] = ...
                   ' / ' num2str(num_evaluations) ...
                   '), current estimate: ' num2str(estimated_proportions(num_evaluations) * 100) '%' ...
                   ' +/- ' num2str(sqrt(proportion_variances(num_evaluations)) * 100) '%'];
-      if (actual_propotion > 0)
+
+      if (options.actual_proportion > 0)
         [alpha beta] = moment_matched_beta(this_mean, this_variance);
-        log_likelihood = log(normpdf(actual_proportion, alpha, beta));
+        log_likelihood = log(normpdf(options.actual_proportion, alpha, beta));
         to_print = [to_print ', log likelihood: ' num2str(log_likelihood)];
       end
       
