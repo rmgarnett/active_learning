@@ -24,7 +24,6 @@ battleship_likelihoods = zeros(num_experiments, 1);
 optimal_likelihoods = zeros(num_experiments, 1);
 
 for experiment = 1:num_experiments
-
   load([results_directory '/' num2str(experiment)]);
 
   all_purely_random_estimated_proportions(experiment) = ...
@@ -51,7 +50,6 @@ for experiment = 1:num_experiments
   uncertainty_likelihoods(experiment) = uncertainty_likelihood;
   battleship_likelihoods(experiment) = battleship_likelihood;
   optimal_likelihoods(experiment) = optimal_likelihood;
-
 end
 
 num_kde_grid_points = 300;
@@ -68,13 +66,9 @@ kde_parameters.x = xx(:);
 kde_parameters.y = yy(:);
 kde_parameters.h = 0.1;
 
-random_distribution = gkde2(random_points_chosen, kde_parameters);
 uncertainty_distribution = gkde2(uncertainty_points_chosen, kde_parameters);
 battleship_distribution = gkde2(battleship_points_chosen, kde_parameters);
 optimal_distribution = gkde2(optimal_points_chosen, kde_parameters);
-
-figure(1);
-set(gcf, 'color', 'white');
 
 in_square_index = (xx >= 0) & (xx <= 1) & (yy >= 0) & (yy <= 1);
 side_length = sqrt(nnz(in_square_index));
@@ -82,27 +76,48 @@ side_length = sqrt(nnz(in_square_index));
 lower_bound = 0;
 upper_bound = 1;
 
-subplot(2, 2, 1);
-imagesc([lower_bound upper_bound], [lower_bound upper_bound], ...
-        reshape(random_distribution.pdf(in_square_index), side_length, ...
-                side_length));
-axis square;
-axis off;
-subplot(2, 2, 2);
+plot_directory = '~/work/paper/active_mean/figures/';
+
+ticks = linspace(lower_bound, upper_bound, 6);
+
+figure(1);
 imagesc([lower_bound upper_bound], [lower_bound upper_bound], ...
         reshape(uncertainty_distribution.pdf(in_square_index), ...
                 side_length, side_length));
+set(gcf, 'color', 'white');
+set(gca, 'ydir', 'normal', ...
+         'xtick', ticks, ...
+         'ytick', ticks, ...
+         'tickdir', 'out');
+colormap(lbmap(1e3, 'bluered'));
+colorbar('ytick', []);
 axis square;
-axis off;
-subplot(2, 2, 3);
+matlabfrag([plot_directory 'uncertainty_circle']);
+
+figure(2);
 imagesc([lower_bound upper_bound], [lower_bound upper_bound], ...
         reshape(battleship_distribution.pdf(in_square_index), ...
                 side_length, side_length));
+set(gcf, 'color', 'white');
+set(gca, 'ydir', 'normal', ...
+         'xtick', ticks, ...
+         'ytick', ticks, ...
+         'tickdir', 'out');
+colormap(lbmap(1e3, 'bluered'));
+colorbar('ytick', []);
 axis square;
-axis off;
-subplot(2, 2, 4);
+matlabfrag([plot_directory 'battleship_circle']);
+
+figure(3);
 imagesc([lower_bound upper_bound], [lower_bound upper_bound], ...
         reshape(optimal_distribution.pdf(in_square_index), side_length, ...
                 side_length));
+set(gcf, 'color', 'white');
+set(gca, 'ydir', 'normal', ...
+         'xtick', ticks, ...
+         'ytick', ticks, ...
+         'tickdir', 'out');
+colormap(lbmap(1e3, 'bluered'));
+colorbar('ytick', []);
 axis square;
-axis off;
+matlabfrag([plot_directory 'optimal_circle']);
