@@ -1,7 +1,7 @@
 function [expected_proportion proportion_variance] = ...
       gp_estimate_proportion_approximate(data, responses, test, ...
           inference_method, mean_function, covariance_function, ...
-          likelihood, hypersamples, num_samples, num_test_points, num_trials)
+          likelihood, hypersamples, num_samples, num_trial_points, num_trials)
 
   expected_proportions = zeros(num_trials, 1);
   proportion_variances = zeros(num_trials, 1);
@@ -9,16 +9,15 @@ function [expected_proportion proportion_variance] = ...
   num_test = size(test, 1);
 
   for i = 1:num_trials
-
     r = randperm(num_test);
-    trial_test = test(r(1:num_test_points), :);
+    trial_test = test(r(1:num_trial_points), :);
   
     [latent_means latent_covariances hypersample_weights] = ...
         estimate_latent_posterior(data, responses, trial_test, ...
                                   inference_method, mean_function, ...
                                   covariance_function, likelihood, ...
                                   hypersamples, true);
-    
+
     [dimension, num_components] = size(latent_means);
     
     components = randsample(num_components, num_samples, true, hypersample_weights);
@@ -34,7 +33,6 @@ function [expected_proportion proportion_variance] = ...
     
     expected_proportions(i) = mean(trial_probabilities(:));
     proportion_variances(i) = var(mean(trial_probabilities, 2));
-  
   end
 
   expected_proportion = mean(expected_proportions);
