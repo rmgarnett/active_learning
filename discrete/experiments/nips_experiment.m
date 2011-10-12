@@ -1,4 +1,4 @@
-random_seed = 314159;
+random_seed = 0;
 
 stream = RandStream.create('mt19937ar', 'Seed', random_seed);
 RandStream.setGlobalStream(stream);
@@ -16,17 +16,19 @@ actual_proportion = mean(responses == 1);
 
 in_train = false(num_observations, 1);
 
-num_initial = 1;
+in_train(1) = true;
 
-positives = find(responses == 1);
-negatives = find(responses ~= 1);
+% num_initial = 1;
 
-r = randperm(numel(positives));
-in_train(positives(r(1:num_initial))) = true;
-r = randperm(numel(negatives));
-in_train(negatives(r(1:num_initial))) = true;
+% positives = find(responses == 1);
+% negatives = find(responses ~= 1);
 
-variance_target = 0.01^2;
+% r = randperm(numel(positives));
+% in_train(positives(r(1:num_initial))) = true;
+% r = randperm(numel(negatives));
+% in_train(negatives(r(1:num_initial))) = true;
+
+variance_target = 0.02^2;
 
 num_trial_points = floor(num_observations / 50);
 num_trials = 1;
