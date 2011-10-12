@@ -59,7 +59,7 @@ function [estimated_proportions proportion_variances in_train] = ...
 
       if (options.actual_proportion > 0)
         [alpha beta] = moment_matched_beta(this_mean, this_variance);
-        log_likelihood = log(normpdf(options.actual_proportion, alpha, beta));
+        log_likelihood = log(betapdf(options.actual_proportion, alpha, beta));
         to_print = [to_print ', log likelihood: ' num2str(log_likelihood)];
       end
       
