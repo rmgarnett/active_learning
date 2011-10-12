@@ -1,11 +1,6 @@
-random_seed = 12345;
-
-stream = RandStream.create('mt19937ar', 'Seed', random_seed);
-RandStream.setGlobalStream(stream);
-
-data_directory = '~/work/data/nips_papers/processed/top_venues';
-load([data_directory '/top_venues_graph'], 'nips_index');
-load([data_directory '/nips_graph_pca_vectors'], 'data');
+data_directory = '~/work/data/nips_papers/processed/top_venues/';
+load([data_directory 'top_venues_graph'], 'nips_index');
+load([data_directory 'nips_graph_pca_vectors'], 'data');
 all_data = data;
 
 num_observations = size(data, 1);
@@ -17,22 +12,19 @@ actual_proportion = mean(responses == 1);
 
 in_train = false(num_observations, 1);
 
-positives = find(responses == 1);
-negatives = find(responses ~= 1);
-
 num_initial = 1;
-r = randperm(numel(positives));
-in_train(positives(r(1:num_initial))) = true;
-r = randperm(numel(negatives));
-in_train(negatives(r(1:num_initial))) = true;
+r = randperm(numel(responses));
+in_train(r(1:num_initual)) = true;
 
-variance_target = 0.05^2;
+variance_target = 0.01^2;
 
 num_trial_points = floor(num_observations / 50);
 num_trials = 1;
 num_f_samples = 1000;
 
-num_test_points = floor(num_observations / 100);
+num_centers = 50;
+num_farthest = 50;
+num_random = 50;
 
 log_input_scale_prior_mean = -4;
 log_input_scale_prior_variance = 1;
@@ -87,11 +79,21 @@ proportion_estimation_function = @(data, responses, test) ...
 random_utility_function = @random_utility;
 uncertainty_utility_function = @(data, responses, test) ...
     uncertainty_utility(data, responses, test, probability_function);
+
+optimal_selection_function = @(data, responses, test) ...
+    union(metric_k_center_point_selection(test, num_centers), ...
+          union(farthest_point_selection(data, test, num_farthest), ...
+                random_point_selection(test, num_random)));
+optimal_full_utility_function = @(data, responses, test) ...
+    optimal_utility(data, responses, test, all_data, probability_function, ...
+                    proportion_estimation_function);
 optimal_utility_function = @(data, responses, test) ...
-    partial_search_utility_wrapper(data, responses, test, @(data, ...
-        responses, test) optimal_utility(data, responses, test, ...
-        all_data, probability_function, proportion_estimation_function), ...
-        num_test_points);
+    restricted_search_utility_wrapper(data, responses, test, ...
+        optimal_selection_function, optimal_full_utility_function);
+
+options.verbose = true;
+options.actual_proportion = actual_proportion;
+options.evaluation_limit = 1;
 
 random_estimated_proportions = [];
 uncertainty_estimated_proportions = [];
@@ -105,14 +107,9 @@ random_in_train = in_train;
 uncertainty_in_train = in_train;
 optimal_in_train = in_train;
 
-round = 1;
-
 done = @(round, variances) ((round > 1) && (variances(end) < variance_target));
 
-options.verbose = true;
-options.actual_proportion = actual_proportion;
-options.num_evaluations = 1;
-
+round = 1;
 while (~(done(round, random_proportion_variances) && ...
          done(round, uncertainty_proportion_variances) && ...
          done(round, optimal_proportion_variances)))
@@ -125,7 +122,6 @@ while (~(done(round, random_proportion_variances) && ...
                               random_utility_function, ...
                               proportion_estimation_function, options);
   end
-
   if (~done(round, uncertainty_proportion_variances))
     [uncertainty_estimated_proportions(end + 1) ...
      uncertainty_proportion_variances(end + 1) uncertainty_in_train] ...
@@ -133,7 +129,6 @@ while (~(done(round, random_proportion_variances) && ...
                               uncertainty_utility_function, ...
                               proportion_estimation_function, options);
   end
-
   if (~done(round, optimal_proportion_variances))
     [optimal_estimated_proportions(end + 1) ...
      optimal_proportion_variances(end + 1) optimal_in_train] = ...
