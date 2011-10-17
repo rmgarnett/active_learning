@@ -1,4 +1,4 @@
-random_seed = 0;
+random_seed = 31415;
 
 stream = RandStream.create('mt19937ar', 'Seed', random_seed);
 RandStream.setGlobalStream(stream);
@@ -7,8 +7,9 @@ data_directory = '~/work/data/wikipedia/computer_science/processed/';
 load([data_directory 'topics/wikipedia_topic_vectors.mat'], 'topics');
 load([data_directory 'programming_language_page_ids']);
 
+results_directory = '~/work/results/wikipedia';
+
 data = topics;
-all_data = data;
 clear topics;
 
 num_observations = size(data, 1);
@@ -18,22 +19,24 @@ responses(programming_language_page_ids) = true;
 responses = 2 * responses - 1;
 actual_proportion = mean(responses == 1);
 
-in_train = false(num_observations, 1);
+responses = responses(1:10:end);
+data = data(1:10:end, :);
+all_data = data;
 
-positives = find(responses == 1);
-negatives = find(responses ~= 1);
+num_observations = size(data, 1);
+in_train = false(num_observations, 1);
 
 num_initial = 1;
 r = randperm(numel(responses));
 in_train(r(1:num_initial)) = true;
 
-variance_target = 0.01^2;
+variance_target = 0.02^2;
 
-num_trial_points = floor(num_observations / 300);
+num_trial_points = floor(num_observations / 100);
 num_trials = 1;
 num_f_samples = 1000;
 
-num_random = 150;
+num_random = 100;
 
 log_input_scale_prior_mean = -2.5;
 log_input_scale_prior_variance = 0.5;
@@ -41,7 +44,7 @@ log_input_scale_prior_variance = 0.5;
 log_output_scale_prior_mean = 0;
 log_output_scale_prior_variance = 1;
 
-latent_prior_mean_prior_mean = norminv(1 / 10);
+latent_prior_mean_prior_mean = norminv(1 / 20);
 latent_prior_mean_prior_variance = 0.5;
 
 hypersamples.prior_means = ...
@@ -148,6 +151,7 @@ while (~(done(round, random_proportion_variances) && ...
                             proportion_estimation_function, options);
   end
 
+  save([results_directory 'round' num2str(round)]);
   round = round + 1;
 end
 

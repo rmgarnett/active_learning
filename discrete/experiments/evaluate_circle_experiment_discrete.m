@@ -24,7 +24,7 @@ battleship_likelihoods = zeros(num_experiments, 1);
 optimal_likelihoods = zeros(num_experiments, 1);
 
 for experiment = 1:num_experiments
-  load([results_directory '/' num2str(experiment)]);
+  load(['~/work/results/circle/' num2str(experiment)]);
 
   all_purely_random_estimated_proportions(experiment) = ...
       purely_random_estimated_proportion;
@@ -80,11 +80,17 @@ plot_directory = '~/work/paper/active_mean/figures/';
 
 ticks = linspace(lower_bound, upper_bound, 6);
 
+% width and height in centimeters
+width = 8.75; height = 7;
+
 figure(1);
 imagesc([lower_bound upper_bound], [lower_bound upper_bound], ...
         reshape(uncertainty_distribution.pdf(in_square_index), ...
                 side_length, side_length));
-set(gcf, 'color', 'white');
+position = get(gcf, 'position');
+set(gcf, 'color', 'white', ...
+         'units', 'centimeters', ...
+         'position', [position(1:2) width height]);
 set(gca, 'ydir', 'normal', ...
          'xtick', ticks, ...
          'ytick', ticks, ...

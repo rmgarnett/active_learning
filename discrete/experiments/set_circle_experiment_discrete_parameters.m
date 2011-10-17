@@ -12,6 +12,6 @@ centers = [0 0;
           ];
 radius = (1 / 5);
 
-results_directory = '~/work/active_mean/discrete/results/circle';
+results_directory = '~/work/results/circle';
 
 num_experiments = 100;
