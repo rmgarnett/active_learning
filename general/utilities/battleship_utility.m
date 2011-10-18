@@ -1,6 +1,5 @@
-function utilities = battleship_utility(data, responses, test, ...
-          probability_function)
+function utility = battleship_utility(responses)
 
-  utilities = probability_function(data, responses, test);
+  utility = nnz(responses == true);
 
 end
