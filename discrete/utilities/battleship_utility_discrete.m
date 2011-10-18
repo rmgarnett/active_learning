@@ -1,6 +1,5 @@
-function utilities = battleship_utility_discrete(data, responses, in_train, ...
-          probability_function)
+function utility = battleship_utility_discrete(data, responses, in_train)
 
-  utilities = probability_function(data, responses, in_train);
+  utility = nnz(responses(in_train) == true);
 
 end
