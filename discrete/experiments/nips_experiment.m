@@ -3,10 +3,11 @@ load([data_directory 'top_venues_graph'], 'nips_index');
 load([data_directory 'nips_graph_pca_vectors'], 'data');
 all_data = data;
 
+data = data(1:1000, :);
 num_observations = size(data, 1);
 
 responses = false(num_observations, 1);
-responses(nips_index) = true;
+responses(nips_index(nips_index < 1000)) = true;
 responses = 2 * responses - 1;
 actual_proportion = mean(responses == 1);
 
@@ -14,7 +15,7 @@ in_train = false(num_observations, 1);
 
 num_initial = 1;
 r = randperm(numel(responses));
-in_train(r(1:num_initual)) = true;
+in_train(r(1:num_initial)) = true;
 
 variance_target = 0.01^2;
 
@@ -67,9 +68,10 @@ likelihood = @likErf;
                        mean_function, covariance_function, likelihood, ...
                        data, responses);
 
-probability_function = @(data, responses, test) gp_probability(data, ...
-        responses, test, inference_method, mean_function, ...
-        covariance_function, likelihood, hypersamples);
+probability_function = @(data, responses, in_train) ...
+    gp_probability_discrete(data, responses, in_train, prior_covariances, ...
+                            inference_method, mean_function, ...
+                            covariance_function, likelihood, hypersamples);
 
 proportion_estimation_function = @(data, responses, test) ...
     gp_estimate_proportion_approximate(data, responses, test, ...
