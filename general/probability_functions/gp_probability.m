@@ -14,5 +14,5 @@ function probabilities = gp_probability(data, responses, test, ...
   
   probabilities = exp(likelihood([], ones(num_test, 1), ...
           posterior_means, posterior_variances));
-  
+
 end
