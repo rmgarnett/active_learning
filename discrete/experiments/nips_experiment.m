@@ -1,31 +1,38 @@
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
 load([data_directory 'nips_graph_pca_vectors'], 'data');
-all_data = data;
 
-data = data(1:1000, :);
+limit = size(data, 1);
+
+data = data(1:limit, :);
 num_observations = size(data, 1);
 
 responses = false(num_observations, 1);
-responses(nips_index(nips_index < 1000)) = true;
+responses(nips_index(nips_index <= limit)) = true;
 responses = 2 * responses - 1;
+
+num_positives = nnz(responses == 1);
 actual_proportion = mean(responses == 1);
 
 in_train = false(num_observations, 1);
 
+logical_ind = ...
+    @(array, ind) subsref(find(array), ...
+                          struct('type', '()', 'subs', {{ind}}));
+
 num_initial = 1;
-r = randperm(numel(responses));
-in_train(r(1:num_initial)) = true;
+r = randperm(num_positives);
+in_train(logical_ind(responses == 1, r(1:num_initial))) = true;
 
-variance_target = 0.01^2;
+k = 100;
+[nearest_neighbors distances] = knnsearch(data, data, 'k', k + 1);
+nearest_neighbors = nearest_neighbors(:, 2:end)';
+distances = distances(:, 2:end)';
 
-num_trial_points = floor(num_observations / 50);
-num_trials = 1;
-num_f_samples = 1000;
-
-num_centers = 50;
-num_farthest = 50;
-num_random = 50;
+weights = sparse(kron((1:num_observations)', ones(k, 1)), ...
+                 nearest_neighbors(:), 1, num_observations, ...
+                 num_observations);
+nearest_neighbors = (weights > 0);
 
 log_input_scale_prior_mean = -4;
 log_input_scale_prior_variance = 1;
@@ -68,10 +75,35 @@ likelihood = @likErf;
                        mean_function, covariance_function, likelihood, ...
                        data, responses);
 
-probability_function = @(data, responses, in_train) ...
-    gp_probability_discrete(data, responses, in_train, prior_covariances, ...
-                            inference_method, mean_function, ...
-                            covariance_function, likelihood, hypersamples);
+verbose = true;
+
+selection_function = @(data, responses, in_train) ...
+    random_point_selection(in_train, 10000);
+
+pseudocount = 1 / 10;
+
+probability_function = @(data, responses, in_train, test_ind) ...
+    knn_probability_discrete(responses, in_train, test_ind, ...
+                             nearest_neighbors, weights, pseudocount);
+
+utility_function = @(data, responses, in_train) ...
+    battleship_utility_discrete(responses, in_train);
+
+[in_train utilities] = optimal_learning_discrete(data, responses, ...
+        in_train, probability_function, selection_function, ...
+        utility_function, num_evaluations, verbose);
+
+probability_function = @(data, responses, in_train, test_ind) ...
+    gp_probability(data(in_train, :), responses(in_train), ...
+                   data(test_ind, :), ...
+                   inference_method, mean_function, covariance_function, ...
+                   likelihood, hypersamples);
+
+variance_target = 0.01^2;
+
+num_trial_points = floor(num_observations / 50);
+num_trials = 1;
+num_f_samples = 1000;
 
 proportion_estimation_function = @(data, responses, test) ...
     gp_estimate_proportion_approximate(data, responses, test, ...
