@@ -1,4 +1,3 @@
-% implementation of the probability function interface for a
 % gaussian process classifier.  
 %
 % requires the gpml_extensions project available here

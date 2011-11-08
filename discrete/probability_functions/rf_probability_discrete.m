@@ -1,4 +1,3 @@
-% implementation of the probability function interface for a
 % random forest classifier.
 %
 % function probabilities = rf_probability_discrete(data, responses, ...

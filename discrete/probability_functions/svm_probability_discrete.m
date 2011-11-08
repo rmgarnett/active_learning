@@ -1,5 +1,4 @@
-% implementation of the probability function interface for a
-% random forest classifier.
+% support vector machine classifier.
 %
 % function probabilities = svm_probability_discrete(data, responses, ...
 %        train_ind, test_ind, varargin)
