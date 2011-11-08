@@ -1,4 +1,4 @@
-% selection function to select a random subset of points
+% select a random subset of points.
 %
 % function test_ind = random_point_selection(train_ind, num_test_points)
 %

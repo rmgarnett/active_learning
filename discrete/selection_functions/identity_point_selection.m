@@ -1,4 +1,4 @@
-% selection function to select all points.
+% select all points.
 %
 % function test_ind = identity_point_selection(train_ind)
 %
