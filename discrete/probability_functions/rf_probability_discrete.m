@@ -8,9 +8,9 @@
 %        data: an (n x d) matrix of input data
 %   responses: an (n x 1) vector of 0/1 responses
 %   train_ind: an index into data/responses indicating
-%              the training data
+%              the training points
 %    test_ind: an index into data/responses indicating
-%              the test data
+%              the test points
 %   num_trees: the number of trees to build in the random forest
 %     options: (optional) additional options to pass into 
 %              TreeBagger for training
