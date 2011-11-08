@@ -1,9 +1,8 @@
-% function utility = count_utility_discrete(responses, train_ind)
-%
-% an implementation of the utility function interface for the
 % simple "battleship" utility function
 %
 % u(D) = \sum_i y_i
+%
+% function utility = count_utility_discrete(responses, train_ind)
 %
 % inputs:
 %   responses: an (n x 1) vector of 0 / 1 responses

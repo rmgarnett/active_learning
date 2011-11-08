@@ -1,10 +1,9 @@
-% function utility = maximum_variance_utility_discrete(data, responses, ...
-%           train_ind, probability_function)
-%
-% an implementation of the utility function interface for the
 % maximum variance loss function used by uncertainty sampling
 %
 % u(D) = -\max_i var p(y_i = 1 | x_i, D)
+%
+% function utility = maximum_variance_utility_discrete(data, responses, ...
+%           train_ind, probability_function)
 %
 % inputs:
 %        data: an (n x d) matrix of input data

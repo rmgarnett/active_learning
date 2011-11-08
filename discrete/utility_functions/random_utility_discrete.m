@@ -1,7 +1,6 @@
-% function utility = random_utility_discrete
+% random utility function
 %
-% an implementation of the utility function interface for a
-% random utility
+% function utility = random_utility_discrete
 %
 % u(D) = random
 %

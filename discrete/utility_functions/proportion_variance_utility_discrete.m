@@ -1,10 +1,9 @@
-% function utility = maximum_variance_utility_discrete(data, responses, ...
-%           train_ind, probability_function)
-%
-% an implementation of the utility function interface for the
 % variance in the class proportion distribution used by active surveying
 %
 % u(D) = -var[ \sum_i y_i | D ]
+%
+% function utility = maximum_variance_utility_discrete(data, responses, ...
+%           train_ind, probability_function)
 %
 % inputs:
 %                             data: an (n x d) matrix of input data
