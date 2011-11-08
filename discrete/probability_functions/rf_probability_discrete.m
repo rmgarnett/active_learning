@@ -1,8 +1,8 @@
-% function probabilities = rf_probability_discrete(data, responses, ...
-%           train_ind, test_ind, num_trees, options)
-%
 % implementation of the probability function interface for a
 % random forest classifier.
+%
+% function probabilities = rf_probability_discrete(data, responses, ...
+%           train_ind, test_ind, num_trees, options)
 %
 % inputs:
 %        data: an (n x d) matrix of input data

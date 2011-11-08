@@ -1,8 +1,8 @@
-% function probabilities = knn_probability_discrete(responses, train_ind, ...
-%           test_ind, nearest_neighbors, weights, pseudocount)
-%
 % implementation of the probability function interface for a
 % k-nearest-neighbor classifier.
+%
+% function probabilities = knn_probability_discrete(responses, train_ind, ...
+%           test_ind, nearest_neighbors, weights, pseudocount)
 %
 % inputs:
 %               data: an (n x d) matrix of input data

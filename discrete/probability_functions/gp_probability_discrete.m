@@ -1,12 +1,13 @@
+% implementation of the probability function interface for a
+% gaussian process classifier.  
+%
+% requires the gpml_extensions project available here
+%
+% https://github.com/rmgarnett/gpml_extensions
+%
 % function probabilities = gp_probability_discrete(data, responses, ...
 %           in_train, prior_covariances, inference_method, mean_function, ...
 %           covariance_function, likelihood, hypersamples)
-%
-% implementation of the probability function interface for a
-% gaussian process classifier.  requires the gpml_extensions
-% project here
-%
-% https://github.com/rmgarnett/gpml_extensions
 %
 % inputs:
 %                  data: an (n x d) matrix of input data
