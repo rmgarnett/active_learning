@@ -20,12 +20,13 @@
 %                         adding each indicated test point to the
 %                         dataset
 %
-% Copyright (c) Roman Garnett, 2011
+% copyright (c) roman garnett, 2011
 
 function expected_utilities = expected_count_utility_discrete(data, ...
           responses, train_ind, test_ind, probability_function)
 
-  expected_utilities = nnz(responses(in_train)) + ...
+  % expected utility is # ones in training set + p(y = 1 | x, D)
+  expected_utilities = nnz(responses(train_ind)) + ...
       probability_function(data, responses, train_ind, test_ind);
 
 end
