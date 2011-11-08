@@ -7,8 +7,7 @@
 % u(D) = -\max_i var p(y_i = 1 | x_i, D)
 %
 % inputs:
-%
-%        data: an (n x d) matrix of data
+%        data: an (n x d) matrix of input data
 %   responses: an (n x 1) vector of 0 / 1 responses
 %   train_ind: an index into responses indicating the training points
 %
