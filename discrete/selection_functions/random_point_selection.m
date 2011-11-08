@@ -1,7 +1,6 @@
-% function test_ind = random_point_selection(train_ind, num_test_points)
+% selection function to select a random subset of points
 %
-% an implementation of the selection function interface to select
-% a random subset of points
+% function test_ind = random_point_selection(train_ind, num_test_points)
 %
 % inputs:
 %         train_ind: an index into data/responses indicating the 

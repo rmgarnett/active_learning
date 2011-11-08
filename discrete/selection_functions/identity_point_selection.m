@@ -1,7 +1,6 @@
-% function test_ind = identity_point_selection(train_ind)
+% selection function to select all points.
 %
-% an implementation of the selection function interface to simply
-% select all points.
+% function test_ind = identity_point_selection(train_ind)
 %
 % inputs:
 %   train_ind: an index into data/responses indicating the 
