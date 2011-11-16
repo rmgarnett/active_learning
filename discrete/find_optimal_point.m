@@ -50,7 +50,7 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
 
   % limit search to specified test points
   test_ind = selection_function(data, responses, train_ind);
-  num_test = length(test_ind);
+  num_test = numel(test_ind);
 
   % calculate the current posterior probabilities
   probabilities = probability_function(data, responses, train_ind, test_ind);
