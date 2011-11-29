@@ -2,7 +2,7 @@
 % indicates which of the unlabeld points should be considered for
 % addition at this time.  selection functions have the interface:
 %
-% test_ind = selection_function(data, responses, train_ind);
+% test_ind = selection_function(data, responses, train_ind)
 %
 % where
 %        data: an (n x d) matrix of input data
