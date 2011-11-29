@@ -43,7 +43,7 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
             train_ind, test_ind);
 
     % return best point
-    [best_utility best_ind] = max(expected_utilities);
+    [best_utility, best_ind] = max(expected_utilities);
     best_ind = test_ind(best_ind);
     return;
   end
