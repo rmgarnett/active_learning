@@ -6,6 +6,7 @@
 %     probability_function(data, responses, train_ind, test_ind);
 %
 % where
+%
 %           data: an (n x d) matrix of input data
 %      responses: an (n x 1) vector of 0 / 1 responses
 %      train_ind: an index into data/responses indicating the
