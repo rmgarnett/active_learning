@@ -1,5 +1,4 @@
-function probability_function = build_mknn_probability_discrete(data, ...
-        k, weight_function, pseudocount)
+function weights = knn_weights(data, k, weight_function)
 
   num_observations = size(data, 1);
 
@@ -12,9 +11,4 @@ function probability_function = build_mknn_probability_discrete(data, ...
                      num_observations, num_observations);
   weights = weight_function(distances);
 
-  weights(weights' == 0) = 0;
-
-  probability_function = @(data, responses, train_ind, test_ind) ...
-      knn_probability_discrete(responses, train_ind, test_ind, ...
-                               weights, pseudocount);
 end
