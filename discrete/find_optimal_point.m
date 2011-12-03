@@ -55,14 +55,14 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
   num_test = nnz(test_ind);
   
   if (verbose)
-    disp(['  ...testing ' num2str(num_test) ' points']);
+    disp(['  ... testing ' num2str(num_test) ' points']);
   end
   
   % calculate the current posterior probabilities
   probabilities = probability_function(data, responses, train_ind, test_ind);
   expected_utilities = zeros(num_test, 1);
   
-  for j = 1:num_test
+  parfor j = 1:num_test
     fake_train_ind = train_ind;
     fake_train_ind(test_ind(j)) = true;
     
