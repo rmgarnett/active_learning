@@ -1,7 +1,7 @@
 verbose = true;
 
-num_evaluations = 2;
-num_experiments = 1000;
+num_evaluations = 1000;
+num_experiments = 1;
 
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
@@ -15,13 +15,11 @@ responses = false(num_observations, 1);
 responses(nips_index(nips_index <= num_observations)) = true;
 num_positives = nnz(responses == 1);
 
-num_initial = 1000;
+num_initial = 1;
 balanced = true;
 
-selection_function = @(data, responses, in_train) ...
-    identity_point_selection(in_train);
-utility_function = @(data, responses, in_train) ...
-    count_utility_discrete(responses, in_train);
+utility_function = @(data, responses, train_ind) ...
+    count_utility_discrete(responses, train_ind);
 
 setup_nips_mknn_plus_mst;
 
@@ -30,34 +28,34 @@ two_step_results = zeros(num_experiments, 1);
 
 for i = 1:num_experiments
 
-  in_train = false(num_observations, 1);
+  train_ind = false(num_observations, 1);
   if (balanced)
     r = randperm(nnz(responses == 1));
-    in_train(logical_ind(responses == 1, r(1:num_initial))) = true;
+    train_ind(logical_ind(responses == 1, r(1:num_initial))) = true;
     r = randperm(nnz(responses == 0));
-    in_train(logical_ind(responses == 0, r(1:num_initial))) = true;
+    train_ind(logical_ind(responses == 0, r(1:num_initial))) = true;
   else
     r = randperm(num_observations);
-    in_train(r(1:num_initial)) = true;
+    train_ind(r(1:num_initial)) = true;
   end
 
-  expected_utility_function = @(data, responses, in_train, test_ind) ...
-      expected_count_utility_discrete(data, responses, in_train, ...
+  expected_utility_function = @(data, responses, train_ind, test_ind) ...
+      expected_count_utility_discrete(data, responses, train_ind, ...
           test_ind, probability_function);
 
-  [~, utilities] = optimal_learning_discrete(data, responses, in_train, ...
-          selection_function, probability_function, ...
+  lookahead = 1;
+  [~, utilities] = optimal_learning_discrete(data, responses, train_ind, ...
+          one_step_selection_function, probability_function, ...
           expected_utility_function, utility_function, num_evaluations, ...
-          1, verbose);
+          lookahead, verbose);
+  one_step_results(i) = utilities(end) - nnz(responses(train_ind));
 
-  one_step_results(i) = utilities(end) - nnz(responses(in_train));
-
-  [~, utilities] = optimal_learning_discrete(data, responses, in_train, ...
-          selection_function, probability_function, ...
+  lookahead = 2;
+  [~, utilities] = optimal_learning_discrete(data, responses, train_ind, ...
+          two_step_selection_function, probability_function, ...
           expected_utility_function, utility_function, num_evaluations, ...
-          2, verbose);
-
-  two_step_results(i) = utilities(end) - nnz(responses(in_train));
+          lookahead, verbose);
+  two_step_results(i) = utilities(end) - nnz(responses(train_ind));
 
   disp([  'one-step utility: ' num2str(one_step_results(i)) ...
         ', mean: ' num2str(mean(one_step_results(1:i))) ...
