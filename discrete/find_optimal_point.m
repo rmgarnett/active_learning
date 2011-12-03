@@ -1,6 +1,6 @@
 % function [best_utility best_ind] = find_optimal_point(data, responses, ...
 %          train_ind, selection_function, probability_function, ...
-%          expected_utility_function, lookahead)
+%          expected_utility_function, lookahead, verbose)
 %
 % finds the optimal next point to add to a dataset for active learning
 % on a set of discrete points for a particular utility function and
@@ -23,6 +23,7 @@
 %        probability_function: the probability function to use
 %   expected_utility_function: the expected utility function to use
 %                   lookahead: the number of steps to look ahead
+%                     verbose: true to print status after each
 %
 % outputs:
 %   best_utility: the expected utility of the best point found
@@ -32,13 +33,14 @@
 
 function [best_utility best_ind] = find_optimal_point(data, responses, ...
           train_ind, selection_function, probability_function, ...
-          expected_utility_function, lookahead)
+          expected_utility_function, lookahead, verbose)
 
   % base of the recursion, simply calculate expected utilities and
   % return best point
   if (lookahead == 1)
     % limit search to specified test points
     test_ind = selection_function(data, responses, train_ind);
+
     expected_utilities = expected_utility_function(data, responses, ...
             train_ind, test_ind);
 
@@ -50,13 +52,17 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
 
   % limit search to specified test points
   test_ind = selection_function(data, responses, train_ind);
-  num_test = numel(test_ind);
-
+  num_test = nnz(test_ind);
+  
+  if (verbose)
+    disp(['  ...testing ' num2str(num_test) ' points']);
+  end
+  
   % calculate the current posterior probabilities
   probabilities = probability_function(data, responses, train_ind, test_ind);
   expected_utilities = zeros(num_test, 1);
   
-  parfor j = 1:num_test
+  for j = 1:num_test
     fake_train_ind = train_ind;
     fake_train_ind(test_ind(j)) = true;
     
@@ -68,15 +74,13 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
     fake_responses(test_ind(j)) = true;
     utility_true = find_optimal_point(data, fake_responses, ...
             fake_train_ind, selection_function, probability_function, ...
-            expected_utility_function, lookahead - 1);
+            expected_utility_function, lookahead - 1, verbose);
     
-    % add a fake "false" observation for this test point and
-    % calculate the expected utility, calling this function
-    % recursively with new point and (lookahead - 1)
+    % add a fake "false" observation for this test point
     fake_responses(test_ind(j)) = false;
     utility_false = find_optimal_point(data, fake_responses, ...
             fake_train_ind, selection_function, probability_function, ...
-            expected_utility_function, lookahead - 1);
+            expected_utility_function, lookahead - 1, verbose);
     
     % calculate the overall expected utility
     expected_utilities(j) = probabilities(j)  * utility_true + ...
