@@ -23,6 +23,6 @@ function utility = proportion_variance_utility_discrete(data, ...
 
   [~, proportion_variance] = proportion_estimation_function(data, ...
           responses, train_ind);
-  utility = proportion_variance;
+  utility = -proportion_variance;
 
 end
