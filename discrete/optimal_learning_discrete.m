@@ -1,4 +1,4 @@
-% function [train_ind utilities] = optimal_learning_discrete(data, ...
+% function [chosen_ind utilities] = optimal_learning_discrete(data, ...
 %           responses, train_ind, selection_function, probability_function, ...
 %           expected_utility_function, utility_function, num_evaluations, ...
 %           lookahead, verbose)
@@ -20,7 +20,7 @@
 % inputs:
 %                        data: an (n x d) matrix of input data
 %                   responses: an (n x 1) vector of 0 / 1 responses
-%                   train_ind: an index into data/responses
+%                   train_ind: a list of indices into data/responses
 %                              indicating the starting labeled points
 %          selection_function: the selection function to use
 %        probability_function: the probability function to use
@@ -32,14 +32,13 @@
 %                              evaluation
 %
 % outputs:
-%   train_ind: an index into data/observations indicating the
-%              points in the final selected set
-%   utilities: the utility of the dataset after adding each
-%              successive point
+%   chosen_ind: a list of indices of the chosen datapoints, in order
+%    utilities: the utility of the dataset after adding each
+%               successive point in chosen_ind
 %
 % copyright (c) roman garnett, 2011
 
-function [train_ind utilities] = optimal_learning_discrete(data, ...
+function [chosen_ind utilities] = optimal_learning_discrete(data, ...
           responses, train_ind, selection_function, probability_function, ...
           expected_utility_function, utility_function, num_evaluations, ...
           lookahead, verbose)
@@ -48,6 +47,7 @@ function [train_ind utilities] = optimal_learning_discrete(data, ...
     verbose = false;
   end
 
+  chosen_ind = zeros(num_evaluations, 1);
   utilities = zeros(num_evaluations, 1);
 
   for i = 1:num_evaluations
@@ -65,15 +65,14 @@ function [train_ind utilities] = optimal_learning_discrete(data, ...
             train_ind, selection_function, probability_function, ...
             expected_utility_function, lookahead, verbose);
     
-    % add the selected point
-    train_ind(best_ind) = true;
-
-    % measure our current success
+    % add the selected point and measure our current success
+    chosen_ind(i) = best_ind;
+    train_ind = [train_ind; best_ind];
     utilities(i) = utility_function(data, responses, train_ind);
 
     if (verbose)
       elapsed = toc;
-      disp(['  ...expected utility: ' num2str(best_utility) ...
+      disp(['  ... expected utility: ' num2str(best_utility) ...
             ', true utility: ' num2str(utilities(i)) ...
             ', distribution (' num2str(nnz(responses(train_ind) == 1)) ...
             ' / ' num2str(nnz(train_ind)) ')' ...

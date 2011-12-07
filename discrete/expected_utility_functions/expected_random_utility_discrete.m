@@ -5,17 +5,17 @@
 % u(D) = rand
 %
 % inputs:
-%               test_ind: an index into data/responses indicating
-%                         the test data
+%   test_ind: a list of indices into data/responses
+%             indicating the test data
 % outputs:
-%     expected_utilities: a vector indicating the expected utility of
-%                         adding each indicated test point to the
-%                         dataset
+%   expected_utilities: a vector indicating the expected utility of
+%                       adding each indicated test point to the
+%                       dataset
 %
 % copyright (c) roman garnett, 2011
 
 function expected_utilities = expected_random_utility_discrete(test_ind)
 
-  expected_utilities = rand(length(test_ind), 1);
+  expected_utilities = rand(numel(test_ind), 1);
 
 end

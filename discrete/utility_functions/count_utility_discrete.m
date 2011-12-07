@@ -6,7 +6,8 @@
 %
 % inputs:
 %   responses: an (n x 1) vector of 0 / 1 responses
-%   train_ind: an index into responses indicating the training points
+%   train_ind: a list of indices into responses
+%              indicating the training points
 %
 % outputs:
 %   utility: the utility of the selected points

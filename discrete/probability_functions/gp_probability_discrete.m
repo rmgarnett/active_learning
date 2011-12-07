@@ -11,10 +11,10 @@
 % inputs:
 %                  data: an (n x d) matrix of input data
 %             responses: an (n x 1) vector of 0/1 responses
-%             train_ind: an index into data/responses indicating
-%                        the training points
-%              test_ind: an index into data/responses indicating
-%                        the test points
+%             train_ind: a list of indices into data/responses
+%                        indicating the training points
+%              test_ind: a list of indices into data/responses
+%                        indicating the test points
 %     prior_covariances: a (num_hypersamples x n x n) matrix
 %                        containing the prior covariance matrices
 %      inference_method: a gpml inference method

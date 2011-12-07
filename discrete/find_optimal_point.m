@@ -17,8 +17,8 @@
 % inputs:
 %                        data: an (n x d) matrix of input data
 %                   responses: an (n x 1) vector of 0 / 1 responses
-%                   train_ind: an index into data/responses
-%                              indicating the starting labeled points
+%                   train_ind: a list of indices into data/responses
+%                              indicating the labeled points
 %          selection_function: the selection function to use
 %        probability_function: the probability function to use
 %   expected_utility_function: the expected utility function to use
@@ -45,14 +45,14 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
             train_ind, test_ind);
 
     % return best point
-    [best_utility, best_ind] = max(expected_utilities);
+    [best_utility best_ind] = max(expected_utilities);
     best_ind = test_ind(best_ind);
     return;
   end
 
   % limit search to specified test points
   test_ind = selection_function(data, responses, train_ind);
-  num_test = nnz(test_ind);
+  num_test = numel(test_ind);
   
   if (verbose)
     disp(['  ... testing ' num2str(num_test) ' points']);
@@ -63,8 +63,7 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
   expected_utilities = zeros(num_test, 1);
   
   parfor j = 1:num_test
-    fake_train_ind = train_ind;
-    fake_train_ind(test_ind(j)) = true;
+    fake_train_ind = [train_ind; test_ind(j)];
     
     fake_responses = responses;
     

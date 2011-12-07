@@ -1,7 +1,7 @@
-verbose = true;
+verbose = false;
 
-num_evaluations = 1000;
-num_experiments = 1;
+num_evaluations = 100;
+num_experiments = 10;
 
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
@@ -15,7 +15,7 @@ responses = false(num_observations, 1);
 responses(nips_index(nips_index <= num_observations)) = true;
 num_positives = nnz(responses == 1);
 
-num_initial = 1;
+num_initial = 10;
 balanced = true;
 
 utility_function = @(data, responses, train_ind) ...
@@ -28,30 +28,30 @@ two_step_results = zeros(num_experiments, 1);
 
 for i = 1:num_experiments
 
-  train_ind = false(num_observations, 1);
   if (balanced)
     r = randperm(nnz(responses == 1));
-    train_ind(logical_ind(responses == 1, r(1:num_initial))) = true;
+    train_ind = logical_ind(responses == 1, r(1:num_initial));
     r = randperm(nnz(responses == 0));
-    train_ind(logical_ind(responses == 0, r(1:num_initial))) = true;
+    train_ind = [train_ind; ...
+                 logical_ind(responses == 0, r(1:num_initial))];
   else
     r = randperm(num_observations);
-    train_ind(r(1:num_initial)) = true;
+    train_ind = r(1:num_initial);
   end
-
+  
   expected_utility_function = @(data, responses, train_ind, test_ind) ...
       expected_count_utility_discrete(data, responses, train_ind, ...
           test_ind, probability_function);
 
   lookahead = 1;
-  [~, utilities] = optimal_learning_discrete(data, responses, train_ind, ...
-          one_step_selection_function, probability_function, ...
+  [chosen_ind, utilities] = optimal_learning_discrete(data, responses, ...
+          train_ind, one_step_selection_function, probability_function, ...
           expected_utility_function, utility_function, num_evaluations, ...
           lookahead, verbose);
   one_step_results(i) = utilities(end) - nnz(responses(train_ind));
 
   lookahead = 2;
-  [~, utilities] = optimal_learning_discrete(data, responses, train_ind, ...
+  [chosen_ind, utilities] = optimal_learning_discrete(data, responses, train_ind, ...
           two_step_selection_function, probability_function, ...
           expected_utility_function, utility_function, num_evaluations, ...
           lookahead, verbose);

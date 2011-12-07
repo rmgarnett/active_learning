@@ -5,14 +5,15 @@
 % expected_utilites = ...
 %     expected_utility_function(data, responses, train_ind, test_ind)
 %
-% where
+% inputs:
 %                 data: an (n x d) matrix of input data
 %            responses: an (n x 1) vector of 0 / 1 responses
-%            train_ind: an index into data/responses indicating
-%                       the training points
-%             test_ind: an index into data/responses indicating
-%                       the test points
+%            train_ind: a list of indices into data/responses
+%                       indicating the training points
+%             test_ind: a list of indices into data/responses
+%                       indicating the test points
 %
+% outputs:
 %   expected_utilities: the expected utility of adding each of the
 %                       test points to the dataset
 %

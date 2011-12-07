@@ -4,13 +4,14 @@
 %
 % test_ind = selection_function(data, responses, train_ind)
 %
-% where
+% inputs:
 %        data: an (n x d) matrix of input data
 %   responses: an (n x 1) vector of 0 / 1 responses
-%   train_ind: an index into data/responses indicating the
-%              training points
+%   train_ind: a list of indices into data/responses
+%              indicating the training points
 %
-%    test_ind: an index into data/responses indicating the
-%              points to test
+% outputs:
+%    test_ind: an list of indices into data/responses
+%              indicating the points to test
 %
 % copyright (c) roman garnett, 2011

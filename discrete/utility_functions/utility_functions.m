@@ -3,11 +3,13 @@
 %
 % utility = utility_function(data, responses, train_ind)
 %
-% where:
+% inputs:
 %        data: an (n x d) matrix of input data
 %   responses: an (n x 1) vector of 0 / 1 responses
-%   train_ind: an index into responses indicating the training points
+%   train_ind: a list of indices into data/responses
+%              indicating the training points
 %
+% outputs:
 %   utility: the utility of the selected points
 %
 % copyright (c) roman garnett, 2011

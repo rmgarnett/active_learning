@@ -7,17 +7,17 @@
 % inputs:
 %                   data: an (n x d) matrix of input data
 %              responses: an (n x 1) vector of 0 / 1 responses
-%              train_ind: an index into data/responses indicating
-%                         the training data
-%               test_ind: an index into data/responses indicating
-%                         the test data
+%              train_ind: a list of indices into data/responses
+%                         indicating the training points
+%               test_ind: a list of indices into data/responses
+%                         the test points
 %   probability_function: a handle to a probability function
 %       utility_function: a handle to a utility function
 %
 % outputs:
-%     expected_utilities: a vector indicating the expected utility of
-%                         adding each indicated test point to the
-%                         dataset
+%   expected_utilities: a vector indicating the expected utility of
+%                       adding each indicated test point to the
+%                       dataset
 %
 % copyright (c) roman garnett, 2011
 
@@ -32,8 +32,7 @@ function expected_utilities = ...
   expected_utilities = zeros(num_test, 1);
   
   parfor j = 1:num_test
-    fake_train_ind = train_ind;
-    fake_train_ind(test_ind(j)) = true;
+    fake_train_ind = [train_ind; test_ind(j)];
     
     fake_responses = responses;
     
@@ -44,8 +43,8 @@ function expected_utilities = ...
     
     % add a fake "false" observation for this test point and calculate the
     % utility
-    fake_train_ind(test_ind(j)) = false;
-    utility_false =  utility_function(data, fake_responses, fake_train_ind);
+    fake_responses(test_ind(j)) = false;
+    utility_false = utility_function(data, fake_responses, fake_train_ind);
     
     % calculate the overall expected utility
     expected_utilities(j) = probabilities(j)  * utility_true + ...
