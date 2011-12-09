@@ -47,6 +47,6 @@ function test_ind = two_step_search_bound_selection_function(data, ...
                         (1 + one_step_bound - p_star);
 
   test_ind = unique([one_step_optimal_ind; ...
-                     find(probabilities >= optimal_lower_bound)]);
+                     test_ind(probabilities >= optimal_lower_bound)]);
 
 end
