@@ -27,10 +27,12 @@ function test_ind = two_step_search_bound_selection_function(data, ...
       probability_function(data, responses, train_ind, test_ind);
   [p_star, one_step_optimal_ind] = max(probabilities);
 
+  fake_test_ind = test_ind;
+  fake_test_ind(one_step_optimal_ind) = [];
+  
   one_step_optimal_ind = test_ind(one_step_optimal_ind);
   
   fake_train_ind = [train_ind; one_step_optimal_ind];
-  fake_test_ind  = setdiff(test_ind, one_step_optimal_ind);
   fake_responses = responses;
   
   fake_responses(one_step_optimal_ind) = false;

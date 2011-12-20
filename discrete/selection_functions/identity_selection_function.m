@@ -16,7 +16,8 @@
 
 function test_ind = ...
       identity_selection_function(responses, train_ind)
-
-  test_ind = setdiff((1:numel(responses))', train_ind);
-
+    
+  test_ind = (1:numel(responses))';
+  test_ind(train_ind) = [];
+  
 end
