@@ -8,9 +8,7 @@
 % using user-defined:
 %
 % - selection functions, which specify which among the unlabeled
-%   points should have their expected utilities evaluated. this
-%   implementation allows multiple selection functions to be used,
-%   should different ones be desired for different lookaheads.
+%   points should have their expected utilities evaluated.
 % - probability functions, which assign probabilities to indicated
 %   test data from the current training set
 % - expected utility functions, which calculate the expected
@@ -24,10 +22,7 @@
 %                   responses: an (n x 1) vector of 0 / 1 responses
 %                   train_ind: a list of indices into data/responses
 %                              indicating the starting labeled points
-%         selection_functions: a cell array of selection functions
-%                              to use. if lookahead = k, then
-%                              the min(k, numel(selection_functions))th
-%                              element of this array will be used.
+%          selection_function: the selection function to use
 %        probability_function: the probability function to use
 %   expected_utility_function: the expected utility function to use
 %            utility_function: the utility function to use
@@ -44,7 +39,7 @@
 % copyright (c) roman garnett, 2011
 
 function [chosen_ind utilities] = optimal_learning_discrete(data, ...
-          responses, train_ind, selection_functions, probability_function, ...
+          responses, train_ind, selection_function, probability_function, ...
           expected_utility_function, utility_function, num_evaluations, ...
           lookahead, verbose)
   
@@ -63,11 +58,6 @@ function [chosen_ind utilities] = optimal_learning_discrete(data, ...
     
     % do not look past the maximum number of evaluations
     lookahead = min(lookahead, num_evaluations - i + 1);
-
-    % allow array of selection functions, fall back if no entry for
-    % current lookahead
-    selection_function = ...
-        selection_functions{min(lookahead, numel(selection_functions))};
 
     % find the optimal next point to add given the current training
     % set and chosen utility function
