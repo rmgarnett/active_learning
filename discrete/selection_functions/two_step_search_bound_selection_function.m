@@ -27,10 +27,9 @@ function test_ind = two_step_search_bound_selection_function(data, ...
       probability_function(data, responses, train_ind, test_ind);
   [p_star, one_step_optimal_ind] = max(probabilities);
 
-  fake_test_ind = test_ind;
-  fake_test_ind(one_step_optimal_ind) = [];
-  
   one_step_optimal_ind = test_ind(one_step_optimal_ind);
+
+  fake_test_ind = test_ind(logical_ind(test_ind, test_ind ~= one_step_optimal_ind));
   
   fake_train_ind = [train_ind; one_step_optimal_ind];
   fake_responses = responses;
@@ -48,7 +47,6 @@ function test_ind = two_step_search_bound_selection_function(data, ...
   optimal_lower_bound = (p_star_false + p_star * (p_star_true - p_star_false)) / ...
                         (1 + one_step_bound - p_star);
 
-  test_ind = unique([one_step_optimal_ind; ...
-                     test_ind(probabilities >= optimal_lower_bound)]);
+  test_ind = test_ind(probabilities >= min(optimal_lower_bound, p_star));
 
 end
