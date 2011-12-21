@@ -26,7 +26,7 @@ function bound = knn_probability_bound_discrete(responses, train_ind, ...
           test_ind, weights, max_weights, pseudocount)
 
   this_weights = weights(test_ind, train_ind);
-  total_weight = sum(this_weights, 2);
+  total_weight = full(sum(this_weights, 2));
 
   max_weight = max(max_weights(test_ind));
   
