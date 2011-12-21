@@ -1,5 +1,5 @@
 % function [best_utility best_ind] = find_optimal_point(data, responses, ...
-%          train_ind, selection_function, probability_function, ...
+%          train_ind, selection_functions, probability_function, ...
 %          expected_utility_function, lookahead, verbose)
 %
 % finds the optimal next point to add to a dataset for active learning
@@ -7,7 +7,9 @@
 % lookahead.  this function supports using user-defined:
 %
 % - selection functions, which specify which among the unlabeled
-%   points should have their expected utilities evaluated.
+%   points should have their expected utilities evaluated. this
+%   implementation allows multiple selection functions to be used,
+%   should different ones be desired for different lookaheads.
 % - probability functions, which assign probabilities to indicated
 %   test data from the current training set
 % - expected utility functions, which calculate the expected
@@ -19,7 +21,10 @@
 %                   responses: an (n x 1) vector of 0 / 1 responses
 %                   train_ind: a list of indices into data/responses
 %                              indicating the labeled points
-%          selection_function: the selection function to use
+%         selection_functions: a cell array of selection functions
+%                              to use. if lookahead = k, then the
+%                              min(k, numel(selection_functions))th
+%                              element of this array will be used.
 %        probability_function: the probability function to use
 %   expected_utility_function: the expected utility function to use
 %                   lookahead: the number of steps to look ahead
@@ -32,8 +37,13 @@
 % copyright (c) roman garnett, 2011
 
 function [best_utility best_ind] = find_optimal_point(data, responses, ...
-          train_ind, selection_function, probability_function, ...
+          train_ind, selection_functions, probability_function, ...
           expected_utility_function, lookahead, verbose)
+
+  % allow array of selection functions and fall back if no entry
+  % for current lookahead
+  selection_function = ...
+      selection_functions{min(lookahead, numel(selection_functions))};
 
   % base of the recursion, simply calculate expected utilities and
   % return best point
@@ -72,13 +82,13 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
     % recursively with new point and (lookahead - 1)
     fake_responses(test_ind(j)) = true;
     utility_true = find_optimal_point(data, fake_responses, ...
-            fake_train_ind, selection_function, probability_function, ...
+            fake_train_ind, selection_functions, probability_function, ...
             expected_utility_function, lookahead - 1, verbose);
     
     % add a fake "false" observation for this test point
     fake_responses(test_ind(j)) = false;
     utility_false = find_optimal_point(data, fake_responses, ...
-            fake_train_ind, selection_function, probability_function, ...
+            fake_train_ind, selection_functions, probability_function, ...
             expected_utility_function, lookahead - 1, verbose);
     
     % calculate the overall expected utility
