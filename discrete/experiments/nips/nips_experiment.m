@@ -1,5 +1,5 @@
 verbose = false;
-num_experiments = 100;
+num_experiments = 50;
 
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
@@ -21,7 +21,7 @@ utility_function = @(data, responses, train_ind) ...
 
 setup_nips_mknn_plus_mst;
 
-for num_evaluations = [10 20 50 100 200 500 1000 2000 5000]
+for num_evaluations = [100 200 500 1000]
   disp(['trying ' num2str(num_evaluations) ' evaluations.']);
 
   one_step_results = zeros(num_experiments, 1);
