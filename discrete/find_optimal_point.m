@@ -72,7 +72,7 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
   probabilities = probability_function(data, responses, train_ind, test_ind);
   expected_utilities = zeros(num_test, 1);
   
-  parfor j = 1:num_test
+  for j = 1:num_test
     fake_train_ind = [train_ind; test_ind(j)];
     
     fake_responses = responses;
