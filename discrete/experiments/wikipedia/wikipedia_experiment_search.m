@@ -27,7 +27,7 @@ utility_function = @(data, responses, train_ind) ...
 
 setup_wikipedia_knn;
 
-for num_evaluations = [1e1 2e1 5e1 1e2 2e2 5e2 1e3 2e3 5e3]
+for num_evaluations = [1e2 2e2 5e2 1e3 2e3 5e3]
   disp(['trying ' num2str(num_evaluations) ' evaluations.']);
 
   one_step_results = zeros(num_experiments, 1);
