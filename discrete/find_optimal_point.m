@@ -28,7 +28,6 @@
 %        probability_function: the probability function to use
 %   expected_utility_function: the expected utility function to use
 %                   lookahead: the number of steps to look ahead
-%                     verbose: true to print status after each
 %
 % outputs:
 %   best_utility: the expected utility of the best point found
@@ -38,7 +37,7 @@
 
 function [best_utility best_ind] = find_optimal_point(data, responses, ...
           train_ind, selection_functions, probability_function, ...
-          expected_utility_function, lookahead, verbose)
+          expected_utility_function, lookahead)
 
   % allow array of selection functions and fall back if no entry
   % for current lookahead
@@ -64,10 +63,6 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
   test_ind = selection_function(data, responses, train_ind);
   num_test = numel(test_ind);
   
-  if (verbose)
-    disp(['  ... testing ' num2str(num_test) ' points']);
-  end
-  
   % calculate the current posterior probabilities
   probabilities = probability_function(data, responses, train_ind, test_ind);
   expected_utilities = zeros(num_test, 1);
@@ -83,13 +78,13 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
     fake_responses(test_ind(j)) = true;
     utility_true = find_optimal_point(data, fake_responses, ...
             fake_train_ind, selection_functions, probability_function, ...
-            expected_utility_function, lookahead - 1, verbose);
+            expected_utility_function, lookahead - 1);
     
     % add a fake "false" observation for this test point
     fake_responses(test_ind(j)) = false;
     utility_false = find_optimal_point(data, fake_responses, ...
             fake_train_ind, selection_functions, probability_function, ...
-            expected_utility_function, lookahead - 1, verbose);
+            expected_utility_function, lookahead - 1);
     
     % calculate the overall expected utility
     expected_utilities(j) = probabilities(j)  * utility_true + ...
