@@ -4,16 +4,7 @@
 %
 % selection function to pick out only those points that could have
 % optimal l-step lookahead expected utility for the active search
-% problem (corresponding to count_utility). this is accomplished
-% via a function providing a bound on the maximum possible
-% (l-1)-step utility after adding a point. the expected interface
-% for this function is
-%
-% function bound = utility_bound(data, responses, train_ind, ...
-%                                test_ind, lookahead)
-%
-% which should return an upper bound for the maximum (l-1) step expected
-% utility after adding a single positive observation.
+% problem (corresponding to count_utility).
 %
 % inputs:
 %                   data: an (n x d) matrix of input data
@@ -21,7 +12,8 @@
 %              train_ind: an index into data/responses indicating
 %                         the training points
 %   probability_function: a function handle providing a probability function 
-%          utility_bound: a function handle probiding a utility bound
+%      probability_bound: a function handle probiding a probability
+%                         bound (see expected_count_utility_bound)
 %              lookahead: the number of steps of lookahead to consider
 %
 % outputs:
@@ -31,7 +23,7 @@
 % copyright (c) roman garnett, 2011
 
 function test_ind = optimal_search_bound_selection_function(data, ...
-          responses, train_ind, probability_function, utility_bound, ...
+          responses, train_ind, probability_function, probability_bound, ...
           lookahead)
 
   test_ind = identity_selection_function(responses, train_ind);
@@ -56,7 +48,7 @@ function test_ind = optimal_search_bound_selection_function(data, ...
   for i = 1:(lookahead - 1)
     selection_functions{i} = @(data, responses, train_ind) ...
         optimal_search_bound_selection_function(data, responses, ...
-            train_ind, probability_function, utility_bound, i);
+            train_ind, probability_function, probability_bound, i);
   end
   selection_functions{lookahead} = @(data, responses, train_ind) ...
       (one_step_optimal_ind);
@@ -83,7 +75,8 @@ function test_ind = optimal_search_bound_selection_function(data, ...
   % find a bound on the maximum (l-1)-step expected utility after
   % one more positive observation
   one_fewer_step_utility_bound = ...
-      utility_bound(data, responses, train_ind, test_ind, lookahead - 1);
+      expected_count_utility_bound(data, responses, train_ind, ...
+          test_ind, probability_bound, lookahead - 1, 1);
 
   % now a point with probability p can have l-step utility at most
   %
