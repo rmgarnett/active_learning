@@ -1,3 +1,5 @@
+% function bound = knn_probability_bound_discrete(responses, train_ind, ...
+%           test_ind, weights, max_weights, pseudocount, num_positives)
 % probability bound for a k-nearest-neighbor classifier. this
 % function provides a bound for
 %
@@ -23,7 +25,11 @@
 % copyright (c) roman garnett, 2011
 
 function bound = knn_probability_bound_discrete(responses, train_ind, ...
-          test_ind, weights, max_weights, pseudocount)
+          test_ind, weights, max_weights, pseudocount, num_positives)
+
+  if (nargin < 7)
+    num_positives = 1;
+  end
 
   this_weights = weights(test_ind, train_ind);
   total_weight = full(sum(this_weights, 2));
@@ -31,8 +37,8 @@ function bound = knn_probability_bound_discrete(responses, train_ind, ...
   max_weight = max(max_weights(test_ind));
   
   bound = max( ...
-        (pseudocount + max_weight + this_weights * responses(train_ind)) ./ ...
-                  (1 + max_weight + total_weight) ...
+        (pseudocount + num_positives * max_weight + this_weights * responses(train_ind)) ./ ...
+                  (1 + num_positives * max_weight + total_weight) ...
       );
 
 end
