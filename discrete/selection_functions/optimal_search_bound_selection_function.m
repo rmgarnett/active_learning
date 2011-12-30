@@ -4,16 +4,16 @@
 %
 % selection function to pick out only those points that could have
 % optimal l-step lookahead expected utility for the active search
-% problem (corresponding to count_utility).  this is accomplished
+% problem (corresponding to count_utility). this is accomplished
 % via a function providing a bound on the maximum possible
-% (l-1)-step utility after adding a point.  the expected interface
+% (l-1)-step utility after adding a point. the expected interface
 % for this function is
 %
 % function bound = utility_bound(data, responses, train_ind, ...
 %                                test_ind, lookahead)
 %
-% which should return  an upper bound for the maximum (l-1) step expected
-% utility after adding a single positive observation in bound.
+% which should return an upper bound for the maximum (l-1) step expected
+% utility after adding a single positive observation.
 %
 % inputs:
 %                   data: an (n x d) matrix of input data
@@ -23,6 +23,7 @@
 %   probability_function: a function handle providing a probability function 
 %          utility_bound: a function handle probiding a utility bound
 %              lookahead: the number of steps of lookahead to consider
+%
 % outputs:
 %    test_ind: an list of indices into data/responses
 %              indicating the points to test
