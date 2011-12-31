@@ -21,7 +21,9 @@ num_positives = nnz(responses == 1);
 utility_function = @(data, responses, train_ind) ...
     count_utility(responses, train_ind);
 
-setup_nips_mknn_plus_mst;
+if (~exist('selection_functions', 'var'))
+  setup_nips_mknn_plus_mst;
+end
 
 for num_evaluations = max_lookahead
   disp(['trying ' num2str(num_evaluations) ' evaluations.']);
