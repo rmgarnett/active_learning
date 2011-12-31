@@ -1,5 +1,5 @@
 verbose = true;
-num_experiments = 10;
+num_experiments = 100;
 
 num_initial = 50;
 balanced = true;
@@ -25,7 +25,7 @@ if (~exist('selection_functions', 'var'))
   setup_nips_mknn_plus_mst;
 end
 
-for num_evaluations = max_lookahead
+for num_evaluations = 100
   disp(['trying ' num2str(num_evaluations) ' evaluations.']);
 
   results = zeros(num_experiments, max_lookahead);
