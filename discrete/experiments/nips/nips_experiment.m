@@ -1,5 +1,10 @@
-verbose = true;
-num_experiments = 10;
+verbose = false;
+num_experiments = 100;
+
+num_initial = 10;
+balanced = true;
+
+max_lookahead = 4;
 
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
@@ -13,20 +18,15 @@ responses = false(num_observations, 1);
 responses(nips_index(nips_index <= num_observations)) = true;
 num_positives = nnz(responses == 1);
 
-num_initial = 100;
-balanced = true;
-
 utility_function = @(data, responses, train_ind) ...
     count_utility_discrete(responses, train_ind);
 
 setup_nips_mknn_plus_mst;
 
-for num_evaluations = [10 20 50 100]
+for num_evaluations = 100
   disp(['trying ' num2str(num_evaluations) ' evaluations.']);
 
-    one_step_results = zeros(num_experiments, 1);
-    two_step_results = zeros(num_experiments, 1);
-  three_step_results = zeros(num_experiments, 1);
+  results = zeros(num_experiments, max_lookahead);
 
   for i = 1:num_experiments
 
@@ -45,34 +45,21 @@ for num_evaluations = [10 20 50 100]
         expected_count_utility_discrete(data, responses, train_ind, ...
             test_ind, probability_function);
 
-    lookahead = 1;
-    [~, utilities] = optimal_learning_discrete(data, responses, ...
-            train_ind, selection_functions, probability_function, ...
-            expected_utility_function, utility_function, num_evaluations, ...
-            lookahead, verbose);
-    one_step_results(i) = utilities(end) - nnz(responses(train_ind));
-    fprintf('one-step utility: %i, mean: %.3f', ...
-            one_step_results(i), ...
-            mean(one_step_results(1:i)));
+    for lookahead = 1:max_lookahead
+			tic;
+      [~, utilities] = optimal_learning_discrete(data, responses, ...
+              train_ind, selection_functions, probability_function, ...
+              expected_utility_function, utility_function, num_evaluations, ...
+              lookahead, verbose);
+      results(i, lookahead) = utilities(end) - nnz(responses(train_ind));
+      elapsed = toc;
+      fprintf('%i-step utility: %i, mean: %.2f, took: %.2fs ', ...
+              lookahead, ...
+              results(i, lookahead), ...
+              mean(results(1:i, lookahead)) ...
+							elapsed);
+    end
 
-    lookahead = 2;
-    [~, utilities] = optimal_learning_discrete(data, responses, ...
-            train_ind, selection_functions, probability_function, ...
-            expected_utility_function, utility_function, num_evaluations, ...
-            lookahead, verbose);
-    two_step_results(i) = utilities(end) - nnz(responses(train_ind));
-    fprintf(', two-step utility: %i, mean: %.3f', ...
-            two_step_results(i), ...
-            mean(two_step_results(1:i)));
-
-    lookahead = 3;
-    [~, utilities] = optimal_learning_discrete(data, responses, ...
-            train_ind, selection_functions, probability_function, ...
-            expected_utility_function, utility_function, num_evaluations, ...
-            lookahead, verbose);
-    three_step_results(i) = utilities(end) - nnz(responses(train_ind));
-    fprintf(', three-step utility: %i mean: %.3f\n', ...
-            three_step_results(i), ...
-            mean(three_step_results(1:i)));
+		fprintf('\n');
   end
 end
