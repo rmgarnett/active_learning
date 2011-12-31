@@ -18,51 +18,61 @@ responses = false(num_observations, 1);
 responses(nips_index(nips_index <= num_observations)) = true;
 num_positives = nnz(responses == 1);
 
-utility_function = @(data, responses, train_ind) ...
-    count_utility(responses, train_ind);
-
-if (~exist('selection_functions', 'var'))
+if (~exist('probability_function', 'var'))
   setup_nips_mknn_plus_mst;
 end
 
-for num_evaluations = 100
-  disp(['trying ' num2str(num_evaluations) ' evaluations.']);
+utility_function = @(data, responses, train_ind) ...
+    count_utility(responses, train_ind);
 
-  results = zeros(num_experiments, max_lookahead);
+expected_utility_function = @(data, responses, train_ind, test_ind) ...
+    expected_count_utility(data, responses, train_ind, test_ind, ...
+                           probability_function);
 
-  for i = 1:num_experiments
+selection_functions = cell(max_lookahead, 1);
+for i = 1:max_lookahead
+    selection_functions{i} = @(data, responses, train_ind) ...
+        optimal_search_bound_selection_function(data, responses, ...
+            train_ind, probability_function, probability_bound, i);
+end
 
-    if (balanced)
-      r = randperm(nnz(responses == 1));
-      train_ind = logical_ind(responses == 1, r(1:num_initial));
-      r = randperm(nnz(responses == 0));
-      train_ind = [train_ind; ...
-                   logical_ind(responses == 0, r(1:num_initial))];
-    else
-      r = randperm(num_observations);
-      train_ind = r(1:num_initial);
-    end
+num_evaluations = 100;
 
-    expected_utility_function = @(data, responses, train_ind, test_ind) ...
-        expected_count_utility(data, responses, train_ind, test_ind, ...
-                               probability_function);
+results = zeros(num_experiments, max_lookahead);
+elapsed = zeros(num_experiments, max_lookahead);
 
-    for lookahead = 1:max_lookahead
-			tic;
-      [~, utilities] = optimal_learning(data, responses, train_ind, ...
-              selection_functions, probability_function, ...
-              expected_utility_function, utility_function, ...
-              num_evaluations, lookahead, verbose);
-      results(i, lookahead) = ...
-          utilities(end) - utility_function(data, responses, train_ind);
-      elapsed = toc;
-      fprintf('%i-step utility: %i, mean: %.2f, took: %.2fs\n', ...
-              lookahead, ...
-              results(i, lookahead), ...
-              mean(results(1:i, lookahead)), ...
-							elapsed);
-    end
+for experiment = 1:num_experiments
 
-		fprintf('\n');
+  if (balanced)
+    r = randperm(nnz(responses == 1));
+    train_ind = logical_ind(responses == 1, r(1:num_initial));
+    r = randperm(nnz(responses == 0));
+    train_ind = [train_ind; ...
+                 logical_ind(responses == 0, r(1:num_initial))];
+  else
+    r = randperm(num_observations);
+    train_ind = r(1:num_initial);
   end
+
+  for lookahead = 1:max_lookahead
+    start = cputime;
+    [~, utilities] = optimal_learning(data, responses, train_ind, ...
+            selection_functions, probability_function, ...
+            expected_utility_function, utility_function, ...
+            num_evaluations, lookahead, verbose);
+    results(experiment, lookahead) = ...
+        utilities(end) - utility_function(data, responses, train_ind);
+    elapsed(experiment, lookahead) = cputime - start;
+
+    for i = 1:max_lookahead
+      fprintf('%i-step utility: %i, mean: %.2f, took: %.2fs, mean: %.2fs\n', ...
+              i, ...
+              results(experiment, i), ...
+              mean(results(1:experiment, i)), ...
+              elapsed(experiment, i), ...
+              mean(elapsed(1:experiment, i)));
+    end
+  end
+
+  fprintf('\n');
 end
