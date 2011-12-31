@@ -1,10 +1,10 @@
-verbose = false;
-num_experiments = 100;
+verbose = true;
+num_experiments = 10;
 
-num_initial = 10;
+num_initial = 50;
 balanced = true;
 
-max_lookahead = 4;
+max_lookahead = 3;
 
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
@@ -23,7 +23,7 @@ utility_function = @(data, responses, train_ind) ...
 
 setup_nips_mknn_plus_mst;
 
-for num_evaluations = 100
+for num_evaluations = max_lookahead
   disp(['trying ' num2str(num_evaluations) ' evaluations.']);
 
   results = zeros(num_experiments, max_lookahead);
@@ -54,7 +54,7 @@ for num_evaluations = 100
       results(i, lookahead) = ...
           utilities(end) - utility_function(data, responses, train_ind);
       elapsed = toc;
-      fprintf('%i-step utility: %i, mean: %.2f, took: %.2fs ', ...
+      fprintf('%i-step utility: %i, mean: %.2f, took: %.2fs\n', ...
               lookahead, ...
               results(i, lookahead), ...
               mean(results(1:i, lookahead)), ...
