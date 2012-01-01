@@ -1,10 +1,10 @@
-verbose = true;
+verbose = false;
 num_experiments = 100;
 
-num_initial = 50;
+num_initial = 1;
 balanced = true;
 
-max_lookahead = 3;
+max_lookahead = 2;
 
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
@@ -36,7 +36,8 @@ for i = 1:max_lookahead
             train_ind, probability_function, probability_bound, i);
 end
 
-num_evaluations = 100;
+num_evaluations = 1000;
+report = [10 20 50 100 200 500 1000];
 
 results = zeros(num_experiments, max_lookahead);
 elapsed = zeros(num_experiments, max_lookahead);
@@ -55,24 +56,20 @@ for experiment = 1:num_experiments
   end
 
   for lookahead = 1:max_lookahead
-    start = cputime;
+    start = tic;
     [~, utilities] = optimal_learning(data, responses, train_ind, ...
             selection_functions, probability_function, ...
             expected_utility_function, utility_function, ...
             num_evaluations, lookahead, verbose);
     results(experiment, lookahead) = ...
         utilities(end) - utility_function(data, responses, train_ind);
-    elapsed(experiment, lookahead) = cputime - start;
+    elapsed(experiment, lookahead) = toc(start);
 
-    for i = 1:max_lookahead
-      fprintf('%i-step utility: %i, mean: %.2f, took: %.2fs, mean: %.2fs\n', ...
-              i, ...
-              results(experiment, i), ...
-              mean(results(1:experiment, i)), ...
-              elapsed(experiment, i), ...
-              mean(elapsed(1:experiment, i)));
-    end
+    fprintf('%i-step utility: %i, mean: %.2f, took: %.2fs, mean: %.2fs\n', ...
+            lookahead, ...
+            results(experiment, lookahead), ...
+            mean(results(1:experiment, lookahead)), ...
+            elapsed(experiment, lookahead), ...
+            mean(elapsed(1:experiment, lookahead)));
   end
-
-  fprintf('\n');
 end
