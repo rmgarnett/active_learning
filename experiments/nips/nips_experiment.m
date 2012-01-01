@@ -1,7 +1,7 @@
 verbose = false;
 num_experiments = 100;
 
-num_initial = 1;
+num_initial = 10;
 balanced = true;
 
 max_lookahead = 3;
@@ -42,8 +42,8 @@ for i = 1:max_lookahead
             train_ind, probability_function, probability_bound, i);
 end
 
-num_evaluations = 100;
-report = [10 20 50 100];
+num_evaluations = 1000;
+report = [10 20 50 100 200 500 1000];
 
 results = zeros(num_experiments, num_evaluations, max_lookahead);
 elapsed = zeros(num_experiments, max_lookahead);
