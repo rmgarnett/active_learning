@@ -61,8 +61,8 @@ for experiment = 1:num_experiments
             selection_functions, probability_function, ...
             expected_utility_function, utility_function, ...
             num_evaluations, lookahead, verbose);
-    results(experiment, lookahead) = ...
-        utilities(end) - utility_function(data, responses, train_ind);
+    utilities = utilities - utility_function(data, responses, train_ind);
+    results(experiment, lookahead) = utilities(end);
     elapsed(experiment, lookahead) = toc(start);
 
     fprintf('%i-step utility: %i, mean: %.2f, took: %.2fs, mean: %.2fs\n', ...
@@ -71,5 +71,13 @@ for experiment = 1:num_experiments
             mean(results(1:experiment, lookahead)), ...
             elapsed(experiment, lookahead), ...
             mean(elapsed(1:experiment, lookahead)));
+
+    fprintf('  ...');
+    for i = 1:numel(report)
+      fprintf('after %i steps: %i ', ...
+              report(i), utilities(report));
+    end
+    fprintf('\n');
+
   end
 end
