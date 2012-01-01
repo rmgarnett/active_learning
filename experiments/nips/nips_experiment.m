@@ -36,8 +36,8 @@ for i = 1:max_lookahead
             train_ind, probability_function, probability_bound, i);
 end
 
-num_evaluations = 1000;
-report = [10 20 50 100 200 500 1000];
+num_evaluations = 100;
+report = [10 20 50 100];
 
 results = zeros(num_experiments, num_evaluations, max_lookahead);
 elapsed = zeros(num_experiments, max_lookahead);
