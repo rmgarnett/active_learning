@@ -6,6 +6,12 @@ balanced = true;
 
 max_lookahead = 3;
 
+try
+  if (matlabpool('size') == 0)
+    matlabpool('open');
+  end
+end
+
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
 load([data_directory 'nips_graph_pca_vectors'], 'data');
