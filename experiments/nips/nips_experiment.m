@@ -1,10 +1,10 @@
 verbose = false;
 num_experiments = 100;
 
-num_initial = 1;
+num_initial = 10;
 balanced = true;
 
-max_lookahead = 2;
+max_lookahead = 3;
 
 data_directory = '~/work/data/nips_papers/processed/top_venues/';
 load([data_directory 'top_venues_graph'], 'nips_index');
