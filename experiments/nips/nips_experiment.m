@@ -4,7 +4,7 @@ num_experiments = 100;
 num_initial = 1;
 balanced = true;
 
-max_lookahead = 4;
+max_lookahead = 3;
 
 try
   if (matlabpool('size') == 0)
