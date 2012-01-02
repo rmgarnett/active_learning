@@ -1,8 +1,8 @@
-% function expected_utilities = expected_random_utility(test_ind)
-%
 % calculates expected utilities for a random utility function
 %
 % u(D) = rand
+%
+% function expected_utilities = expected_random_utility(test_ind)
 %
 % inputs:
 %   test_ind: a list of indices into data/responses

@@ -1,10 +1,10 @@
-% function test_ind = optimal_search_bound_selection_function(data, ...
-%           responses, train_ind, probability_function, utility_bound, ...
-%           lookahead)
-%
 % selection function to pick out only those points that could have
 % optimal l-step lookahead expected utility for the active search
 % problem (corresponding to count_utility).
+%
+% function test_ind = optimal_search_bound_selection_function(data, ...
+%           responses, train_ind, probability_function, utility_bound, ...
+%           lookahead)
 %
 % inputs:
 %                   data: an (n x d) matrix of input data

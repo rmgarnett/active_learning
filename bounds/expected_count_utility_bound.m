@@ -1,6 +1,3 @@
-% function bound = expected_count_utility_bound(data, responses, ...
-%          train_ind, test_ind, probability_bound, lookahead, num_positives)
-%
 % bound on the l-step lookahead expected utility of an unlabeled
 % point for the active search problem (corresponding to
 % count_utility). this is accomplished via a function providing a
@@ -13,6 +10,9 @@
 %
 % which should return an upper bound for the maximum posterior probability
 % after adding num_positives positive observations.
+%
+% function bound = expected_count_utility_bound(data, responses, ...
+%          train_ind, test_ind, probability_bound, lookahead, num_positives)
 %
 % inputs:
 %                data: an (n x d) matrix of input data
