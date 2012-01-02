@@ -1,6 +1,6 @@
 options_defined = true;
 required_options = {'num_initial', 'num_experiments', 'num_evaluations', ...
-                    'max_lookahead'};
+                    'max_lookahead', 'report'};
 
 for i = 1:numel(required_options)
   if (~exist(required_options{i}, 'var'))
@@ -76,17 +76,16 @@ if (options_defined)
               elapsed(experiment, lookahead), ...
               mean(elapsed(1:experiment, lookahead)));
     end
-
-    for steps = 1:numel(report)
-      fprintf(' ...');
-      for lookahead = 1:max_lookahead
-        fprintf(' %i-step-utility after %i steps: %i, mean: %.2f', ...
-                lookahead, ...
-                report(i), ...
-                results(experiment, report(i), lookahead), ...
-                mean(results(1:experiment, report(i), lookahead)));
-      end
-      fprintf('\n');
+  end
+  for steps = 1:numel(report)
+    fprintf(' ... ');
+    for lookahead = 1:max_lookahead
+      fprintf('%i-step-utility after %i steps: %i, mean: %.2f ', ...
+              lookahead, ...
+              report(i), ...
+              results(experiment, report(i), lookahead), ...
+              mean(results(1:experiment, report(i), lookahead)));
     end
+    fprintf('\n');
   end
 end
