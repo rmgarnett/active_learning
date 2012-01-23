@@ -1,3 +1,5 @@
+% select points with probability above a given threshold.
+%
 % function test_ind = probability_treshold_selection_function(data, ...
 %           responses, train_ind, probability_function, threshold)
 %
