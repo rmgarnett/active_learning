@@ -8,7 +8,8 @@
 %
 % inputs:
 %                   data: an (n x d) matrix of input data
-%              responses: an (n x 1) vector of 0 / 1 responses
+%              responses: an (n x 1) vector of responses (class 1
+%                         is treated as "interesting")
 %              train_ind: an index into data/responses indicating
 %                         the training points
 %   probability_function: a function handle providing a probability function
@@ -20,7 +21,7 @@
 %    test_ind: an list of indices into data/responses
 %              indicating the points to test
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function test_ind = optimal_search_bound_selection_function(data, ...
           responses, train_ind, probability_function, probability_bound, ...
@@ -31,7 +32,7 @@ function test_ind = optimal_search_bound_selection_function(data, ...
   % find point with current maximum posterior probability
   probabilities = ...
       probability_function(data, responses, train_ind, test_ind);
-  [p_star, one_step_optimal_ind] = max(probabilities);
+  [p_star, one_step_optimal_ind] = max(probabilities(:, 1));
   one_step_optimal_ind = test_ind(one_step_optimal_ind);
 
   % if we only look ahead one step, we only need to consider the
