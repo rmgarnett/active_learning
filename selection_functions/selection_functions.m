@@ -6,7 +6,7 @@
 %
 % inputs:
 %        data: an (n x d) matrix of input data
-%   responses: an (n x 1) vector of 0 / 1 responses
+%   responses: an (n x 1) vector of responses
 %   train_ind: a list of indices into data/responses
 %              indicating the training points
 %
@@ -14,4 +14,4 @@
 %    test_ind: an list of indices into data/responses
 %              indicating the points to test
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
