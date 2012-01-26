@@ -3,7 +3,7 @@
 % data. probability functions have the interface:
 %
 % probabilities = ...
-%     probability_function(data, responses, train_ind, test_ind);
+%     probability_function(data, responses, train_ind, test_ind)
 %
 % inputs:
 %           data: an (n x d) matrix of input data
