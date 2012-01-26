@@ -7,10 +7,10 @@
 %        data: an (n x d) matrix of input data
 %   responses: an (n x 1) vector of responses (class 1 is tested
 %              against "any other class")
-%   train_ind: a list of indices into data/responses
-%              indicating the training points
-%    test_ind: a list of indices into data/responses
-%              indicating the test points
+%   train_ind: a list of indices into data/responses indicating
+%              the training points
+%    test_ind: a list of indices into data/responses indicating
+%              the test points
 %    varargin: all remaining inputs are passed to svmtrain
 %
 % outputs:
