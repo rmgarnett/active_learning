@@ -1,7 +1,7 @@
 % calculates expected utilities for the maximum variance loss
 % function used by uncertainty sampling
 %
-% u(D) = -\max_i var p(y_i | x_i, D)
+% u(D) = -\max_i (1 - p(argmax_y y_i = y | x_i, D))
 %
 % function expected_utilities = expected_maximum_variance_utility(data, ...
 %           responses, train_ind, test_ind, probability_function)
@@ -25,8 +25,8 @@
 function expected_utilities = expected_maximum_variance_utility(data, ...
           responses, train_ind, test_ind, probability_function)
 
-  % utility is -var p(y = 1 | x, D) = -|p - 1/2|
-  expected_utilities = ...
-      -abs(probability_function(data, responses, train_ind, test_ind) - (1 / 2));
+  probabilities = ...
+      probability_function(data, responses, train_ind, test_ind);
+  expected_utilities = -max(1 - max(probabilities, 2));
 
 end
