@@ -5,8 +5,8 @@
 % function utility = count_utility(responses, train_ind)
 %
 % inputs:
-%   responses: an (n x 1) vector of responses (class 1 is treated
-%              as "interesting")
+%   responses: an (n x 1) vector of responses (class 1 is
+%              treated as "interesting")
 %   train_ind: a list of indices into responses
 %              indicating the training points
 %
