@@ -29,7 +29,6 @@ function probabilities = rf_probability(data, responses, ...
 
   model = TreeBagger(num_trees, data(train_ind, :), responses(train_ind), ...
                      'method', 'classification', 'options', options);
-  [~, votes] = predict(model, data(test_ind, :));
-  probabilities = votes(:, 2);
+  [~, probabilities] = predict(model, data(test_ind, :));
 
 end
