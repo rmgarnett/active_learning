@@ -16,7 +16,8 @@
 %
 % inputs:
 %                data: an (n x d) matrix of input data
-%           responses: an (n x 1) vector of 0 / 1 responses
+%           responses: an (n x 1) vector of responses (class 1 is
+%                      tested against "any other class")
 %           train_ind: an index into data/responses indicating
 %                      the training points
 %            test_ind: an index into data/responses indicating
@@ -30,7 +31,7 @@
 %   bound: an upper bound for the (lookahead)-step expected count
 %          utilities of the unlabeled points
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function bound = expected_count_utility_bound(data, responses, ...
           train_ind, test_ind, probability_bound, lookahead, num_positives)
