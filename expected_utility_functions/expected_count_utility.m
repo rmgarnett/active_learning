@@ -9,8 +9,8 @@
 % inputs:
 %                   data: an (n x d) matrix of input data
 %              responses: an (n x 1) vector of responses (class 1
-%                         indicates "interesting")
-%              train_ind: an index into data/responses
+%                         is treated as "interesting")
+%              train_ind: a list of indices  into data/responses
 %                         indicating the training points
 %               test_ind: a list of indices into data/responses
 %                         indicating the test points
