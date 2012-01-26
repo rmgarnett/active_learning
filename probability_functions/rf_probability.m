@@ -5,19 +5,20 @@
 %
 % inputs:
 %        data: an (n x d) matrix of input data
-%   responses: an (n x 1) vector of 0/1 responses
-%   train_ind: a list of indices into data/responses
-%              indicating the training points
-%    test_ind: a list of indices into data/responses
-%              indicating the test points
+%   responses: an (n x 1) vector of responses
+%   train_ind: a list of indices into data/responses indicating
+%              the training points
+%    test_ind: a list of indices into data/responses indicating
+%              the test points
 %   num_trees: the number of trees to build in the random forest
 %     options: (optional) additional options to pass into
 %              TreeBagger for training
 %
 % outputs:
-%   probabilities: a vector of posterior probabilities for the test data
+%   probabilities: a matrix of posterior probabilities for the test
+%                  data
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function probabilities = rf_probability(data, responses, ...
           train_ind, test_ind, num_trees, options)
