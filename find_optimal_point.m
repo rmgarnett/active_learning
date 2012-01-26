@@ -89,7 +89,7 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
               probability_function, expected_utility_function, lookahead - 1);
     end
 
-    expected_utilities(i) = probabilities(test_ind(i), :) * fake_utilities;
+    expected_utilities(i) = probabilities(i, :) * fake_utilities;
   end
 
   [best_utility best_ind] = max(expected_utilities);
