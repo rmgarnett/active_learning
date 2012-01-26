@@ -1,7 +1,7 @@
 % calculates expected utilities for the maximum variance loss
 % function used by uncertainty sampling
 %
-% u(D) = -\max_i var p(y_i = 1 | x_i, D)
+% u(D) = -\max_i var p(y_i | x_i, D)
 %
 % function expected_utilities = expected_maximum_variance_utility(data, ...
 %           responses, train_ind, test_ind, probability_function)
@@ -12,7 +12,7 @@
 %              train_ind: a list of indices into data/responses
 %                         indicating the training points
 %               test_ind: a list of indices into data/responses
-%                         the test points
+%                         indicating the test points
 %   probability_function: a handle to a probability function
 %
 % outputs:
@@ -20,7 +20,7 @@
 %                       adding each indicated test point to the
 %                       dataset
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function expected_utilities = expected_maximum_variance_utility(data, ...
           responses, train_ind, test_ind, probability_function)
