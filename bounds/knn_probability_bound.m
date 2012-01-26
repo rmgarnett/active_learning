@@ -11,7 +11,8 @@
 %
 % inputs:
 %            data: an (n x d) matrix of input data
-%       responses: an (n x 1) vector of 0 / 1 responses
+%       responses: an (n x 1) vector of responses (class 1 is
+%                  tested against "any other class")
 %       train_ind: an index into data/responses indicating
 %                  the training points
 %        test_ind: an index into data/responses indicating
@@ -25,7 +26,7 @@
 % outputs:
 %   bound: an upper bound for the probabilities of the test data
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function bound = knn_probability_bound(responses, train_ind, test_ind, ...
           weights, max_weights, pseudocount, num_positives)
@@ -33,6 +34,8 @@ function bound = knn_probability_bound(responses, train_ind, test_ind, ...
   if (nargin < 7)
     num_positives = 1;
   end
+
+  responses(responses ~= 1) = 0;
 
   this_weights = weights(test_ind, train_ind);
   total_weight = full(sum(this_weights, 2));

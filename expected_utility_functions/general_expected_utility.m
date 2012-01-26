@@ -5,7 +5,7 @@
 %
 % inputs:
 %                   data: an (n x d) matrix of input data
-%              responses: an (n x 1) vector of 0 / 1 responses
+%              responses: an (n x 1) vector of responses
 %              train_ind: a list of indices into data/responses
 %                         indicating the training points
 %               test_ind: a list of indices into data/responses
@@ -18,7 +18,7 @@
 %                       adding each indicated test point to the
 %                       dataset
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function expected_utilities = general_expected_utility(data, responses, ...
           train_ind, test_ind, probability_function, utility_function)
@@ -29,24 +29,24 @@ function expected_utilities = general_expected_utility(data, responses, ...
   probabilities = probability_function(data, responses, train_ind, test_ind);
   expected_utilities = zeros(num_test, 1);
 
-  parfor j = 1:num_test
-    fake_train_ind = [train_ind; test_ind(j)];
-
+  for i = 1:num_test
+    fake_train_ind = [train_ind; test_ind(i)];
     fake_responses = responses;
 
-    % add a fake "truee" observation for this test point and calculate the
-    % utility
-    fake_responses(test_ind(j)) = true;
-    utility_true =  utility_function(data, fake_responses, fake_train_ind);
+    num_classes = max(responses);
+    fake_utilities = zeros(num_classes, 1);
 
-    % add a fake "false" observation for this test point and calculate the
-    % utility
-    fake_responses(test_ind(j)) = false;
-    utility_false = utility_function(data, fake_responses, fake_train_ind);
+    for fake_response = 1:num_classes
+      % add a fake observation for this test point and calculate the
+      % expected utility, calling this function recursively with new
+      % point and (lookahead - 1)
+      fake_responses(test_ind(i)) = fake_response;
 
-    % calculate the overall expected utility
-    expected_utilities(j) = probabilities(j)  * utility_true + ...
-                       (1 - probabilities(j)) * utility_false;
+      fake_utilities(test_ind(i)) = ...
+          utility_function(data, fake_responses, fake_train_ind);
+    end
+
+    expected_utilities(i) = probabilities(i, :) * fake_utilities;
   end
 
 end
