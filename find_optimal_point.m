@@ -1,7 +1,3 @@
-% function [best_utility best_ind] = find_optimal_point(data, responses, ...
-%          train_ind, selection_functions, probability_function, ...
-%          expected_utility_function, lookahead, verbose)
-%
 % finds the optimal next point to add to a dataset for active learning
 % on a set of discrete points for a particular utility function and
 % lookahead.  this function supports using user-defined:
@@ -15,6 +11,10 @@
 % - expected utility functions, which calculate the expected
 %   utility of the dataset after adding one of a specified set of
 %   points
+%
+% function [best_utility best_ind] = find_optimal_point(data, responses, ...
+%          train_ind, selection_functions, probability_function, ...
+%          expected_utility_function, lookahead)
 %
 % inputs:
 %                        data: an (n x d) matrix of input data
@@ -67,7 +67,7 @@ function [best_utility best_ind] = find_optimal_point(data, responses, ...
   probabilities = probability_function(data, responses, train_ind, test_ind);
   expected_utilities = zeros(num_test, 1);
 
-  for j = 1:num_test
+  parfor j = 1:num_test
     fake_train_ind = [train_ind; test_ind(j)];
 
     fake_responses = responses;

@@ -1,10 +1,10 @@
-% function expected_utilities = expected_proportion_variance_utility(data, ...
-%           responses, train_ind, test_ind, probability_function)
-%
 % calculates expected utilities for the "active surveying" utillity
 % function
 %
 % u(D) = var[ \sum_i y_i | D ]
+%
+% function expected_utilities = expected_proportion_variance_utility(data, ...
+%           responses, train_ind, test_ind, probability_function)
 %
 % inputs:
 %                   data: an (n x d) matrix of input data

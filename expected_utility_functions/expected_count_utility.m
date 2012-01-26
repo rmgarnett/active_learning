@@ -1,10 +1,10 @@
-% function expected_utilities = expected_count_utility(data, responses, ...
-%           train_ind, test_ind, probability_function)
-%
 % calculates expected utilities for the simple "battleship" utillity
 % function
 %
 % u(D) = \sum_i y_i
+%
+% function expected_utilities = expected_count_utility(data, responses, ...
+%           train_ind, test_ind, probability_function)
 %
 % inputs:
 %                   data: an (n x d) matrix of input data

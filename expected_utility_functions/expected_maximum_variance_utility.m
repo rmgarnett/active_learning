@@ -1,10 +1,10 @@
-% function expected_utilities = expected_maximum_variance_utility(data, ...
-%           responses, train_ind, test_ind, probability_function)
-%
 % calculates expected utilities for the maximum variance loss
 % function used by uncertainty sampling
 %
 % u(D) = -\max_i var p(y_i = 1 | x_i, D)
+%
+% function expected_utilities = expected_maximum_variance_utility(data, ...
+%           responses, train_ind, test_ind, probability_function)
 %
 % inputs:
 %                   data: an (n x d) matrix of input data

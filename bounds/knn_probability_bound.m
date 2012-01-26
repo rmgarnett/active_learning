@@ -1,6 +1,3 @@
-% function bound = knn_probability_bound(responses, train_ind, test_ind, ...
-%           weights, max_weights, pseudocount, num_positives)
-%
 % probability bound for a k-nearest-neighbor classifier. this
 % function provides a bound for
 %
@@ -8,6 +5,9 @@
 %
 % after adding additional points to the current training set,
 % perhaps for use with probability_threshold_selection_function.
+%
+% function bound = knn_probability_bound(responses, train_ind, test_ind, ...
+%           weights, max_weights, pseudocount, num_positives)
 %
 % inputs:
 %            data: an (n x d) matrix of input data

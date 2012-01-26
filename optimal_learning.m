@@ -1,8 +1,3 @@
-% function [chosen_ind utilities] = optimal_learning(data, responses, ...
-%           train_ind, selection_function, probability_function, ...
-%           expected_utility_function, utility_function, num_evaluations, ...
-%           lookahead, verbose)
-%
 % perform optimal active learning on a set of discrete points for a
 % particular utility function and lookahead.  this function supports
 % using user-defined:
@@ -16,6 +11,11 @@
 %   points
 % - utility functions, which calculate the utility of a selected
 %   set of points
+%
+% function [chosen_ind utilities] = optimal_learning(data, responses, ...
+%           train_ind, selection_function, probability_function, ...
+%           expected_utility_function, utility_function, num_evaluations, ...
+%           lookahead, verbose)
 %
 % inputs:
 %                        data: an (n x d) matrix of input data
