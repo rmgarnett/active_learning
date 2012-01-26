@@ -1,4 +1,4 @@
-% selects points with posterior probability above a specified threshold.
+% select points with posterior probability above a specified threshold.
 %
 % function test_ind = probability_treshold_selection_function(data, ...
 %           responses, train_ind, probability_function, threshold)
