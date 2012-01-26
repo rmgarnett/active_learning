@@ -1,10 +1,7 @@
-<<<<<<< Updated upstream
-=======
 % function [best_utility, best_ind] = find_optimal_point(data, responses, ...
 %           train_ind, selection_functions, probability_function, ...
 %           expected_utility_function, lookahead)
 %
->>>>>>> Stashed changes
 % finds the optimal next point to add to a dataset for active learning
 % on a set of discrete points for a particular utility function and
 % lookahead.  this function supports using user-defined:
@@ -61,7 +58,7 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
             train_ind, test_ind);
 
     % return best point
-    [best_utility best_ind] = max(expected_utilities);
+    [best_utility, best_ind] = max(expected_utilities);
     best_ind = test_ind(best_ind);
     return;
   end
@@ -74,17 +71,12 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
   probabilities = probability_function(data, responses, train_ind, test_ind);
   expected_utilities = zeros(num_test, 1);
 
-<<<<<<< Updated upstream
-  parfor j = 1:num_test
-    fake_train_ind = [train_ind; test_ind(j)];
+  num_classes = max(responses);
 
-=======
   for i = 1:num_test
     fake_train_ind = [train_ind; test_ind(i)];
->>>>>>> Stashed changes
     fake_responses = responses;
 
-    num_classes = max(responses);
     fake_utilities = zeros(num_classes, 1);
 
     for fake_response = 1:num_classes
@@ -98,7 +90,7 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
               probability_function, expected_utility_function, lookahead - 1);
     end
 
-    expected_utilities(i) = probabilities(i, :) * fake_utilities;
+    expected_utilities(i) = probabilities(test_ind(i), :) * fake_utilities;
   end
 
   [best_utility best_ind] = max(expected_utilities);
