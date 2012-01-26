@@ -36,7 +36,7 @@
 %    utilities: the utility of the dataset after adding each
 %               successive point in chosen_ind
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function [chosen_ind utilities] = optimal_learning(data, responses, ...
           train_ind, selection_function, probability_function, ...
