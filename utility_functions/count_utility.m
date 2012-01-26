@@ -1,4 +1,4 @@
-% simple "battleship" utility function
+% simple "battleship" utility function.
 %
 % u(D) = \sum_i \chi(y_i = 1)
 %
@@ -7,8 +7,8 @@
 % inputs:
 %   responses: an (n x 1) vector of responses (class 1 is
 %              treated as "interesting")
-%   train_ind: a list of indices into responses
-%              indicating the training points
+%   train_ind: a list of indices into responses indicating
+%              the training points
 %
 % outputs:
 %   utility: the utility of the selected points
