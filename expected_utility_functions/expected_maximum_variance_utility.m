@@ -26,6 +26,6 @@ function expected_utilities = expected_maximum_variance_utility(data, ...
           responses, train_ind, test_ind, probability_function)
 
   probabilities = probability_function(data, responses, train_ind, test_ind);
-  expected_utilities = -max(1 - max(probabilities, [], 2));
+  expected_utilities = -(1 - max(probabilities, [], 2));
 
 end
