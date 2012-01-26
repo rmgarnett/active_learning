@@ -1,4 +1,4 @@
-% variance in the class proportion distribution used by active surveying
+% variance in the class proportion distribution used by active surveying.
 %
 % u(D) = -var[ \sum_i \chi(y_i = 1) | D ]
 %
