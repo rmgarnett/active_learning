@@ -1,5 +1,5 @@
 % calculates expected utilities for the maximum variance loss
-% function used by uncertainty sampling
+% function used by uncertainty sampling.
 %
 % u(D) = -\max_i (1 - p(argmax_y y_i = y | x_i, D))
 %
