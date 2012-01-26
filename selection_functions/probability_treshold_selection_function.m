@@ -26,6 +26,6 @@ function test_ind = probability_treshold_selection_function(data, ...
   probabilities = ...
       probability_function(data, responses, train_ind, test_ind);
 
-  test_ind = find(probabilities >= threshold);
+  test_ind = find(max(probabilities, [], 2) >= threshold);
   
 end
