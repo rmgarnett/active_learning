@@ -1,13 +1,13 @@
-% random utility function
+% trivial random utility function.
+%
+% u(D) = U[0, 1]
 %
 % function utility = random_utility
-%
-% u(D) = random
 %
 % outputs:
 %   utility: the utility of the selected points
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function utility = random_utility
 
