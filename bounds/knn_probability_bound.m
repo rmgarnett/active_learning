@@ -31,10 +31,19 @@
 function bound = knn_probability_bound(responses, train_ind, test_ind, ...
           weights, max_weights, pseudocount, num_positives)
 
+  % given nothing else, consider having added one new positive observation
   if (nargin < 7)
     num_positives = 1;
   end
 
+  % this method is limited to only binary classification
+  if (any(responses > 2))
+    warning('optimal_learning:multi_class_not_supported', ...
+            ['svm_probability can only be used for binary problems! ' ...
+             'will test class 1 vs "any other class."']);
+  end
+  
+  % transform responses for knn classifier
   responses(responses ~= 1) = 0;
 
   this_weights = weights(test_ind, train_ind);
