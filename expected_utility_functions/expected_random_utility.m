@@ -5,14 +5,14 @@
 % function expected_utilities = expected_random_utility(test_ind)
 %
 % inputs:
-%   test_ind: a list of indices into data/responses
-%             indicating the test data
+%   test_ind: a list of indices into data/responses indicating
+%             the test points
 % outputs:
 %   expected_utilities: a vector indicating the expected utility of
 %                       adding each indicated test point to the
 %                       dataset
 %
-% copyright (c) roman garnett, 2011
+% copyright (c) roman garnett, 2011--2012
 
 function expected_utilities = expected_random_utility(test_ind)
 
