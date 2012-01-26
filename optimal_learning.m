@@ -68,6 +68,7 @@ function [chosen_ind utilities] = optimal_learning(data, responses, ...
     % add the selected point and measure our current success
     chosen_ind(i) = best_ind;
     train_ind = [train_ind; best_ind];
+
     utilities(i) = utility_function(data, responses, train_ind);
 
     if (verbose)
