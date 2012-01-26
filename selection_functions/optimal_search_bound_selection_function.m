@@ -91,6 +91,6 @@ function test_ind = optimal_search_bound_selection_function(data, ...
       (p_star_expected_utility - one_fewer_step_optimal_utility) / ...
       (1 + one_fewer_step_utility_bound - one_fewer_step_optimal_utility);
 
-  test_ind = test_ind(probabilities >= min(optimal_lower_bound, p_star));
+  test_ind = test_ind(probabilities(:, 1) >= min(optimal_lower_bound, p_star));
 
 end
