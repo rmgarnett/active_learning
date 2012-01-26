@@ -22,7 +22,8 @@
 %         mean_function: a gpml mean function
 %   covariance_function: a gpml covariance function
 %            likelihood: a gpml likelihood
-%          hypersamples: a hypersample structure for use with gpml_extensions
+%          hypersamples: a hypersample structure for use with
+%                        gpml_extensions
 %
 % outputs:
 %   probabilities: a matrix of posterior probabilities for the test
