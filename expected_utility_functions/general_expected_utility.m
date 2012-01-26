@@ -9,7 +9,7 @@
 %              train_ind: a list of indices into data/responses
 %                         indicating the training points
 %               test_ind: a list of indices into data/responses
-%                         the test points
+%                         indicating the test points
 %   probability_function: a handle to a probability function
 %       utility_function: a handle to a utility function
 %
