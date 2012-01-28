@@ -72,11 +72,12 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
   expected_utilities = zeros(num_test, 1);
 
   num_classes = max(responses);
-  fake_utilities = zeros(num_classes, 1);
 
   for i = 1:num_test
     fake_train_ind = [train_ind; test_ind(i)];
     fake_responses = responses;
+
+    fake_utilities = zeros(num_classes, 1);
 
     for fake_response = 1:num_classes
       % add a fake observation for this test point and calculate the
