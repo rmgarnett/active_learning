@@ -1,6 +1,9 @@
+stream = RandStream('mt19937ar', 'seed', 31415);
+RandStream.setGlobalStream(stream);
+
 options_defined = true;
 required_options = {'num_initial', 'num_experiments', 'num_evaluations', ...
-                    'max_lookahead', 'report'};
+                    'max_lookahead', 'report', 'balanced'};
 
 for i = 1:numel(required_options)
   if (~exist(required_options{i}, 'var'))
@@ -14,24 +17,37 @@ if (options_defined)
 
   try
     if (matlabpool('size') == 0)
-      matlabpool('open');
+      %matlabpool('open');
     end
   end
 
   data_directory = '~/work/data/nips_papers/processed/top_venues/';
-  load([data_directory 'top_venues_graph'], 'nips_index');
-  load([data_directory 'nips_graph_pca_vectors'], 'data');
+  load([data_directory 'top_venues_graph'], 'nips_index', 'connected_W');
 
-  num_observations = size(data, 1);
-  num_components = size(data, 2);
-  data = data(1:num_observations, 1:num_components);
-
-  responses = false(num_observations, 1);
-  responses(nips_index(nips_index <= num_observations)) = true;
+  num_observations = size(connected_W, 1);
+  data = (1:num_observations)';
+  
+  responses = 2 * ones(num_observations, 1);
+  responses(nips_index(nips_index <= num_observations)) = 1;
   num_positives = nnz(responses == 1);
 
   if (~exist('probability_function', 'var'))
-    setup_nips_mknn_plus_mst;
+    weights = connected_W;
+    clear connected_W;
+
+    normalizer = max(weights, [], 2);
+    weights = weights - bsxfun(@times, weights > 0, normalizer);
+    
+    % weights = max(weights, weights');
+
+    max_weights = full(max(weights));
+
+    probability_function = @(data, responses, train_ind, test_ind) ...
+        knn_probability(responses, train_ind, test_ind, weights, pseudocount);
+    
+    probability_bound = @(data, responses, train_ind, test_ind, num_positives) ...
+        knn_probability_bound(responses, train_ind, test_ind, weights, ...
+                              max_weights, pseudocount, num_positives);
   end
 
   utility_function = @(data, responses, train_ind) ...
@@ -55,9 +71,10 @@ if (options_defined)
 
     r = randperm(nnz(responses == 1));
     train_ind = logical_ind(responses == 1, r(1:num_initial));
-    r = randperm(nnz(responses == 0));
-    train_ind = [train_ind; ...
-                 logical_ind(responses == 0, r(1:num_initial))];
+    if (balanced)
+      r = randperm(nnz(responses == 2));
+      train_ind = [train_ind; logical_ind(responses == 2, r(1: num_initial))];
+    end
 
     for lookahead = 1:max_lookahead
       start = tic;
