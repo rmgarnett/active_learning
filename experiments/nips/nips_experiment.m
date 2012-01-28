@@ -17,12 +17,13 @@ if (options_defined)
 
   try
     if (matlabpool('size') == 0)
-      %matlabpool('open');
+      matlabpool('open');
     end
   end
 
   data_directory = '~/work/data/nips_papers/processed/top_venues/';
-  load([data_directory 'top_venues_graph'], 'nips_index', 'connected_W');
+  load([data_directory 'top_venues_graph'], 'nips_index');
+  load([data_directory 'top_venues_graph'], 'nips_index');
 
   num_observations = size(connected_W, 1);
   data = (1:num_observations)';
@@ -32,22 +33,7 @@ if (options_defined)
   num_positives = nnz(responses == 1);
 
   if (~exist('probability_function', 'var'))
-    weights = connected_W;
-    clear connected_W;
-
-    normalizer = max(weights, [], 2);
-    weights = weights - bsxfun(@times, weights > 0, normalizer);
-    
-    % weights = max(weights, weights');
-
-    max_weights = full(max(weights));
-
-    probability_function = @(data, responses, train_ind, test_ind) ...
-        knn_probability(responses, train_ind, test_ind, weights, pseudocount);
-    
-    probability_bound = @(data, responses, train_ind, test_ind, num_positives) ...
-        knn_probability_bound(responses, train_ind, test_ind, weights, ...
-                              max_weights, pseudocount, num_positives);
+    setup_nips_knn;
   end
 
   utility_function = @(data, responses, train_ind) ...
