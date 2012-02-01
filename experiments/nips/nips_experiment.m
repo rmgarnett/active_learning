@@ -3,7 +3,7 @@ RandStream.setGlobalStream(stream);
 
 options_defined = true;
 required_options = {'num_initial', 'num_experiments', 'num_evaluations', ...
-                    'max_lookahead', 'report', 'balanced'};
+                    'max_lookahead', 'report', 'balanced', 'k', 'pseudocount'};
 
 for i = 1:numel(required_options)
   if (~exist(required_options{i}, 'var'))
@@ -22,14 +22,13 @@ if (options_defined)
   end
 
   data_directory = '~/work/data/nips_papers/processed/top_venues/';
-  load([data_directory 'top_venues_graph'], 'nips_index');
+  load([data_directory 'nips_graph_pca_vectors'], 'nips_index');
   load([data_directory 'top_venues_graph'], 'nips_index');
 
-  num_observations = size(connected_W, 1);
-  data = (1:num_observations)';
-  
+  num_observations = size(data, 1);
+
   responses = 2 * ones(num_observations, 1);
-  responses(nips_index(nips_index <= num_observations)) = 1;
+  responses(nips_index) = 1;
   num_positives = nnz(responses == 1);
 
   if (~exist('probability_function', 'var'))
