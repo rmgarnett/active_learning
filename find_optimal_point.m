@@ -73,7 +73,7 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
 
   num_classes = max(responses);
 
-  for i = 1:num_test
+  parfor i = 1:num_test
     fake_train_ind = [train_ind; test_ind(i)];
     fake_responses = responses;
 
