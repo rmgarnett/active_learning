@@ -21,6 +21,6 @@ function utility = maximum_variance_utility(data, responses, train_ind, ...
 
   test_ind = identity_selection_function(responses, train_ind);
   probabilities = probability_function(data, responses, train_ind, test_ind);
-  utility = -max(1 - max(probabilities, [], 2));
+  utility = -max(abs(probabilities - (1 / 2)));
 
 end
