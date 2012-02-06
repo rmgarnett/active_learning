@@ -6,7 +6,7 @@ function [results, elapsed] = perform_search_experiment(data, ...
   if (nargin < 11)
     verbose = false;
   end
-
+  
   utility_function = @(data, responses, train_ind) ...
       count_utility(responses, train_ind);
 
@@ -29,8 +29,8 @@ function [results, elapsed] = perform_search_experiment(data, ...
     r = randperm(nnz(responses == 1));
     train_ind = logical_ind(responses == 1, r(1:num_initial));
     if (balanced)
-      r = randperm(nnz(responses == 2));
-      train_ind = [train_ind; logical_ind(responses == 2, r(1: num_initial))];
+      r = randperm(nnz(responses == 0));
+      train_ind = [train_ind; logical_ind(responses == 0, r(1: num_initial))];
     end
 
     for lookahead = 1:max_lookahead

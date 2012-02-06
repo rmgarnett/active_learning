@@ -1,4 +1,4 @@
-stream = RandStream('mt19937ar', 'seed', 31415);
+stream = RandStream('mt19937ar', 'seed', 1);
 RandStream.setGlobalStream(stream);
 
 check_search_experiment_options;
@@ -15,13 +15,10 @@ if (options_defined)
   num_observations = size(data, 1);
   num_neighbors = size(neighbors, 2);
 
-  responses = 2 * ones(num_observations, 1);
+  responses = zeros(num_observations, 1);
   responses(programming_language_page_ids) = 1;
-  num_positives = nnz(responses == 1);
 
   setup_wikipedia_knn;
-
-  open_matlabpool;
 
   [results, elapsed] = perform_search_experiment(data, responses, ...
           num_initial, balanced, probability_function, probability_bound, ...
