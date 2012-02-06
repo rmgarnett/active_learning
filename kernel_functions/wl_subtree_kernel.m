@@ -42,7 +42,7 @@
 %
 %   kernel_matrix: the resulting kernel matrix between the graphs.
 %
-% roman garnett, 2012.
+% copyright (c) roman garnett, 2012.
 
 function kernel_matrix = wl_subtree_kernel(data, responses, graph_ind, h)
 
