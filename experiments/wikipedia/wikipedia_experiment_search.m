@@ -6,7 +6,7 @@ check_search_experiment_options;
 if (options_defined)
 
   data_directory = '~/work/data/wikipedia/computer_science/processed/';
-  load([data_directory 'topics/wikipedia_topic_vectors']);
+  load([data_directory 'topics/wikipedia_topic_vectors.mat']);
   load([data_directory 'programming_language_page_ids']);
 
   data = topics;
@@ -24,6 +24,6 @@ if (options_defined)
   open_matlabpool;
 
   [results, elapsed] = perform_search_experiment(data, responses, ...
-          probability_function, probability_bound, num_experiments, ...
-          num_evaluations, num_initial, balanced, report);
+          num_initial, balanced, probability_function, probability_bound, ...
+          num_experiments, num_evaluations, max_lookahead, report);
 end
