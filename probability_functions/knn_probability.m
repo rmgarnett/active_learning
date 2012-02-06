@@ -29,6 +29,5 @@ function probabilities = knn_probability(responses, train_ind, ...
 
   probabilities = ...
       (this_weights * responses(train_ind) + pseudocount) ./ (total_weight + 1);
-  probabilities = [probabilities (1 - probabilities)];
 
 end
