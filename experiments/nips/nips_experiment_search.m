@@ -1,5 +1,5 @@
 stream = RandStream('mt19937ar', 'seed', 1);
-RandStream.setGlobalStream(stream);
+RandStream.setDefaultStream(stream);
 
 check_search_experiment_options;
 
