@@ -24,16 +24,6 @@
 function probabilities = knn_probability(responses, train_ind, ...
           test_ind, weights, pseudocount)
 
-  % this method is limited to only binary classification
-  if (any(responses > 2))
-    warning('optimal_learning:multi_class_not_supported', ...
-            ['svm_probability can only be used for binary problems! ' ...
-             'will test class 1 vs "any other class."']);
-  end
-
-  % transform responses for knn classifier
-  responses(responses ~= 1) = 0;
-
   this_weights = weights(test_ind, train_ind);
   total_weight = sum(this_weights, 2);
 

@@ -36,13 +36,6 @@ function probabilities = gp_probability(data, responses, train_ind, ...
           prior_covariances, inference_method, mean_function, ...
           covariance_function, likelihood, hypersamples)
 
-  % this method is limited to only binary classification
-  if (any(responses > 2))
-    warning('optimal_learning:multi_class_not_supported', ...
-            ['svm_probability can only be used for binary problems! ' ...
-             'will test class 1 vs "any other class."']);
-  end
-
   % transform responses to match what gpml expects
   responses(responses ~= 1) = -1;
 
@@ -60,6 +53,5 @@ function probabilities = gp_probability(data, responses, train_ind, ...
 
   probabilities = bsxfun(@times, probabilities, hypersample_weights);
   probabilities = sum(probabilities, 2);
-  probabilities = [probabilities (1 - probabilities)];
 
 end
