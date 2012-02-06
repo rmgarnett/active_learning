@@ -11,8 +11,7 @@
 %
 % inputs:
 %            data: an (n x d) matrix of input data
-%       responses: an (n x 1) vector of responses (class 1 is
-%                  tested against "any other class")
+%       responses: an (n x 1) vector of 0 / 1 responses
 %       train_ind: an index into data/responses indicating
 %                  the training points
 %        test_ind: an index into data/responses indicating
@@ -35,17 +34,7 @@ function bound = knn_probability_bound(responses, train_ind, test_ind, ...
   if (nargin < 7)
     num_positives = 1;
   end
-
-  % this method is limited to only binary classification
-  if (any(responses > 2))
-    warning('optimal_learning:multi_class_not_supported', ...
-            ['svm_probability can only be used for binary problems! ' ...
-             'will test class 1 vs "any other class."']);
-  end
   
-  % transform responses for knn classifier
-  responses(responses ~= 1) = 0;
-
   this_weights = weights(test_ind, train_ind);
   total_weight = full(sum(this_weights, 2));
 
