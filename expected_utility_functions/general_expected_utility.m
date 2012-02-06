@@ -33,20 +33,15 @@ function expected_utilities = general_expected_utility(data, responses, ...
     fake_train_ind = [train_ind; test_ind(i)];
     fake_responses = responses;
 
-    num_classes = max(responses);
-    fake_utilities = zeros(num_classes, 1);
+    fake_responses(test_ind(i)) = true;
+    fake_utility_true = utility_function(data, fake_responses, fake_train_ind);
 
-    for fake_response = 1:num_classes
-      % add a fake observation for this test point and calculate the
-      % expected utility, calling this function recursively with new
-      % point and (lookahead - 1)
-      fake_responses(test_ind(i)) = fake_response;
+    fake_responses(test_ind(i)) = false;
+    fake_utility_false = utility_function(data, fake_responses, fake_train_ind);
 
-      fake_utilities(fake_response) = ...
-          utility_function(data, fake_responses, fake_train_ind);
-    end
-
-    expected_utilities(i) = probabilities(i, :) * fake_utilities;
+    expected_utilities(i) = ...
+             probabilities(i)  * fake_utility_true + ...
+        (1 - probabilities(i)) * fake_utility_false;
   end
 
 end

@@ -29,6 +29,6 @@ function expected_utilities = expected_count_utility(data, responses, ...
   probabilities = probability_function(data, responses, train_ind, test_ind);
 
   % expected utility is # ones in training set + p(y = 1 | x, D)
-  expected_utilities = nnz(responses(train_ind) == 1) + probabilities(:, 1);
+  expected_utilities = nnz(responses(train_ind) == 1) + probabilities;
 
 end
