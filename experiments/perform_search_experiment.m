@@ -1,12 +1,11 @@
 function [results, elapsed] = perform_search_experiment(data, ...
-          responses, num_initial, balanced, probability_function, ...
+          responses, num_initial, balanced, seed, probability_function, ...
           probability_bound, num_experiments, num_evaluations, ...
-          max_lookahead, report, verbose)
-
-  if (nargin < 11)
-    verbose = false;
-  end
+          max_lookahead, report)
   
+  stream = RandStream('mt19937ar', 'seed', seed);
+  RandStream.setDefaultStream(stream);
+
   utility_function = @(data, responses, train_ind) ...
       count_utility(responses, train_ind);
 
@@ -30,7 +29,7 @@ function [results, elapsed] = perform_search_experiment(data, ...
     train_ind = logical_ind(responses == 1, r(1:num_initial));
     if (balanced)
       r = randperm(nnz(responses == 0));
-      train_ind = [train_ind; logical_ind(responses == 0, r(1: num_initial))];
+      train_ind = [train_ind; logical_ind(responses == 0, r(1:num_initial))];
     end
 
     for lookahead = 1:max_lookahead

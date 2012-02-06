@@ -1,6 +1,3 @@
-stream = RandStream('mt19937ar', 'seed', 1);
-RandStream.setDefaultStream(stream);
-
 check_search_experiment_options;
 
 if (options_defined)
@@ -21,6 +18,7 @@ if (options_defined)
   setup_wikipedia_knn;
 
   [results, elapsed] = perform_search_experiment(data, responses, ...
-          num_initial, balanced, probability_function, probability_bound, ...
-          num_experiments, num_evaluations, max_lookahead, report);
+          num_initial, balanced, seed, probability_function, ...
+          probability_bound, num_experiments, num_evaluations, ...
+          max_lookahead, report);
 end
