@@ -2,7 +2,7 @@ function [results, elapsed] = perform_search_experiment(data, ...
           responses, num_initial, balanced, seed, probability_function, ...
           probability_bound, num_experiments, num_evaluations, ...
           max_lookahead, report)
-  
+
   stream = RandStream('mt19937ar', 'seed', seed);
   RandStream.setDefaultStream(stream);
 
@@ -32,6 +32,7 @@ function [results, elapsed] = perform_search_experiment(data, ...
       train_ind = [train_ind; logical_ind(responses == 0, r(1:num_initial))];
     end
 
+    fprintf('experiment %i -- ', experiment);
     for lookahead = 1:max_lookahead
       start = tic;
       [~, utilities] = optimal_learning(data, responses, train_ind, ...
