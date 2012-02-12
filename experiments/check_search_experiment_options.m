@@ -1,5 +1,5 @@
 options_defined = true;
-required_options = {'num_initial', 'balanced', 'seed', 'num_experiments', ...
+required_options = {'num_additional', 'seed', 'num_experiments', ...
                     'num_evaluations', 'max_lookahead', 'report'};
 
 for i = 1:numel(required_options)

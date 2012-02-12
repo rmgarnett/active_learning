@@ -50,10 +50,6 @@ function [chosen_ind utilities] = optimal_learning(data, responses, ...
   chosen_ind = zeros(num_evaluations, 1);
   utilities = zeros(num_evaluations, 1);
 
-  if (verbose)
-    fprintf('\n');
-  end
-
   for i = 1:num_evaluations
     if (verbose)
       tic;
