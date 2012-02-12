@@ -17,5 +17,5 @@ if (options_defined)
  
   [results, elapsed] = perform_uncertainty_experiment(data, responses, ...
           num_additional, seed, probability_function, num_experiments, ...
-          num_evaluations, max_lookahead, report);
+          num_evaluations, report);
 end
