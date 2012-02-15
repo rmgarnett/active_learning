@@ -72,15 +72,16 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
   expected_utilities = zeros(num_test, 1);
 
   for i = 1:num_test
-    fake_train_ind = [train_ind; test_ind(i)];
+    ind = test_ind(i);
+    fake_train_ind = [train_ind; ind];
     fake_responses = responses;
 
-    fake_responses(test_ind(i)) = true;
+    fake_responses(ind) = true;
     fake_utility_true = find_optimal_point(data, fake_responses, ...
             fake_train_ind, selection_functions, probability_function, ...
             expected_utility_function, lookahead - 1);
 
-    fake_responses(test_ind(i)) = false;
+    fake_responses(ind) = false;
     fake_utility_false = find_optimal_point(data, fake_responses, ...
             fake_train_ind, selection_functions, probability_function, ...
             expected_utility_function, lookahead - 1);
