@@ -16,7 +16,6 @@
 %              graph.  the graph_ind argument, below, provides an
 %              index into data for conveniently extracting the
 %              adjacency matrix for a specified graph.
-%
 %   responses: an (n x 1) vector containing the node labels of the
 %              nodes appearing in all graphs.  node labels are
 %              expected to be integers from 1..[num_classes]. the
@@ -24,12 +23,10 @@
 %              the graph_ind argument, below, can also be used to
 %              index into responses to extract the node labels for a
 %              specified graph.
-%
 %   graph_ind: an (n x 1) vector indicating which graph each row
 %              (node) appearing in data/responses corresponds to.
 %              the graphs are expected to be numbered with the
 %              integers 1..[num_graphs].
-%
 %           h: an integer corresponding to the desired h parameter
 %              as defined in the paper above.  if K_i represents
 %              the kernel on the feature vectors resulting from the
@@ -51,13 +48,33 @@ function kernel_matrix = wl_subtree_kernel(data, responses, graph_ind, h)
 
   kernel_matrix = zeros(num_graphs, num_graphs);
 
-  for step = 1:h
+  iteration = 0;
+  while (true)
     label_set = unique(responses);
     num_labels = numel(label_set);
 
+    % the contribution to the graph feature vectors at every step
+    % is simply the counts of each node label on the graph
+    feature_vectors = zeros(num_graphs, num_labels);
+    for i = 1:num_graphs
+      ind = (graph_ind == i);
+      labels = responses(ind);
+
+      feature_vectors(i, :) = histc(labels, label_set);
+    end
+
+    % the kernel is the outer product of the feature vectors
+    kernel_matrix = kernel_matrix + feature_vectors * feature_vectors';
+
+    % exit after h applications of the WL transformation
+    if (iteration == h)
+      break;
+    end
+
+    % perform the WL transformation
     signatures = zeros(num_nodes, num_labels + 1);
 
-    % the first column of the node signatures is the current node labels
+    % the first entry of each node's signature is its current label
     signatures(:, 1) = responses;
 
     for i = 1:num_graphs
@@ -66,38 +83,13 @@ function kernel_matrix = wl_subtree_kernel(data, responses, graph_ind, h)
       labels = responses(ind);
       A = full(data(ind, ind));
 
-      % the remaining columns are the counts of the node labels
-      % surrounding each node
-      signatures(ind, 2:end) = ...
-          histc(bsxfun(@times, A, labels), label_set)';
+      % the signatures are the counts of the labels surrounding each node
+      signatures(ind, 2:end) = histc(bsxfun(@times, A, labels), label_set)';
     end
 
     % perform signature compression
-    [~, ~, new_responses] = unique(signatures, 'rows');
+    [~, ~, responses] = unique(signatures, 'rows');
 
-    % force new label set to be disjoint from previous label set
-    new_responses = new_responses + max(label_set);
-
-    new_label_set = unique(new_responses);
-    num_new_labels = numel(new_label_set);
-
-    % collapse node signatures into feature vectors for each graph.  the
-    % feature vector of a graph is the counts of the old labels on its
-    % nodes concatonated with the counts of the new labels.
-    feature_vectors = zeros(num_graphs, num_labels + num_new_labels);
-    for i = 1:num_graphs
-      ind = (graph_ind == i);
-      old_labels =     responses(ind);
-      new_labels = new_responses(ind);
-
-      feature_vectors(i, :) = histc([old_labels; new_labels], ...
-                                    union(label_set, new_label_set));
-    end
-
-    % the kernel is simply the outer product of the feature vectors
-    kernel_matrix = kernel_matrix + feature_vectors * feature_vectors';
-
-    % relabel nodes with new label set and repeat
-    responses = new_responses;
+    iteration = iteration + 1;
   end
 end
