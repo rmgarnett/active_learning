@@ -22,7 +22,10 @@
 %                   responses: an (n x 1) vector of responses
 %                   train_ind: a list of indices into data/responses
 %                              indicating the starting labeled points
-%          selection_function: the selection function to use
+%         selection_functions: a cell array of selection functions
+%                              to use. if lookahead = k, then the
+%                              min(k, numel(selection_functions))th
+%                              element of this array will be used.
 %        probability_function: the probability function to use
 %   expected_utility_function: the expected utility function to use
 %            utility_function: the utility function to use
@@ -39,7 +42,7 @@
 % copyright (c) roman garnett, 2011--2012
 
 function [chosen_ind utilities] = optimal_learning(data, responses, ...
-          train_ind, selection_function, probability_function, ...
+          train_ind, selection_functions, probability_function, ...
           expected_utility_function, utility_function, num_evaluations, ...
           lookahead, verbose)
 
