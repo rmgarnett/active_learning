@@ -6,10 +6,11 @@
 %           probability_function)
 %
 % inputs:
-%        data: an (n x d) matrix of input data
-%   responses: an (n x 1) vector of responses
-%   train_ind: a list of indices into data/responses indicating the
-%              training points
+%                   data: an (n x d) matrix of input data
+%              responses: an (n x 1) vector of responses
+%              train_ind: a list of indices into data/responses
+%                         indicating the training points
+%   probability_function: a handle to a probability function
 %
 % outputs:
 %   utility: the utility of the selected points
