@@ -3,8 +3,8 @@
 %
 % \max_i p(y_i | x_i, D)
 %
-% after adding additional points to the current training set,
-% perhaps for use with probability_threshold_selection_function.
+% after adding additional points to the current training set, most
+% useful with the optimal_search_bound_selector selection function.
 %
 % function bound = knn_probability_bound(responses, train_ind, test_ind, ...
 %           weights, max_weights, pseudocount, num_positives)
@@ -34,7 +34,7 @@ function bound = knn_probability_bound(responses, train_ind, test_ind, ...
   if (nargin < 7)
     num_positives = 1;
   end
-  
+
   this_weights = weights(test_ind, train_ind);
   total_weight = full(sum(this_weights, 2));
 
