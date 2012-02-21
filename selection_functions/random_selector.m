@@ -16,11 +16,11 @@
 
 function test_ind = random_selector(responses, train_ind, num_test_points)
 
-  test_ind = identity_selection_function(responses, train_ind);
+  test_ind = identity_selector(responses, train_ind);
   num_test = numel(test_ind);
   r = randperm(num_test);
 
   % ensure we don't try to select more points than are available
-  test_ind = r(1:min(num_test, num_test_points));
+  test_ind = test_ind(1:min(num_test, num_test_points));
 
 end
