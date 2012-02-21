@@ -1,4 +1,4 @@
-% select the single point that maximizes a given function of the
+% selects the single point that maximizes a given function of the
 % test points.
 %
 % function test_ind = maximum_value_selector(data, responses, train_ind, ...

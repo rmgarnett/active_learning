@@ -1,4 +1,4 @@
-% select all points.
+% selects all points.
 %
 % function test_ind = identity_selector(responses, train_ind)
 %
