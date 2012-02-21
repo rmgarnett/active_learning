@@ -1,7 +1,6 @@
 % select a random subset of points.
 %
-% function test_ind = ...
-%       random_selection_function(train_ind, num_test_points)
+% function test_ind = random_selector(responses, train_ind, num_test_points)
 %
 % inputs:
 %         responses: an (n x 1) vector of responses
@@ -15,8 +14,7 @@
 %
 % copyright (c) roman garnett, 2011--2012
 
-function test_ind = ...
-      random_selection_function(responses, train_ind, num_test_points)
+function test_ind = random_selector(responses, train_ind, num_test_points)
 
   test_ind = identity_selection_function(responses, train_ind);
   num_test = numel(test_ind);
