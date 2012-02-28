@@ -1,4 +1,4 @@
-% perform optimal active learning on a set of discrete points for a
+% performs optimal active learning on a set of discrete points for a
 % particular utility function and lookahead.  this function supports
 % using user-defined:
 %
@@ -6,11 +6,10 @@
 %   points should have their expected utilities evaluated.
 % - probability functions, which assign probabilities to indicated
 %   test data from the current training set
-% - expected utility functions, which calculate the expected
-%   utility of the dataset after adding one of a specified set of
-%   points
-% - utility functions, which calculate the utility of a selected
-%   set of points
+% - expected utility functions, which calculate the expected utility
+%   of the dataset after adding one of a specified set of points
+% - utility functions, which calculate the utility of a selected set
+%   of points
 %
 % function [chosen_ind utilities] = optimal_learning(data, responses, ...
 %           train_ind, selection_function, probability_function, ...
@@ -62,8 +61,8 @@ function [chosen_ind utilities] = optimal_learning(data, responses, ...
     % do not look past the maximum number of evaluations
     lookahead = min(lookahead, num_evaluations - i + 1);
 
-    % find the optimal next point to add given the current training
-    % set and chosen utility function
+    % find the optimal next point to add given the current training set
+    % and chosen utility function
     [best_utility, best_ind] = find_optimal_point(data, responses, ...
             train_ind, selection_functions, probability_function, ...
             expected_utility_function, lookahead);
