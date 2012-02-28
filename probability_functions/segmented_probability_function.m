@@ -3,11 +3,13 @@
 function probabilities = segmented_probability_function(data, ...
           responses, train_ind, test_ind, classifier_ind, probability_function)
 
+  num_test = numel(test_ind);
+  num_classes = max(responses);
+
+  probabilities = zeros(num_test, num_classes);
+
   classifiers = unique(classifier_ind);
   num_classifiers = numel(classifiers);
-
-  num_test = numel(test_ind);
-  probabilities = zeros(num_test, 1);
 
   for i = 1:num_classifiers
     ind = find(classifier_ind == classifiers(i));
@@ -19,6 +21,6 @@ function probabilities = segmented_probability_function(data, ...
 
     probabilities(result_ind, :) = probability_function(this_data, ...
             this_responses, this_train_ind, this_test_ind);
-
   end
+
 end
