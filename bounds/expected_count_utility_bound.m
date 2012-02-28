@@ -1,15 +1,14 @@
-% bound on the l-step lookahead expected utility of an unlabeled
-% point for the active search problem (corresponding to
-% count_utility). this is accomplished via a function providing a
-% bound on the maximum possible posterior probability after adding
-% a number of positive observations. the expected interface for
-% this function is
+% bound on the l-step lookahead expected utility of an unlabeled point
+% for the active search problem (corresponding to count_utility). this
+% is accomplished via a function providing a bound on the maximum
+% possible posterior probability after adding a number of positive
+% observations. the expected interface for this function is
 %
 % function bound = probability_bound(data, responses, train_ind, ...
 %                                    test_ind, num_positives)
 %
-% which should return an upper bound for the maximum posterior probability
-% after adding num_positives positive observations.
+% which should return an upper bound for the maximum posterior
+% probability after adding num_positives positive observations.
 %
 % function bound = expected_count_utility_bound(data, responses, ...
 %          train_ind, test_ind, probability_bound, lookahead, num_positives)
@@ -18,10 +17,10 @@
 %                data: an (n x d) matrix of input data
 %           responses: an (n x 1) vector of responses (class 1 is
 %                      tested against "any other class")
-%           train_ind: an index into data/responses indicating
-%                      the training points
-%            test_ind: an index into data/responses indicating
-%                      the test points
+%           train_ind: an index into data/responses indicating the
+%                      training points
+%            test_ind: an index into data/responses indicating the
+%                      test points
 %   probability_bound: a function handle providing a probability bound
 %           lookahead: the number of steps of lookahead to consider
 %       num_positives: the number of additional positive
@@ -35,11 +34,6 @@
 
 function bound = expected_count_utility_bound(data, responses, ...
           train_ind, test_ind, probability_bound, lookahead, num_positives)
-
-  % given nothing else, consider having added one new positive observation
-  if (nargin < 7)
-    num_positives = 1;
-  end
 
   current_probability_bound = probability_bound(data, responses, ...
           train_ind, test_ind, num_positives);
