@@ -1,5 +1,5 @@
 % a simple utility function that is the sum of the values returned by
-% a user-defined auxillary function defined on the test points.
+% a user-defined auxillary function.
 %
 % function utility = sum_utility_function(data, responses, train_ind, ...
 %           objective_function)
