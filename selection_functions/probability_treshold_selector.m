@@ -12,7 +12,7 @@
 %                         function
 %              threshold: a value in [0, 1]; points with posterior
 %                         probability greater than or equal to this
-%                         are selected
+%                         in any class are selected
 %
 %   test_ind: a list of indices into data/responses indicating the
 %             points to test
@@ -25,6 +25,6 @@ function test_ind = probability_treshold_selector(data, responses, ...
   test_ind = identity_selector(responses, train_ind);
   probabilities = probability_function(data, responses, train_ind, test_ind);
 
-  test_ind = find(probabilities >= threshold);
+  test_ind = find(any(probabilities >= threshold), 2);
 
 end
