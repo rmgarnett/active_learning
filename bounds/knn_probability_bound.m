@@ -1,5 +1,5 @@
-% probability bound for a k-nearest-neighbor classifier. this
-% function provides a bound for
+% probability bound for a k-nearest-neighbor classifier. this function
+% provides a bound for
 %
 % \max_i p(y_i | x_i, D)
 %
@@ -29,11 +29,6 @@
 
 function bound = knn_probability_bound(responses, train_ind, test_ind, ...
           weights, max_weights, pseudocount, num_positives)
-
-  % given nothing else, consider having added one new positive observation
-  if (nargin < 7)
-    num_positives = 1;
-  end
 
   this_weights = weights(test_ind, train_ind);
   total_weight = full(sum(this_weights, 2));
