@@ -28,7 +28,6 @@
 function utility = sum_utility_function(data, responses, train_ind, ...
           objective_function)
 
-  values = objective_function(data, responses, train_ind);
-  utility = sum(values);
+  utility = sum(objective_function(data, responses, train_ind));
 
 end
