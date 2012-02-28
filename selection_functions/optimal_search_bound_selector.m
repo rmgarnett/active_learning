@@ -7,18 +7,18 @@
 %
 % inputs:
 %                   data: an (n x d) matrix of input data
-%              responses: an (n x 1) vector of responses (class 1
-%                         is treated as "interesting")
-%              train_ind: an index into data/responses indicating
-%                         the training points
+%              responses: an (n x 1) vector of responses (class 1 is
+%                         treated as "interesting")
+%              train_ind: an index into data/responses indicating the
+%                         training points
 %   probability_function: a function handle providing a probability function
 %      probability_bound: a function handle probiding a probability
 %                         bound (see expected_count_utility_bound)
 %              lookahead: the number of steps of lookahead to consider
 %
 % outputs:
-%    test_ind: an list of indices into data/responses
-%              indicating the points to test
+%    test_ind: an list of indices into data/responses indicating the
+%              points to test
 %
 % copyright (c) roman garnett, 2011--2012
 
@@ -28,9 +28,8 @@ function test_ind = optimal_search_bound_selector(data, responses, ...
   test_ind = identity_selector(responses, train_ind);
 
   % find point with current maximum posterior probability
-  probabilities = ...
-      probability_function(data, responses, train_ind, test_ind);
-  [p_star, one_step_optimal_ind] = max(probabilities);
+  probabilities = probability_function(data, responses, train_ind, test_ind);
+  [p_star, one_step_optimal_ind] = max(probabilities(:, 1));
   one_step_optimal_ind = test_ind(one_step_optimal_ind);
 
   % if we only look ahead one step, we only need to consider the
@@ -41,34 +40,37 @@ function test_ind = optimal_search_bound_selector(data, responses, ...
   end
 
   % we will need to calculate the expected l-step utility for two
-  % points. we create the necessary selection functions by using
-  % this selection function recursively.
+  % points, and we create the required problem structure here.
+
+  % for the selection functions, we use this function recursively.
   selection_functions = cell(lookahead, 1);
   for i = 1:(lookahead - 1)
     selection_functions{i} = @(data, responses, train_ind) ...
         optimal_search_bound_selector(data, responses, train_ind, ...
             probability_function, probability_bound, i);
   end
-  selection_functions{lookahead} = @(data, responses, train_ind) ...
-      (one_step_optimal_ind);
+  selection_functions{lookahead} = ...
+      @(data, responses, train_ind) (one_step_optimal_ind);
+  problem.selection_functions = selection_functions;
 
-  % expected utility function for these calculations
-  expected_utility_function = @(data, responses, train_ind, test_ind) ...
+  % the expected utility function corresponds to the count utility
+  problem.expected_utility_function = @(data, responses, train_ind, test_ind) ...
       expected_count_utility(data, responses, train_ind, test_ind, ...
                              probability_function);
+
+  % the probability function is the same as that passed in
+  problem.probability_function = probability_function;
 
   % find the l-step expected utility of the point with current maximum
   % posterior probability
   p_star_expected_utility = find_optimal_point(data, responses, ...
-          train_ind, selection_functions, probability_function, ...
-          expected_utility_function, lookahead) - ...
+          train_ind, problem, lookahead) - ...
       count_utility(responses, train_ind);
 
   % find the maximum (l-1)-step expected utility among the
   % currently unlabeled points
   one_fewer_step_optimal_utility = find_optimal_point(data, responses, ...
-          train_ind, selection_functions, probability_function, ...
-          expected_utility_function, lookahead - 1) - ...
+          train_ind, problem, lookahead - 1) - ...
       count_utility(responses, train_ind);
 
   % find a bound on the maximum (l-1)-step expected utility after
@@ -79,7 +81,7 @@ function test_ind = optimal_search_bound_selector(data, responses, ...
 
   % now a point with probability p can have l-step utility at most
   %
-  %        p  * (1 + one_fewer_step_utility_bound   ) +
+  %        p  * (1 + one_fewer_step_utility_bound  ) +
   %   (1 - p) *      one_fewer_step_optimal_utility
   %
   % and we use this to find a lower bound on p by asserting this
@@ -89,6 +91,6 @@ function test_ind = optimal_search_bound_selector(data, responses, ...
       (p_star_expected_utility - one_fewer_step_optimal_utility) / ...
       (1 + one_fewer_step_utility_bound - one_fewer_step_optimal_utility);
 
-  test_ind = test_ind(probabilities >= min(optimal_lower_bound, p_star));
+  test_ind = test_ind(probabilities(:, 1) >= min(optimal_lower_bound, p_star));
 
 end
