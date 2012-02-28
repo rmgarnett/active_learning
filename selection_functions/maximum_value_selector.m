@@ -15,11 +15,10 @@
 %                         values = objective_function(data, responses, ...
 %                                                     train_ind)
 %
-%                         this function is expected to retrun a
-%                         value for every data point not in
-%                         train_ind, and ultimately the currently
-%                         unlabeled point that maximizes this
-%                         function will be chosen.
+%                         this function is expected to retrun a value
+%                         for every data point not in train_ind, and
+%                         ultimately the currently unlabeled point
+%                         that maximizes this function will be chosen.
 %
 %   test_ind: an index into data/responses indicating the point
 %             with the maximal value of the objective function
