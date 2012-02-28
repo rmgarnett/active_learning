@@ -4,12 +4,12 @@
 %
 % inputs:
 %   responses: an (n x 1) vector of responses
-%   train_ind: a list of indices into data/responses
-%              indicating the labeled points
+%   train_ind: a list of indices into data/responses indicating the
+%              labeled points
 %
 % outputs:
-%    test_ind: a list of into data/responses indicating
-%              the points to test
+%    test_ind: a list of into data/responses indicating the points to
+%              test
 %
 % copyright (c) roman garnett, 2011--2012
 
