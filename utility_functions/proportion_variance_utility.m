@@ -1,10 +1,10 @@
-% variance in the class proportion distribution used by active surveying.
+% utility function that is the negative variance in the class
+% proportion distribution used by active surveying.
 %
 % u(D) = -var[ \sum_i \chi(y_i = 1) | D ]
 %
 % function utility = proportion_variance_utility(data, responses, ...
 %           train_ind, proportion_estimator)
-%
 %
 % inputs:
 %                   data: an (n x d) matrix of input data
