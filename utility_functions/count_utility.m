@@ -1,6 +1,6 @@
 % simple "battleship" utility function.
 %
-% u(D) = \sum_i \chi(y_i = 1)
+%   u(D) = \sum_i \chi(y_i = 1)
 %
 % function utility = count_utility(responses, train_ind)
 %
