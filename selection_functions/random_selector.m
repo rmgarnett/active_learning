@@ -4,8 +4,8 @@
 %
 % inputs:
 %         responses: an (n x 1) vector of responses
-%         train_ind: a list of indices into data/responses
-%                    indicating the training points
+%         train_ind: a list of indices into data/responses indicating
+%                    the training points
 %   num_test_points: the number of test points to select
 %
 % outputs:
