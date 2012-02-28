@@ -14,8 +14,8 @@
 %                         probability greater than or equal to this
 %                         are selected
 %
-%   test_ind: a list of indices into data/responses indicating
-%             the points to test
+%   test_ind: a list of indices into data/responses indicating the
+%             points to test
 %
 % copyright (c) roman garnett, 2011--2012
 
@@ -23,8 +23,7 @@ function test_ind = probability_treshold_selector(data, responses, ...
           train_ind, probability_function, threshold)
 
   test_ind = identity_selector(responses, train_ind);
-  probabilities = ...
-      probability_function(data, responses, train_ind, test_ind);
+  probabilities = probability_function(data, responses, train_ind, test_ind);
 
   test_ind = find(probabilities >= threshold);
 
