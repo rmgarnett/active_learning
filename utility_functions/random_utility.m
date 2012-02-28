@@ -1,6 +1,6 @@
 % trivial random utility function.
 %
-% u(D) = U[0, 1]
+%   u(D) = U[0, 1]
 %
 % function utility = random_utility
 %
