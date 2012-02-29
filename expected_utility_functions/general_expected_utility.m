@@ -28,7 +28,7 @@ function expected_utilities = general_expected_utility(data, responses, ...
           train_ind, test_ind, problem)
 
   num_test = numel(test_ind);
-  num_classes = numel(unique(responses));
+  num_classes = max(responses);
 
   % calculate the current posterior probabilities
   probabilities = problem.probability_function(data, responses, train_ind, test_ind);
