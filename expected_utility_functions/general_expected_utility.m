@@ -1,4 +1,5 @@
 % calculates expected utilities for any arbitrary utility function
+% that does not have a nice form.
 %
 % function expected_utilities = general_expected_utility(data, responses, ...
 %           train_ind, test_ind, probability_function, utility_function)
