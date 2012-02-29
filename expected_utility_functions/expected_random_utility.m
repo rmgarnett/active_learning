@@ -1,6 +1,6 @@
 % calculates expected utilities for a random utility function
 %
-% u(D) = rand
+%   u(D) = rand
 %
 % function expected_utilities = expected_random_utility(test_ind)
 %
