@@ -1,7 +1,7 @@
 % calculates expected utilities for the simple "battleship" utillity
 % function
 %
-% u(D) = \sum_i \chi(y_i = 1)
+%   u(D) = \sum_i \chi(y_i = 1)
 %
 % function expected_utilities = expected_count_utility(data, responses, ...
 %           train_ind, test_ind, probability_function)
