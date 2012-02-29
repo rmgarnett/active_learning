@@ -1,4 +1,4 @@
-% maximum variance loss function used by uncertainty sampling.
+% maximum variance loss function used by mulit-class uncertainty sampling.
 %
 % u(D) = -\max_i (1 - p(argmax_y y_i = y | x_i, D))
 %

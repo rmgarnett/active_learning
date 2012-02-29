@@ -28,7 +28,6 @@
 function utility = max_utility_function(data, responses, train_ind, ...
           objective_function)
 
-  values = objective_function(data, responses, train_ind);
-  utility = max(values);
+  utility = max(objective_function(data, responses, train_ind));
 
 end

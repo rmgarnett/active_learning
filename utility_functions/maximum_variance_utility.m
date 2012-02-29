@@ -1,6 +1,6 @@
 % maximum variance loss function used by uncertainty sampling.
 %
-% u(D) = -\max_i | p(y_i = 1 | x_i, D) - (1 / 2) |
+%   u(D) = -\max_i | p(y_i = 1 | x_i, D) - (1 / 2) |
 %
 % function utility = maximum_variance_utility(data, responses, train_ind, ...
 %           probability_function)
