@@ -22,7 +22,7 @@
 %
 % copyright (c) roman garnett, 2011--2012
 
-function probabilities = rf_probability(data, responses, ...
+function probabilities = random_forest_probability(data, responses, ...
           train_ind, test_ind, num_trees, options)
 
   if (nargin < 6)
