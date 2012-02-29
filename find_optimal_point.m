@@ -1,7 +1,3 @@
-% function [best_utility, best_ind] = find_optimal_point(data, responses, ...
-%           train_ind, selection_functions, probability_function, ...
-%           expected_utility_function, lookahead)
-%
 % finds the optimal next point to add to a dataset for active learning
 % on a set of discrete points for a particular utility function and
 % lookahead.  this function supports using user-defined:
@@ -16,22 +12,26 @@
 %   utility of the dataset after adding one of a specified set of
 %   points
 %
-% function [best_utility best_ind] = find_optimal_point(data, responses, ...
-%          train_ind, selection_functions, probability_function, ...
-%          expected_utility_function, lookahead)
+% function [best_utility, best_ind] = find_optimal_point(data, responses, ...
+%           train_ind, problem, lookahead)
 %
 % inputs:
-%                        data: an (n x d) matrix of input data
-%                   responses: an (n x 1) vector of responses
-%                   train_ind: a list of indices into data/responses
-%                              indicating the labeled points
-%         selection_functions: a cell array of selection functions
-%                              to use. if lookahead = k, then the
-%                              min(k, numel(selection_functions))th
-%                              element of this array will be used.
-%        probability_function: the probability function to use
-%   expected_utility_function: the expected utility function to use
-%                   lookahead: the number of steps to look ahead
+%        data: an (n x d) matrix of input data
+%   responses: an (n x 1) vector of responses
+%   train_ind: a list of indices into data/responses indicating the
+%              starting labeled points
+%     problem: a structure defining the active learning problem,
+%              with fields:
+%
+%           selection_functions: a cell array of selection functions
+%                                to use. if lookahead = k, then the
+%                                min(k, numel(selection_functions))th
+%                                element of this array will be used.
+%          probability_function: the probability function to use
+%     expected_utility_function: the expected utility function to use
+%              utility_function: the utility function to use
+%
+%   lookahead: the number of steps to look ahead
 %
 % outputs:
 %   best_utility: the expected utility of the best point found
@@ -40,57 +40,33 @@
 % copyright (c) roman garnett, 2011--2012
 
 function [best_utility, best_ind] = find_optimal_point(data, responses, ...
-          train_ind, selection_functions, probability_function, ...
-          expected_utility_function, lookahead)
+          train_ind, problem, lookahead)
 
   % allow array of selection functions and fall back if no entry
   % for current lookahead
   selection_function = ...
-      selection_functions{min(lookahead, numel(selection_functions))};
-
-  % base of the recursion, simply calculate expected utilities and
-  % return best point
-  if (lookahead == 1)
-    % limit search to specified test points
-    test_ind = selection_function(data, responses, train_ind);
-
-    expected_utilities = expected_utility_function(data, responses, ...
-            train_ind, test_ind);
-
-    % return best point
-    [best_utility, best_ind] = max(expected_utilities);
-    best_ind = test_ind(best_ind);
-    return;
-  end
+      problem.selection_functions{min(lookahead, numel(selection_functions))};
 
   % limit search to specified test points
   test_ind = selection_function(data, responses, train_ind);
-  num_test = numel(test_ind);
 
-  % calculate the current posterior probabilities
-  probabilities = probability_function(data, responses, train_ind, test_ind);
-  expected_utilities = zeros(num_test, 1);
+  if (lookahead == 1)
+    % base of the recursion, simply calculate expected utilities and
+    % return best point
+    expected_utilities = ...
+        problem.expected_utility_function(data, responses, train_ind, test_ind);
+  else
+    % otherwise, look ahead. we will use the general expected utility
+    % function for this purpose, with a utility function that is a
+    % recursive call of this function.
+    lookahead_problem = problem;
+    lookahead_problem.utility_function = @(data, responses, train_ind) ...
+        find_optimal_point(data, responses, train_ind, problem, lookahead - 1);
 
-  for i = 1:num_test
-    ind = test_ind(i);
-    fake_train_ind = [train_ind; ind];
-    fake_responses = responses;
-
-    fake_responses(ind) = true;
-    fake_utility_true = find_optimal_point(data, fake_responses, ...
-            fake_train_ind, selection_functions, probability_function, ...
-            expected_utility_function, lookahead - 1);
-
-    fake_responses(ind) = false;
-    fake_utility_false = find_optimal_point(data, fake_responses, ...
-            fake_train_ind, selection_functions, probability_function, ...
-            expected_utility_function, lookahead - 1);
-    
-    expected_utilities(i) = ...
-             probabilities(i)  * fake_utility_true + ...
-        (1 - probabilities(i)) * fake_utility_false;
+    expected_utilities = general_expected_utility(data, responses, ...
+            train_ind, test_ind, lookahead_problem);
   end
 
-  [best_utility best_ind] = max(expected_utilities);
+  [best_utility, best_ind] = max(expected_utilities);
   best_ind = test_ind(best_ind);
 end
