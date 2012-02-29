@@ -47,7 +47,7 @@ function expected_utilities = general_expected_utility(data, responses, ...
       fake_responses(test_ind(i)) = fake_response;
 
       fake_utilities(fake_response) = ...
-          utility_function(data, fake_responses, fake_train_ind);
+          problem.utility_function(data, fake_responses, fake_train_ind);
     end
 
     expected_utilities(i) = probabilities(i, :) * fake_utilities;
