@@ -24,6 +24,9 @@
 function probabilities = knn_probability(responses, train_ind, ...
           test_ind, weights, pseudocount)
 
+  % transform responses to handle multi-class
+  reponses(responses ~= 1) = 0;
+
   this_weights = weights(test_ind, train_ind);
   total_weight = sum(this_weights, 2);
 
