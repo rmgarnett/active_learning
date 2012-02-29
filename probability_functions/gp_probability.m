@@ -53,5 +53,6 @@ function probabilities = gp_probability(data, responses, train_ind, ...
 
   probabilities = bsxfun(@times, probabilities, hypersample_weights);
   probabilities = sum(probabilities, 2);
+  probabilities = [probabilities, (1 - probabilities0];
 
 end
