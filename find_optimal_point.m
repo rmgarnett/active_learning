@@ -26,7 +26,7 @@
 %                         element of this array will be used.
 %   probability_function: the probability function to use
 %       utility_function: the utility function to use
-%              lookahead: the number of steps to look ahead at each step
+%              lookahead: the number of steps to look ahead
 %
 % outputs:
 %   best_utility: the expected utility of the best point found
@@ -35,7 +35,6 @@
 % copyright (c) roman garnett, 2011--2012
 
 function [best_utility, best_ind] = find_optimal_point(data, responses, ...
-          train_ind, utility_function, probability_function, ...
           selection_functions, lookahead)
 
   num_classes = max(responses);
