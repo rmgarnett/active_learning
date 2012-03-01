@@ -8,8 +8,6 @@
 %   should different ones be desired for different lookaheads.
 % - probability functions, which assign probabilities to indicated
 %   test data from the current training set
-% - expected utility functions, which calculate the expected utility
-%   of the dataset after adding one of a specified set of points
 % - utility functions, which calculate the utility of a selected set
 %   of points
 %
@@ -29,7 +27,6 @@
 %                                min(k, numel(selection_functions))th
 %                                element of this array will be used.
 %          probability_function: the probability function to use
-%     expected_utility_function: the expected utility function to use
 %              utility_function: the utility function to use
 %                   num_classes: the number of classes in the
 %                                classification problem
