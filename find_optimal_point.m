@@ -45,7 +45,7 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
   % allow array of selection functions and fall back if no entry
   % for current lookahead
   selection_function = ...
-      problem.selection_functions{min(lookahead, numel(selection_functions))};
+      problem.selection_functions{min(lookahead, numel(problem.selection_functions))};
 
   % limit search to specified test points
   test_ind = selection_function(data, responses, train_ind);
