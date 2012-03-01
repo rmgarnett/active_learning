@@ -11,6 +11,8 @@
 % - expected utility functions, which calculate the expected
 %   utility of the dataset after adding one of a specified set of
 %   points
+% - utility functions, which calculate the utility of a selected set
+%   of points
 %
 % function [best_utility, best_ind] = find_optimal_point(data, responses, ...
 %           train_ind, problem, lookahead)
@@ -42,31 +44,58 @@
 function [best_utility, best_ind] = find_optimal_point(data, responses, ...
           train_ind, problem, lookahead)
 
-  % allow array of selection functions and fall back if no entry
-  % for current lookahead
+  num_classes = max(responses);
+
+  % select test points.  allow array of selection functions and fall
+  % back if no entry for current lookahead.
   selection_function = ...
       problem.selection_functions{min(lookahead, numel(problem.selection_functions))};
-
-  % limit search to specified test points
   test_ind = selection_function(data, responses, train_ind);
+  num_test = numel(test_ind);
 
-  if (lookahead == 1)
-    % base of the recursion, simply calculate expected utilities and
-    % return best point
-    expected_utilities = ...
-        problem.expected_utility_function(data, responses, train_ind, test_ind);
+  % calculate the current posterior probabilities
+  probabilities = problem.probability_function(data, responses, train_ind, test_ind);
+
+  % we will calculate the expected utility of adding each dataset to the
+  % training set by sampling over labels to create ficticious datasets
+  % and measuring the utility of each.  if we wish to look ahead,
+  % we will make the utility function a recursive call to this
+  % function with lookahead decremented by one.
+  if (lookahead = 1)
+    utility_function = problem.utility_function;
   else
-    % otherwise, look ahead. we will use the general expected utility
-    % function for this purpose, with a utility function that is a
-    % recursive call of this function.
-    lookahead_problem = problem;
-    lookahead_problem.utility_function = @(data, responses, train_ind) ...
+    utility_function = @(data, responses, train_ind) ...
         find_optimal_point(data, responses, train_ind, problem, lookahead - 1);
-
-    expected_utilities = general_expected_utility(data, responses, ...
-            train_ind, test_ind, lookahead_problem);
   end
 
+  % vectors to represent ficticious datasets, created once to avoid
+  % overhead.
+  fake_train_ind = [train_ind; nan];
+  fake_responses = responses;
+  fake_utilities = zeros(num_classes, 1);
+
+  expected_utilities = zeros(num_test, 1);
+  for i = 1:num_test
+    ind = test_ind(i);
+
+    % add this point to the dataset
+    fake_train_ind(end) = ind;
+
+    % sample over labels
+    for fake_response = 1:num_classes
+      fake_responses(ind) = fake_response;
+      fake_utilities(fake_response) = ...
+          utility_function(data, fake_responses, fake_train_ind);
+    end
+
+    % calculate expectation using current probabilities
+    expected_utilities(i) = probabilities(i, :) * fake_utilities;
+
+    % put back real response into fake_responses for next point
+    fake_responses(ind) = responses(ind);
+  end
+
+  % return the best point found from among the points tested
   [best_utility, best_ind] = max(expected_utilities);
   best_ind = test_ind(best_ind);
 end
