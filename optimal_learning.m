@@ -66,13 +66,13 @@ function [chosen_ind, utilities] = optimal_learning(data, responses, ...
     % find the optimal next point to add given the current training set
     % and chosen utility function
     [~, best_ind] = find_optimal_point(data, responses, ...
-            train_ind, problem);
+            train_ind, problem, lookahead);
 
     % add the selected point and measure our current success
     chosen_ind(i) = best_ind;
     train_ind = [train_ind; best_ind];
 
-    utilities(i) = utility_function(data, responses, train_ind);
+    utilities(i) = problem.utility_function(data, responses, train_ind);
 
     if (verbose)
       elapsed = toc(start);
