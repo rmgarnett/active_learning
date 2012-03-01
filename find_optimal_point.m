@@ -35,6 +35,7 @@
 % copyright (c) roman garnett, 2011--2012
 
 function [best_utility, best_ind] = find_optimal_point(data, responses, ...
+          train_ind, utility_function, probability_function, ...
           selection_functions, lookahead)
 
   num_classes = max(responses);
