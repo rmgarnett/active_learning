@@ -54,13 +54,13 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
 
   % we will calculate the expected utility of adding each dataset to the
   % training set by sampling over labels to create ficticious datasets
-  % and measuring the utility of each.  if we wish to look ahead,
-  % we will make the utility function a recursive call to this
-  % function with lookahead decremented by one.
+  % and measuring the expected utility of each.  we accomplish
+  % lookahead by calling this function recursively to calculate the
+  % expected utility at later levels.
   if (lookahead == 1)
-    utility_function = problem.utility_function;
+    expected_utility_function = problem.utility_function;
   else
-    utility_function = @(data, responses, train_ind) ...
+    expected_utility_function = @(data, responses, train_ind) ...
         find_optimal_point(data, responses, train_ind, problem, lookahead - 1);
   end
 
