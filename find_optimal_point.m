@@ -57,7 +57,7 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
   % and measuring the utility of each.  if we wish to look ahead,
   % we will make the utility function a recursive call to this
   % function with lookahead decremented by one.
-  if (lookahead = 1)
+  if (lookahead == 1)
     utility_function = problem.utility_function;
   else
     utility_function = @(data, responses, train_ind) ...
