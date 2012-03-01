@@ -17,7 +17,7 @@
 % outputs:
 %   probabilites: a matrix of posterior probabilities.  the kth
 %                 column gives the posterior probabilities
-%                 p(y = k | x, D) for reach of the indicated
+%                 p(y = k | x, D) for each of the indicated
 %                 test points
 %
 % copyright (c) roman garnett, 2011--2012
