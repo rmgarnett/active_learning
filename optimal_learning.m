@@ -49,7 +49,8 @@
 function [chosen_ind, utilities] = optimal_learning(data, responses, ...
           train_ind, problem, num_evaluations, lookahead, verbose)
 
-  verbose = (nargin == 7) && verbose;
+  % set verbose to false if not defined
+  verbose = exist('verbose', 'var') && verbose;
 
   chosen_ind = zeros(num_evaluations, 1);
   utilities = zeros(num_evaluations, 1);
