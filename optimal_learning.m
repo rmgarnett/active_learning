@@ -28,8 +28,6 @@
 %                                element of this array will be used.
 %          probability_function: the probability function to use
 %              utility_function: the utility function to use
-%                   num_classes: the number of classes in the
-%                                classification problem
 %
 %   num_evaluations: the number of points to select
 %         lookahead: the number of steps to look ahead
