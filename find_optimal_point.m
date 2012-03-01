@@ -8,9 +8,6 @@
 %   should different ones be desired for different lookaheads.
 % - probability functions, which assign probabilities to indicated
 %   test data from the current training set
-% - expected utility functions, which calculate the expected
-%   utility of the dataset after adding one of a specified set of
-%   points
 % - utility functions, which calculate the utility of a selected set
 %   of points
 %
