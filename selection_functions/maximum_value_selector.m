@@ -28,10 +28,11 @@
 function test_ind = maximum_value_selector(data, responses, train_ind, ...
           objective_function)
 
+  test_ind = identity_selector(responses, train_ind);
+
   values = objective_function(data, responses, train_ind);
   [~, best_ind] = max(values);
 
-  test_ind = identity_selector(responses, train_ind);
   test_ind = test_ind(best_ind);
 
 end
