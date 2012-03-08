@@ -28,11 +28,8 @@
 function test_ind = minimum_value_selector(data, responses, train_ind, ...
           objective_function)
 
-  test_ind = identity_selector(responses, train_ind);
-
-  values = objective_function(data, responses, train_ind);
-  [~, best_ind] = min(values);
-
-  test_ind = test_ind(best_ind);
+  test_ind = maximum_value_selector(data, responses, train_ind, ...
+          @(data, responses, train_ind) ...
+            -objective_function(data, responses, train_ind);
 
 end
