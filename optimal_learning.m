@@ -12,7 +12,8 @@
 %   should different ones be desired for different lookaheads.
 %
 % function [chosen_ind, utilities] = optimal_learning(data, responses, ...
-%           train_ind, problem, num_evaluations, lookahead, verbose)
+%           train_ind, utility_function, probability_function, ...
+%           selection_functions, lookahead, num_evaluations, verbose)
 %
 % inputs:
 %                   data: an (n x d) matrix of input data
