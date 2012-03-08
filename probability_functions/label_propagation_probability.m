@@ -3,18 +3,19 @@
 function probabilities = label_propagation_probability(data, responses, ...
           train_ind, test_ind, tolerance)
 
-  num_points  = numel(responses);
+  num_points  = size(data, 1);
+  num_train   = numel(train_ind);
   num_classes = max(responses);
 
-  num_train = numel(train_ind);
-  num_test  = numel(test_ind);
-
+  % preallocate the rows in the label probability matrix for the
+  % labeled nodes
   train_rows = zeros(num_train, num_classes);
   for i = 1:numel(train_ind)
     ind = train_ind(i);
     train_rows(i, responses(ind)) = 1;
   end
 
+  % priors
   probabilities = (1 / num_classes) * ones(num_points, num_classes);
 
   error = Inf;
