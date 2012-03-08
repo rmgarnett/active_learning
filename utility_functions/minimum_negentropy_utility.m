@@ -20,7 +20,7 @@
 function utility = minimum_negentropy_utility(data, responses, train_ind, ...
           probability_function)
 
-  test_ind = identity_selection_function(responses, train_ind);
+  test_ind = identity_selector(responses, train_ind);
 
   probabilities = probability_function(data, responses, train_ind, test_ind);
   negative_entropies = sum(probabilities .* log(probabilities), 2);
