@@ -46,7 +46,7 @@ function [chosen_ind, utilities] = optimal_learning(data, responses, ...
   verbose = exist('verbose', 'var') && verbose;
 
   chosen_ind = zeros(num_evaluations, 1);
-  utilities = zeros(num_evaluations, 1);
+  utilities  = zeros(num_evaluations, 1);
 
   for i = 1:num_evaluations
     if (verbose)
