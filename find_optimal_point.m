@@ -26,7 +26,8 @@
 %                         element of this array will be used.
 %   probability_function: the probability function to use
 %       utility_function: the utility function to use
-%              lookahead: the number of steps to look ahead
+%              lookahead: the number of steps to look ahead.  if
+%                         lookahead = 0, a random point is selected.
 %
 % outputs:
 %   best_utility: the expected utility of the best point found
@@ -38,7 +39,14 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
           train_ind, utility_function, probability_function, ...
           selection_functions, lookahead)
 
-  num_classes = max(responses);
+  % if lookahead = 0, pick a random point
+  if (lookahead == 0)
+    test_ind = identity_selector(responses, train_ind);
+
+    best_utility = Inf;
+    best_ind = test_ind(randi(numel(test_ind)));
+    return;
+  end
 
   % select test points.  allow array of selection functions and fall
   % back if no entry for current lookahead.
@@ -63,6 +71,8 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
                            probability_function, selection_functions, ...
                            lookahead - 1);
   end
+
+  num_classes = max(responses);
 
   % vectors to represent ficticious datasets, created once to avoid
   % overhead.
