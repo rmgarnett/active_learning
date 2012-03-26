@@ -1,7 +1,7 @@
 % copyright (c) roman garnett, 2011--2012
 
 function probabilities = label_propagation_probability(data, responses, ...
-          train_ind, test_ind, tolerance)
+          train_ind, test_ind, tolerance, max_iterations)
 
   num_points  = size(data, 1);
   num_train   = numel(train_ind);
@@ -19,7 +19,8 @@ function probabilities = label_propagation_probability(data, responses, ...
   probabilities = (1 / num_classes) * ones(num_points, num_classes);
 
   error = Inf;
-  while (error > tolerance)
+  num_iterations = 0;
+  while (error > tolerance && num_iterations < max_iterations)
     % "pull-back" known labels
     probabilities(train_ind, :) = train_rows;
 
@@ -27,6 +28,8 @@ function probabilities = label_propagation_probability(data, responses, ...
 
     error = norm(new_probabilities(test_ind, :) - probabilities(test_ind, :));
     probabilities = new_probabilities;
+
+    num_iterations = num_iterations + 1;
   end
 
   probabilities = probabilities(test_ind, :);
