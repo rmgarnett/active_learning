@@ -1,5 +1,5 @@
-function data = perform_row_normalization(data)
+function A = perform_row_normalization(A)
 
-  data = diag(sum(data)) \ data;
+  A = bsxfun(@times, 1 ./ sum(A, 2), A);
 
 end
