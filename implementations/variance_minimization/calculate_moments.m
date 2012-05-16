@@ -18,4 +18,6 @@ function [means, variances] = calculate_moments(data, responses, ...
   means =     sum_values  / num_samples;
   variances = sum_squares / num_samples - means.^2;
 
+  variances = max(variances, 0);
+  
 end
