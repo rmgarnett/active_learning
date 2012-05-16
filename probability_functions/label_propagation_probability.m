@@ -15,9 +15,7 @@ function probabilities = label_propagation_probability(data, responses, ...
     train_rows(i, responses(ind)) = 1;
   end
 
-  % priors
   probabilities = (1 / num_classes) * ones(num_points, num_classes);
-
   error = Inf;
   num_iterations = 0;
   while (error > tolerance && num_iterations < max_iterations)
