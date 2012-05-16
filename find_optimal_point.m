@@ -39,21 +39,19 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
           train_ind, utility_function, probability_function, ...
           selection_functions, lookahead)
 
-  % if lookahead = 0, pick a random point
-  if (lookahead == 0)
-    test_ind = identity_selector(responses, train_ind);
-
-    best_utility = Inf;
-    best_ind = test_ind(randi(numel(test_ind)));
-    return;
-  end
-
   % select test points.  allow array of selection functions and fall
   % back if no entry for current lookahead.
   selection_function = ...
-      selection_functions{min(lookahead, numel(selection_functions))};
+      selection_functions{min(max(1, lookahead), numel(selection_functions))};
   test_ind = selection_function(data, responses, train_ind);
   num_test = numel(test_ind);
+
+  % if lookahead = 0, pick a random point
+  if (lookahead == 0)
+    best_utility = Inf;
+    best_ind = test_ind(randi(num_test));
+    return;
+  end
 
   % calculate the current posterior probabilities
   probabilities = probability_function(data, responses, train_ind, test_ind);
@@ -74,14 +72,13 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
 
   num_classes = max(responses);
 
-  % vectors to represent ficticious datasets, created once to avoid
-  % overhead.
-  fake_train_ind = [train_ind; nan];
-  fake_responses = responses;
-  fake_utilities = zeros(num_classes, 1);
-
   expected_utilities = zeros(num_test, 1);
-  for i = 1:num_test
+  parfor i = 1:num_test
+    
+    fake_train_ind = [train_ind; nan];
+    fake_responses = responses;
+    fake_utilities = zeros(num_classes, 1);
+
     ind = test_ind(i);
 
     % add this point to the dataset
@@ -96,11 +93,8 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
 
     % calculate expectation using current probabilities
     expected_utilities(i) = probabilities(i, :) * fake_utilities;
-
-    % put back real response into fake_responses for next point
-    fake_responses(ind) = responses(ind);
   end
-
+  
   % return the best point found from among the points tested
   [best_utility, best_ind] = max(expected_utilities);
   best_ind = test_ind(best_ind);
