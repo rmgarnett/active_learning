@@ -25,7 +25,7 @@
 %
 % copyright (c) roman garnett, 2012
 
-function utility = max_utility_function(data, responses, train_ind, ...
+function utility = maximum_utility_function(data, responses, train_ind, ...
           objective_function)
 
   utility = max(objective_function(data, responses, train_ind));
