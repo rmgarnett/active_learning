@@ -1,16 +1,14 @@
-function [means, variances] = calculate_moments(data, responses, ...
-          train_ind, response_sampling_function, f, num_samples)
+function [means, variances] = calculate_moments(f, samples)
 
-  response_samples = response_sampling_function(data, responses, ...
-          train_ind, num_samples);
+  num_samples = size(samples, 2);
 
   % initialize sums and sum_squares with a single sample
-  values = f(data, response_samples(:, 1));
+  values = f(samples(:, 1));
   sum_values  = values;
   sum_squares = values.^2;
 
   for i = 2:num_samples
-    values = f(data, response_samples(:, i));
+    values = f(samples(:, i));
     sum_values  = sum_values  + values;
     sum_squares = sum_squares + values.^2;
   end
