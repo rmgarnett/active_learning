@@ -9,7 +9,7 @@
 %
 % outputs:
 %    test_ind: a list of indices into data/labels indicating the
-%               points to test
+%              points to test
 %
 % copyright (c) roman garnett, 2011--2012
 
