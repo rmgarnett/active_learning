@@ -11,14 +11,14 @@
 %   implementation allows multiple selection functions to be used,
 %   should different ones be desired for different lookaheads.
 %
-% function [best_utility, best_ind] = find_optimal_point(data, responses, ...
+% function [best_utility, best_ind] = find_optimal_point(data, labels, ...
 %           train_ind, utility_function, probability_function, ...
 %           selection_functions, lookahead)
 %
 % inputs:
 %                   data: an (n x d) matrix of input data
-%              responses: an (n x 1) vector of responses
-%              train_ind: a list of indices into data/responses
+%                 labels: an (n x 1) vector of labels
+%              train_ind: a list of indices into data/labels
 %                         indicating the starting labeled points
 %    selection_functions: a cell array of selection functions to
 %                         use. if lookahead = k, then the
@@ -35,7 +35,7 @@
 %
 % copyright (c) roman garnett, 2011--2012
 
-function [best_utility, best_ind] = find_optimal_point(data, responses, ...
+function [best_utility, best_ind] = find_optimal_point(data, labels, ...
           train_ind, utility_function, probability_function, ...
           selection_functions, lookahead)
 
@@ -43,7 +43,7 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
   % back if no entry for current lookahead.
   selection_function = ...
       selection_functions{min(max(1, lookahead), numel(selection_functions))};
-  test_ind = selection_function(data, responses, train_ind);
+  test_ind = selection_function(data, labels, train_ind);
   num_test = numel(test_ind);
 
   % if lookahead = 0, pick a random point
@@ -54,7 +54,7 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
   end
 
   % calculate the current posterior probabilities
-  probabilities = probability_function(data, responses, train_ind, test_ind);
+  probabilities = probability_function(data, labels, train_ind, test_ind);
 
   % we will calculate the expected utility of adding each dataset to the
   % training set by sampling over labels to create ficticious datasets
@@ -64,19 +64,19 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
   if (lookahead == 1)
     expected_utility_function = utility_function;
   else
-    expected_utility_function = @(data, responses, train_ind) ...
-        find_optimal_point(data, responses, train_ind, utility_function, ...
+    expected_utility_function = @(data, labels, train_ind) ...
+        find_optimal_point(data, labels, train_ind, utility_function, ...
                            probability_function, selection_functions, ...
                            lookahead - 1);
   end
 
-  num_classes = max(responses);
+  num_classes = max(labels);
 
   expected_utilities = zeros(num_test, 1);
   parfor i = 1:num_test
     
     fake_train_ind = [train_ind; nan];
-    fake_responses = responses;
+    fake_labels    = labels;
     fake_utilities = zeros(num_classes, 1);
 
     ind = test_ind(i);
@@ -86,9 +86,9 @@ function [best_utility, best_ind] = find_optimal_point(data, responses, ...
 
     % sample over labels
     for fake_response = 1:num_classes
-      fake_responses(ind) = fake_response;
+      fake_labels(ind) = fake_response;
       fake_utilities(fake_response) = ...
-          expected_utility_function(data, fake_responses, fake_train_ind);
+          expected_utility_function(data, fake_labels, fake_train_ind);
     end
 
     % calculate expectation using current probabilities
