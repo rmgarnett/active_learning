@@ -1,18 +1,18 @@
 % a simple utility function that is the max of the values returned by
 % a user-defined auxillary function defined on the test points.
 %
-% function utility = max_utility_function(data, responses, train_ind, ...
+% function utility = max_utility_function(data, labels, train_ind, ...
 %           objective_function)
 %
 % where
 %                 data: an (n x d) matrix of input data
-%            responses: an (n x 1) vector of responses
-%            train_ind: a list of indices into data/responses
+%               labels: an (n x 1) vector of labels
+%            train_ind: a list of indices into data/labels
 %                       indicating the training points
 %   objective_function: a function handle providing a function with
 %                       the interface
 %
-%                       values = objective_function(data, responses, ...
+%                       values = objective_function(data, labels, ...
 %                                                   train_ind)
 %
 %                       this function is expected to retrun a value
@@ -25,9 +25,9 @@
 %
 % copyright (c) roman garnett, 2012
 
-function utility = maximum_utility_function(data, responses, train_ind, ...
+function utility = maximum_utility_function(data, labels, train_ind, ...
           objective_function)
 
-  utility = max(objective_function(data, responses, train_ind));
+  utility = max(objective_function(data, labels, train_ind));
 
 end
