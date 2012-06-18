@@ -1,33 +1,29 @@
 % a simple utility function that is the sum of the values returned by
 % a user-defined auxillary function.
 %
-% function utility = sum_utility_function(data, responses, train_ind, ...
-%           objective_function)
+% function utility = sum_utility_function(data, labels, train_ind, ...
+%           score_function)
 %
 % where
-%                 data: an (n x d) matrix of input data
-%            responses: an (n x 1) vector of responses
-%            train_ind: a list of indices into data/responses
-%                       indicating the training points
-%   objective_function: a function handle providing a function with
-%                       the interface
+%             data: an (n x d) matrix of input data
+%           labels: an (n x 1) vector of labels
+%        train_ind: a list of indices into data/labels indicating
+%                   the training points
+%   score_function: a function handle providing a function with the
+%                   interface
 %
-%                       values = objective_function(data, responses, ...
-%                                                   train_ind)
+%                   scores = score_function(data, labels, train_ind)
 %
-%                       this function is expected to retrun a value
-%                       for every data point not in train_ind, and
-%                       ultimately the currently unlabeled point that
-%                       maximizes this function will be chosen.
+%                   the sum of the returned scores is the utility.
 %
 % outputs:
 %   utility: the utility of the selected points
 %
 % copyright (c) roman garnett, 2012
 
-function utility = sum_utility_function(data, responses, train_ind, ...
-          objective_function)
+function utility = sum_utility_function(data, labels, train_ind, ...
+          score_function)
 
-  utility = sum(objective_function(data, responses, train_ind));
+  utility = sum(score_function(data, labels, train_ind));
 
 end
