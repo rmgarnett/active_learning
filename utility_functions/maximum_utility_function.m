@@ -1,7 +1,7 @@
 % a simple utility function that is the max of the values returned by
 % a user-defined auxillary function.
 %
-% function utility = max_utility_function(data, labels, train_ind, ...
+% function utility = maximum_utility_function(data, labels, train_ind, ...
 %           score_function)
 %
 % where
