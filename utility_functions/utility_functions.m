@@ -1,12 +1,12 @@
 % utility functions measure the utility of a given dataest.  utility
 % functions have the interface:
 %
-% utility = utility_function(data, responses, train_ind)
+% utility = utility_function(data, labels, train_ind)
 %
 % inputs:
 %        data: an (n x d) matrix of input data
-%   responses: an (n x 1) vector of responses
-%   train_ind: a list of indices into data/responses indicating the
+%      labels: an (n x 1) vector of labels
+%   train_ind: a list of indices into data/labels indicating the
 %              training points
 %
 % outputs:
