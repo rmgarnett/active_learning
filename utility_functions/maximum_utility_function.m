@@ -7,13 +7,12 @@
 % where
 %                 data: an (n x d) matrix of input data
 %               labels: an (n x 1) vector of labels
-%            train_ind: a list of indices into data/labels
-%                       indicating the training points
+%            train_ind: a list of indices into data/labels indicating
+%                       the training points
 %   objective_function: a function handle providing a function with
 %                       the interface
 %
-%                       values = objective_function(data, labels, ...
-%                                                   train_ind)
+%                       values = objective_function(data, labels, train_ind)
 %
 %                       this function is expected to retrun a value
 %                       for every data point not in train_ind, and
