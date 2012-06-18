@@ -3,9 +3,9 @@
 % using user-defined:
 %
 % - utility functions, which calculate the utility of a selected set
-%   of points
+%   of points,
 % - probability functions, which assign probabilities to indicated
-%   test data from the current training set
+%   test data from the current training set, and
 % - selection functions, which specify which among the unlabeled
 %   points should have their expected utilities evaluated. this
 %   implementation allows multiple selection functions to be used,
