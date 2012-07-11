@@ -1,6 +1,6 @@
-% trivial probability bound
+% trivial probability bound.
 %
-%   bound = 1
+% bound = 1
 %
 % function bound = trivial_utility_bound
 %
