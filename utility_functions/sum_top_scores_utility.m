@@ -2,7 +2,7 @@
 % by a user-defined auxillary function.
 %
 % function utility = sum_top_scores_utility(data, labels, train_ind, ...
-%           score_function)
+%           score_function, k)
 %
 % where
 %             data: an (n x d) matrix of input data
