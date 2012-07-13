@@ -26,7 +26,7 @@
 %                         element of this array will be used.
 %   probability_function: the probability function to use
 %       utility_function: the utility function to use
-%              lookahead: the number of steps to look ahead.  if
+%              lookahead: the number of steps to look ahead. if
 %                         lookahead = 0, a random point is selected.
 %
 % outputs:
