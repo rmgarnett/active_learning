@@ -3,14 +3,14 @@
 % data. probability functions have the interface:
 %
 % probabilities = ...
-%     probability_function(data, responses, train_ind, test_ind)
+%     probability_function(data, labels, train_ind, test_ind)
 %
 % inputs:
 %        data: an (n x d) matrix of input data
-%   responses: an (n x 1) vector of responses
-%   train_ind: a list of indices into data/responses indicating the
+%      labels: an (n x 1) vector of labels
+%   train_ind: a list of indices into data/labels indicating the
 %              training points
-%    test_ind: a list of indices into data/responses indicating the
+%    test_ind: a list of indices into data/labels indicating the
 %              test points
 %
 % outputs:
