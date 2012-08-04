@@ -20,12 +20,12 @@
 %                 labels: an (n x 1) vector of labels
 %              train_ind: a list of indices into data/labels
 %                         indicating the starting labeled points
+%       utility_function: the utility function to use
+%   probability_function: the probability function to use
 %    selection_functions: a cell array of selection functions to
 %                         use. if lookahead = k, then the
 %                         min(k, numel(selection_functions))th
 %                         element of this array will be used.
-%   probability_function: the probability function to use
-%       utility_function: the utility function to use
 %              lookahead: the number of steps to look ahead at each step
 %        num_evaluations: the number of points to select
 %                verbose: a boolean, true to print status after
