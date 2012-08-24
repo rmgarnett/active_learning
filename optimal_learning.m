@@ -45,6 +45,12 @@ function [chosen_ind, utilities] = optimal_learning(data, labels, ...
   % set verbose to false if not defined
   verbose = exist('verbose', 'var') && verbose;
 
+  % wrap the user-provided probability function in a wrapper to
+  % keep already calculated probabilities persistent
+  probability_function = @(data, labels, train_ind, test_ind) ...
+      probability_function_memory_wrapper(data, labels, train_ind, ...
+          test_ind, probability_function);
+  
   chosen_ind = zeros(num_evaluations, 1);
   utilities  = zeros(num_evaluations, 1);
 
