@@ -12,10 +12,11 @@
 %   score_function: a function handle providing a function with the
 %                   interface
 %
-%                   scores = score_function(data, labels, train_ind)
+%                   scores = score_function(data, labels,
+%                                           train_ind, test_ind)
 %
 %                   this function is expected to retrun a value for
-%                   every data point not in train_ind, and ultimately
+%                   every data point in test_ind, and ultimately
 %                   the currently unlabeled point that maximizes this
 %                   function will be chosen.
 %
@@ -25,11 +26,11 @@
 % copyright (c) roman garnett, 2012
 
 function test_ind = maximum_score_selector(data, labels, train_ind, ...
-          score_function)
+          base_selection_function, score_function)
 
-  test_ind = identity_selector(labels, train_ind);
+  test_ind = base_selection_function(data, labels, train_ind);
 
-  scores = score_function(data, labels, train_ind);
+  scores = score_function(data, labels, train_ind, test_ind);
   [~, best_ind] = max(scores);
 
   test_ind = test_ind(best_ind);

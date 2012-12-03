@@ -40,12 +40,10 @@
 %
 % copyright (c) roman garnett, 2011--2012
 
-function [chosen_ind, utilities, statistics] = optimal_learning(data, ...
-          labels, train_ind, utility_function, probability_function, ...
-          selection_functions, lookahead, num_evaluations, verbose)
+function [chosen_ind, statistics] = active_learning(problem)
 
   % set verbose to false if not defined
-  verbose = exist('verbose', 'var') && verbose;
+    problemverbose = exist('verbose', 'var') && verbose;
 
   % wrap the user-provided probability function in a wrapper to
   % keep already calculated probabilities persistent
@@ -58,7 +56,6 @@ function [chosen_ind, utilities, statistics] = optimal_learning(data, ...
   end
   
   chosen_ind = zeros(num_evaluations, 1);
-  utilities  = zeros(num_evaluations, 1);
   
   for i = 1:num_evaluations
     if (verbose)
@@ -66,8 +63,9 @@ function [chosen_ind, utilities, statistics] = optimal_learning(data, ...
       fprintf('point %i: ', i);
     end
 
-    % do not look past the maximum number of evaluations
-    lookahead = min(lookahead, num_evaluations - i + 1);
+    test_ind = selection_function(data, labels, train_ind);
+    
+    scores = score_function(data, labels, train_ind, 
 
     % find the optimal next point to add given the current training set
     % and chosen utility function
@@ -78,18 +76,15 @@ function [chosen_ind, utilities, statistics] = optimal_learning(data, ...
     % add the selected point and measure our current success
     chosen_ind(i) = best_ind;
     train_ind     = [train_ind; best_ind];
-    utilities(i)  = utility_function(data, labels, train_ind);
     statistics(i) = calculate_statistics(data, labels, train_ind, ...
                                          probability_function);
 
     if (verbose)
       elapsed = toc();
       fprintf(['lookahead: %i, ' ...
-               'utility: %.2f, ' ...
                'accuracy: %.2f, ' ...
                'took: %.2fs.\n'], ...
               lookahead, ...
-              utilities(i), ...
               statistics(i).total_accuracy, ...
               elapsed ...
              );
