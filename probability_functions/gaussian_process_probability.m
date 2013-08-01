@@ -1,12 +1,19 @@
 % binary gaussian process classifier.
 %
+% function probabilities = gaussian_process_probability(problem, train_ind, ...
+%           observed_labels, test_ind, hyperparameters, inference_method, ...
+%           mean_function, covariance_function, likelihood)
+%
 % inputs:
-%                  data: an (n x d) matrix of input data
-%                labels: an (n x 1) vector of labels (class 1 is
-%                        tested against "any other class")
-%             train_ind: a list of indices into data/labels indicating
+%           problem: a struct describing the problem, containing the field:
+%
+%             points: an n x d matrix describing the avilable points
+%
+%             train_ind: a list of indices into problem.points indicating
 %                        the training points
-%              test_ind: a list of indices into data/labels indicating
+%       observed_labels: a list of labels corresponding to the
+%                        observations in train_ind
+%              test_ind: a list of indices into problem.points indicating
 %                        the test points
 %       hyperparameters: a gpml hyperparameter structure
 %      inference_method: a gpml inference method
@@ -14,25 +21,26 @@
 %   covariance_function: a gpml covariance function
 %            likelihood: a gpml likelihood
 %
-% outputs:
+% output:
 %   probabilities: a matrix of posterior probabilities for the test
 %                  data. column 1 is p(y = 1 | x, D); column 2 is
 %                  p(y \neq 1 | x, D).
 %
-% copyright (c) roman garnett, 2011--2012
+% copyright (c) roman garnett, 2011--2013
 
-function probabilities = gaussian_process_probability(data, labels, ...
-          train_ind, test_ind, hyperparameters, inference_method, ...
+function probabilities = gaussian_process_probability(problem, train_ind, ...
+          observed_labels, test_ind, hyperparameters, inference_method, ...
           mean_function, covariance_function, likelihood)
 
   % transform labels to match what gpml expects
-  labels(labels ~= 1) = -1;
+  observed_labels(observed_labels ~= 1) = -1;
 
   num_test = numel(test_ind);
-  
+
   [~, ~, ~, ~, log_probabilities] = gp(hyperparameters, inference_method, ...
-          mean_function, covariance_function, likelihood, data(train_ind, :), ...
-          labels(train_ind), data(test_ind, :), ones(num_test, 1));
+                                       mean_function, covariance_function, likelihood, ...
+                                       problem.points(train_ind, :), observed_labels, ...
+                                       problem.points(test_ind, :), ones(num_test, 1));
 
   probabilities = exp(log_probabilities);
   probabilities = [probabilities, (1 - probabilities)];

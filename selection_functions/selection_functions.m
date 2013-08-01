@@ -2,16 +2,22 @@
 % indicates which of the unlabeld points should be considered for
 % addition at this time.  selection functions have the interface:
 %
-% test_ind = selection_function(data, labels, train_ind)
+% test_ind = selection_function(problem, train_ind, observed_labels)
 %
 % inputs:
-%        data: an (n x d) matrix of input data
-%      labels: an (n x 1) vector of labels
-%   train_ind: a list of indices into data/labels indicating the
-%              training points
+%           problem: a struct describing the problem, containing fields:
+%
+%                   points: an n x d matrix describing the avilable points
+%              num_classes: the number of classes
+%              num_queries: the number of queries to make
+%
+%         train_ind: a list of indices into problem.points
+%                    indicating the thus-far observed points
+%   observed_labels: a list of labels corresponding to the
+%                    observations in train_ind
 %
 % outputs:
-%    test_ind: an list of indices into data/labels indicating the
+%    test_ind: an list of indices into problem.points indicating the
 %              points to test
 %
-% copyright (c) roman garnett, 2011--2012
+% copyright (c) roman garnett, 2011--2013

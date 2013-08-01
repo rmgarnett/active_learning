@@ -13,10 +13,11 @@
 %
 % copyright (c) roman garnett, 2011--2012
 
-function test_ind = identified_test_set_selector(labels, train_ind, ...
-          test_set_ind)
+function test_ind = identified_test_set_selector(problem, test_set_ind)
 
-  test_ind = (1:numel(labels))';
-  test_ind(union(train_ind, test_set_ind)) = [];
-  
+  num_points = size(problem.points, 1);
+
+  test_ind = (1:num_points)';
+  test_ind(test_set_ind)) = [];
+
 end

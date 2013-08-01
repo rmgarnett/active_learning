@@ -1,29 +1,33 @@
 % selects points with posterior probability above a specified threshold.
 %
-% function test_ind = probability_treshold_selector(data, labels, ...
-%           train_ind, probability_function, threshold)
+% function test_ind = probability_treshold_selector(problem, ...
+%           train_ind, observed_labels, probability, threshold)
 %
-% where
-%                   data: an (n x d) matrix of input data
-%                 labels: an (n x 1) vector of labels
-%              train_ind: a list of indices into data/labels
-%                         indicating the training points
-%   probability_function: a function handle providing a probability
-%                         function
-%              threshold: a value in [0, 1]; points with posterior
-%                         probability greater than or equal to this
-%                         in any class are selected
+% inputs:
+%           problem: a struct describing the problem, containing fields:
 %
-%   test_ind: a list of indices into data/labels indicating the
-%             points to test
+%                   points: an n x d matrix describing the avilable points
+%              num_classes: the number of classes
+%              num_queries: the number of queries to make
 %
-% copyright (c) roman garnett, 2011--2012
+%         train_ind: a list of indices into problem.points
+%                    indicating the thus-far observed points
+%   observed_labels: a list of labels corresponding to the
+%                    observations in train_ind
+%       probability: a handle to a probability
+%
+% outputs:
+%    test_ind: an list of indices into problem.points indicating the
+%              points to test
+%
+% copyright (c) roman garnett, 2011--2013
 
-function test_ind = probability_treshold_selector(data, labels, ...
-          train_ind, probability_function, threshold)
+function test_ind = probability_treshold_selector(problem, ...
+          train_ind, observed_labels, probability, threshold)
 
-  test_ind = identity_selector(labels, train_ind);
-  probabilities = probability_function(data, labels, train_ind, test_ind);
+  test_ind = (1:size(problem.points, 1))';
+
+  probabilities = probability(problem, train_ind, observed_labels, test_ind);
 
   test_ind = find(any(probabilities >= threshold), 2);
 
