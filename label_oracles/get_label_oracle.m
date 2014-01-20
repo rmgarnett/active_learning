@@ -18,7 +18,7 @@
 %   label_oracle: a function handle to the desired label oracle
 %       varargin: any additional inputs to be bound to the label
 %                 oracle beyond those required by the standard
-%                 API (problem and query_ind)
+%                 interface (problem, query_ind)
 %
 % output:
 %   label_oracle: a function handle to the desired label oracle for
