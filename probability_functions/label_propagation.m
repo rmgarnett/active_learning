@@ -38,9 +38,9 @@
 %
 % output:
 %   probabilities: a matrix containing the probabilities on the
-%                  test points. If m is the number of test points and
-%                  k is the number of classes, then this matrix has
-%                  size (m x k)
+%                  test points. probabilities(i, k) gives
+%
+%                    Pr(x(test_ind(i), :) == k | D)
 %
 % Copyright (c) Roman Garnett, 2014
 
@@ -65,15 +65,15 @@ function probabilities = label_propagation(problem, train_ind, ...
   num_train   = numel(train_ind);
 
   if (options.use_prior)
-    prior = options.pseudocount * ones(1, num_classes) + ...
-            histc(labels(train_ind), 1:num_classes)';
-    prior = prior / sum(prior);
+    prior = options.pseudocount + ...
+            accumarray(labels(train_ind), 1, [1, num_classes]);
+    prior = prior * (1 ./ sum(prior));
   else
-    prior = ones(1, num_classes) / num_classes;
+    prior = ones(1, num_classes) * (1 / num_classes);
   end
 
-  A = [A, spzeros(num_nodes, num_classes); ...
-       spzeros(num_classes, num_nodes + num_classes)];
+  A = [A, sparse(num_nodes, num_classes); ...
+       sparse(num_classes, num_nodes + num_classes)];
 
   A(train_ind, :) = (1 - options.alpha) * A(train_ind, :);
 
