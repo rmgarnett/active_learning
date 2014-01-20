@@ -21,7 +21,7 @@
 %                    Note: this input is ignored by graph_walk_selector.
 %                    If desired, it can be replaced by an empty matrix.
 %
-%                 A: an (n x n) adjacency matrix for the desired
+%                 A: the (n x n) adjacency matrix for the desired
 %                    graph. A nonzero entry for A(i, j) is interpreted
 %                    as the presence of the (possibly directed) edge
 %                    [i -> j].
