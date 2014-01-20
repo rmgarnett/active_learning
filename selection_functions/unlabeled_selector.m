@@ -3,9 +3,9 @@
 % function test_ind = unlabeled_selector(problem, train_ind, observed_labels)
 %
 % inputs:
-%    problem: a struct describing the problem, containing the field:
+%           problem: a struct describing the problem, containing the field:
 %
-%       points: an (n x d) data matrix for the avilable points
+%              points: an (n x d) data matrix for the avilable points
 %
 %         train_ind: a list of indices into problem.points indicating
 %                    the thus-far observed points
