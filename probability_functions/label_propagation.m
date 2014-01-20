@@ -21,7 +21,9 @@
 %                    observations in train_ind
 %          test_ind: a list of indices into A comprising the test
 %                    nodes
-%                 A: the adjacency matrix for the desired graph
+%                 A: a weighted adjacency matrix for the desired graph
+%                    containing transition probabilities. A should be
+%                    row-normalized.
 %
 % optional named arguments specified after requried inputs:
 %      'num_iterations': the number of label propagation iterations to
@@ -47,7 +49,9 @@
 function probabilities = label_propagation(problem, train_ind, ...
   observed_labels, test_ind, A, varargin)
 
+  % parse optional inputs
   options = inputParser;
+
   options.addParamValue('num_iterations', 200, ...
                         @(x) (isscalar(x) && (x >= 0)));
   options.addParamValue('alpha', 1, ...
@@ -60,45 +64,54 @@ function probabilities = label_propagation(problem, train_ind, ...
   options.parse(varargin{:});
   options = options.Results;
 
+  % check whether A is row-normalized
+  if (any(sum(A) ~= 1))
+    A = bsxfun(@times, A, 1 ./ sum(A, 2));
+  end
+
   num_nodes   = size(A, 1);
   num_classes = problem.num_classes;
   num_train   = numel(train_ind);
 
   if (options.use_prior)
     prior = options.pseudocount + ...
-            accumarray(labels(train_ind), 1, [1, num_classes]);
+            accumarray(observed_labels, 1, [1, num_classes]);
     prior = prior * (1 ./ sum(prior));
   else
     prior = ones(1, num_classes) * (1 / num_classes);
   end
 
-  A = [A, sparse(num_nodes, num_classes); ...
-       sparse(num_classes, num_nodes + num_classes)];
+  % expand graph with pseudonodes corresponding to the classes
+  num_expanded_nodes = num_nodes + num_classes;
 
+  A = [A, sparse(num_nodes, num_classes); ...
+       sparse(num_classes, num_expanded_nodes)];
+
+  % reduce weight of edges leaving training nodes by a factor of
+  % (1 - alpha)
   A(train_ind, :) = (1 - options.alpha) * A(train_ind, :);
 
-  A = A + sparse(train_ind, num_nodes + labels(train_ind), options.alpha, ...
-                 num_nodes + num_classes, num_nodes + num_classes);
+  % add edges from training nodes to label nodes with weight alpha
+  A = A + sparse(train_ind, num_nodes + observed_labels, options.alpha, ...
+                 num_expanded_nodes, num_expanded_nodes);
 
-  pseudo_train_ind = (num_nodes + 1):(num_nodes + num_classes);
+  % add self loops on label nodes
+  pseudo_train_ind = (num_nodes + 1):num_expanded_nodes;
   A(pseudo_train_ind, pseudo_train_ind) = speye(num_classes);
 
+  % begin with prior on all nodes
   probabilities = repmat(prior, [num_nodes + num_classes, 1]);
+
+  % fill in known training labels
   probabilities(train_ind, :) = ...
-      accumarray([(1:num_train)', labels(train_ind)], 1, [num_train, num_classes]);
+      accumarray([(1:num_train)', observed_labels], 1, [num_train, num_classes]);
+
+  % add knwon labels for label nodes
   probabilities(pseudo_train_ind, :) = eye(num_classes);
 
-  num_nodes = size(A, 1);
-
-  iteration = 0;
-  while (true)
-    if (iteration == options.num_iterations)
-      break;
-    end
-
-    probabilities = A * current_probabilities;
-
-    iteration = iteration + 1;
+  for i = 1:options.num_iterations
+    % propagate labels
+    probabilities = A * probabilities;
   end
 
   probabilities = probabilities(test_ind, :);
