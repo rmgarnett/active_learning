@@ -72,8 +72,8 @@ function probabilities = label_propagation(problem, train_ind, ...
     prior = ones(1, num_classes) / num_classes;
   end
 
-  A = [A, zeros(num_nodes, num_classes); ...
-       zeros(num_classes, num_nodes + num_classes)];
+  A = [A, spzeros(num_nodes, num_classes); ...
+       spzeros(num_classes, num_nodes + num_classes)];
 
   A(train_ind, :) = (1 - options.alpha) * A(train_ind, :);
 
