@@ -35,17 +35,12 @@
 %                        (false) (default: false)
 %         'pseudocount': if use_prior is set to true, a per-class
 %                        pseudocount can also be specified (default: 1)
-%  'store_intermediate': whether to store the probabilities for
-%                        every iteration of label propagation
-%                        (default: false)
 %
 % output:
 %   probabilities: a matrix containing the probabilities on the
 %                  test points. If m is the number of test points and
 %                  k is the number of classes, then this matrix has
-%                  size (m x k) (if store_intermediate is false) or
-%                  (n x k x num_iterations) (if store_intermediate
-%                  is true)
+%                  size (m x k)
 %
 % Copyright (c) Roman Garnett, 2014
 
@@ -61,8 +56,6 @@ function probabilities = label_propagation(problem, train_ind, ...
                         @(x) (islogical(x) && (numel(x) == 1)));
   options.addParamValue('pseudocount', 0.1, ...
                         @(x) (isscalar(x) && (x > 0)));
-  options.addParamValue('store_intermediate', false, ...
-                        @(x) (islogical(x) && (numel(x) == 1)));
 
   options.parse(varargin{:});
   options = options.Results;
@@ -90,37 +83,23 @@ function probabilities = label_propagation(problem, train_ind, ...
   pseudo_train_ind = (num_nodes + 1):(num_nodes + num_classes);
   A(pseudo_train_ind, pseudo_train_ind) = speye(num_classes);
 
-  current_probabilities = repmat(prior, [num_nodes + num_classes, 1]);
-  current_probabilities(train_ind, :) = ...
+  probabilities = repmat(prior, [num_nodes + num_classes, 1]);
+  probabilities(train_ind, :) = ...
       accumarray([(1:num_train)', labels(train_ind)], 1, [num_train, num_classes]);
-  current_probabilities(pseudo_train_ind, :) = eye(num_classes);
+  probabilities(pseudo_train_ind, :) = eye(num_classes);
 
   num_nodes = size(A, 1);
 
-  if (options.store_intermediate)
-    probabilities = zeros(num_nodes, num_classes, options.num_iterations + 1);
-  else
-    probabilities = zeros(num_nodes, num_classes);
-  end
-
   iteration = 0;
   while (true)
-    if (options.store_intermediate)
-      probabilities(:, :, iteration + 1) = current_probabilities;
-    end
-
     if (iteration == options.num_iterations)
       break;
     end
 
-    current_probabilities = A * current_probabilities;
+    probabilities = A * current_probabilities;
 
     iteration = iteration + 1;
   end
 
-  if (options.store_intermediate)
-    probabilities = probabilities(test_ind, :, :);
-  else
-    probabilities = current_probabilities(test_ind, :);
-  end
+  probabilities = probabilities(test_ind, :);
 end
