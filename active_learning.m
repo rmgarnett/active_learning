@@ -59,6 +59,17 @@ function [chosen_ind, chosen_labels] = ...
       fprintf(' %i points for consideration', numel(test_ind));
     end
 
+    % end early if no points returned from selector
+    if (numel(test_ind) == 0)
+      warning('active_learning:active_learning:no_points_selected', ...
+              sprintf(['after %i steps, no points were selected. ' ...
+                       'Ending run early!'], i));
+
+      chosen_ind    = chosen_ind(1:i);
+      chosen_labels = chosen_labels(1:i);
+      return;
+    end
+
     % select location of next observation from the given list
     chosen_ind(i) = query_strategy(problem, train_ind, observed_labels, test_ind);
 
