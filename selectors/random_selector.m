@@ -11,15 +11,13 @@
 %   num_test: the number of test points to select
 %
 %                    Note: this input is ignored by random_selector.
-%                    If desired, it can be replaced by an empty
-%                    matrix.
+%                    If desired, it can be replaced by an empty matrix.
 %
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
 %
 %                    Note: this input is ignored by random_selector.
-%                    If desired, it can be replaced by an empty
-%                    matrix.
+%                    If desired, it can be replaced by an empty matrix.
 %
 %          num_test: the number of test points to select
 %
