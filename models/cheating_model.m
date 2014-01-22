@@ -14,15 +14,13 @@
 %                    the thus-far observed points
 %
 %                    Note: this input is ignored by cheating_model.
-%                    If desired, it can be replaced by an empty
-%                    matrix.
+%                    If desired, it can be replaced by an empty matrix.
 %
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
 %
 %                    Note: this input is ignored by cheating_model.
-%                    If desired, it can be replaced by an empty
-%                    matrix.
+%                    If desired, it can be replaced by an empty matrix.
 %
 %          test_ind: a list of indices into problem.points indicating
 %                    the test points
