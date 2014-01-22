@@ -3,14 +3,27 @@
 % function test_ind = random_selector(problem, num_test)
 %
 % inputs:
-%           problem: a struct describing the problem, containing the
-%                    field:
+%           problem: a struct describing the problem, which must at
+%                    least contain the field:
 %
 %              points: an (n x d) data matrix for the avilable points
 %
 %   num_test: the number of test points to select
 %
-% outputs:
+%                    Note: this input is ignored by random_selector.
+%                    If desired, it can be replaced by an empty
+%                    matrix.
+%
+%   observed_labels: a list of labels corresponding to the
+%                    observations in train_ind
+%
+%                    Note: this input is ignored by random_selector.
+%                    If desired, it can be replaced by an empty
+%                    matrix.
+%
+%          num_test: the number of test points to select
+%
+% output:
 %    test_ind: a list of indices into problem.points indicating the
 %              points to test
 %

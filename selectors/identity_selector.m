@@ -3,7 +3,8 @@
 % function test_ind = identity_selector(problem)
 %
 % inputs:
-%           problem: a struct describing the problem, containing the field:
+%           problem: a struct describing the problem, which must at
+%                    least contain the field:
 %
 %              points: an (n x d) data matrix for the avilable points
 %
