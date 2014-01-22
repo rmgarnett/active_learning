@@ -1,38 +1,52 @@
-% binary k-nn classifier.  assuming the problem has n points, and W
-% is an (n x n) matrix of pairwise weights, the probability of
-% observing a "1" at y, given observations D = {(x, y)}:
+% A binary weighted k-nn classifier.
+%
+% Assuming the problem has n points, and W is an (n x n) matrix of
+% pairwise weights, the probability of observing a "1" at y, given
+% observations D = {(x, y)} is given by:
 %
 %   p(y = 1 | x, D, \alpha, \beta) = ...
 %                            E[ Beta(\alpha + S, \beta + F) ],
 %
 % where Beta(., .) is the beta distribution, \alpha and \beta are
-% specified hyperparameters, and S/F are defined as:
+% specified hyperparameters, and S/F (for "successes"/"failures") are
+% defined as:
 %
 %   S = \sum_{x' \in D, y'   =  1} W(x, x'),
 %   F = \sum_{x' \in D, y' \neq 1} W(x, x').
 %
-% function probabilities = knn_probability(train_ind, observed_labels, ...
+% function probabilities = knn_model(problem, train_ind, observed_labels, ...
 %           test_ind, weights, prior_alpha, prior_beta)
 %
 % inputs:
-%         train_ind: a list of indices into weights indicating
-%                    the training points
+%           problem: a struct describing the problem, containing the
+%                    field:
+%
+%              points: an (n x d) data matrix for the avilable points
+%
+%                    Note: this input is ignored by random_selector.
+%                    If desired, it can be replaced by an empty matrix.
+%
+%         train_ind: a list of indices into problem.points indicating
+%                    the thus-far observed points
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
-%          test_ind: a list of indices into weights indicating
+%          test_ind: a list of indices into problem.points indicating
 %                    the test points
-%           weights: an n x n matrix of weights
+%           weights: an (n x n) matrix of weights
 %       prior_alpha: the prior value for \alpha
 %        prior_beta: the prior value for \beta
 %
 % outputs:
-%   probabilities: a matrix of posterior probabilities for the test
-%                  data. column 1 is p(y = 1 | x, D); column 2 is
+%   probabilities: a matrix of posterior probabilities. The first
+%                  column gives p(y = 1 | x, D) for each of the
+%                  indicated test points; the second column gives
 %                  p(y \neq 1 | x, D).
 %
-% copyright (c) roman garnett, 2011--2012
+% See also models.
 
-function probabilities = knn_probability(train_ind, observed_labels, ...
+% Copyright (c) Roman Garnett, 2011--2014
+
+function probabilities = knn_model(~, train_ind, observed_labels, ...
           test_ind, weights, prior_alpha, prior_beta)
 
   % transform observed_labels to handle multi-class

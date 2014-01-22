@@ -1,15 +1,18 @@
-% random forest classifier.
+% A random forest classifier.
 %
-% function probabilities = random_forest_probability(problem, ...
-%           train_ind, observed_labels, test_ind, num_trees, options)
+% Requires the TreeBagger class in the MATLAB Statistics Toolbox.
+%
+% function probabilities = random_forest_model(problem, train_ind, ...
+%           observed_labels, test_ind, num_trees, options)
 %
 % inputs:
-%           problem: a struct describing the problem, containing the field:
+%           problem: a struct describing the problem, which must at
+%                    least contain the field:
 %
-%             points: an n x d matrix describing the avilable points
+%              points: an (n x d) data matrix for the avilable points
 %
 %         train_ind: a list of indices into problem.points indicating
-%                    the training points
+%                    the thus-far observed points
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
 %          test_ind: a list of indices into problem.points indicating
@@ -19,15 +22,16 @@
 %                    TreeBagger for training (default: [])
 %
 % output:
-%   probabilites: a matrix of posterior probabilities.  the kth
-%                 column gives the posterior probabilities
-%                 p(y = k | x, D) for each of the indicated
-%                 test points
+%   probabilities: a matrix of posterior probabilities. The ith
+%                  column gives p(y = i | x, D) for each of the
+%                  indicated test points.
 %
-% copyright (c) roman garnett, 2011--2013
+% See also TreeBagger, models.
 
-function probabilities = random_forest_probability(problem, ...
-          train_ind, observed_labels, test_ind, num_trees, options)
+% Copyright (c) Roman Garnett, 2011--2014
+
+function probabilities = random_forest_model(problem, train_ind, ...
+          observed_labels, test_ind, num_trees, options)
 
   if (nargin < 6)
     options = [];
@@ -36,6 +40,7 @@ function probabilities = random_forest_probability(problem, ...
   model = TreeBagger(num_trees, problem.points(train_ind, :), observed_labels, ...
                      'method', 'classification', ...
                      'options', options);
+
   [~, probabilities] = predict(model, problem.points(test_ind, :));
 
 end

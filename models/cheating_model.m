@@ -1,5 +1,7 @@
-% A "cheating" model, which always predicts a delta distribution for
-% each test point with mass on the output of a given label oracle.
+% A "cheating" model.
+%
+% This model always predicts a delta distribution for each test point
+% with mass on the output of a given label oracle.
 %
 % function probabilities = cheating_model(problem, train_ind, ...
 %           observed_labels, test_ind, label_oracle)
@@ -28,12 +30,14 @@
 %                    into problem.points and returns a label
 %
 % outputs:
-%   probabilites: a matrix of posterior probabilities. The ith column
-%                 gives the posterior probabilities p(y = i | x, D)
-%                 for each of the indicated test points; here
-%                 p(y = i | x, D) = 1 if the label oracle output i
-%                 for y; otherwise 0.
+%   probabilities: a matrix of posterior probabilities. The ith column
+%                  gives the posterior probabilities p(y = i | x, D)
+%                  for each of the indicated test points; here
+%                  p(y = i | x, D) = 1 if the label oracle output i
+%                  for y; otherwise 0.
 %
+% See also models.
+
 % Copyright (c) Roman Garnett, 2012--2014
 
 function probabilities = cheating_model(problem, ~, ~, test_ind, label_oracle)

@@ -1,13 +1,15 @@
-% An implementation of the partially absorbing label propagation
-% algorithm described in:
+% Partially abosrbing label propagation for graph classification.
+%
+% This is an implementation of the partially absorbing label
+% propagation algorithm described in:
 %
 %   Neumann, M., Garnett, R., and Kersting, K. Coinciding Walk
 %   Kernels: Parallel Absorbing Random Walks for Learning with Graphs
-%   and Few Labels. (2013). To appear in: Proceedings of the 5th
-%   Annual Asian Conference on Machine Learning (ACML 2013).
+%   and Few Labels. (2013). Proceedings of the 5th Annual Asian
+%   Conference on Machine Learning (ACML 2013).
 %
-% function probabilities = label_propagation(problem, train_ind, ...
-%   observed_labels, test_ind, A, varargin)
+% function probabilities = label_propagation_model(problem, train_ind, ...
+%           observed_labels, test_ind, A, varargin)
 %
 % required inputs:
 %           problem: a struct describing the problem, containing
@@ -39,15 +41,16 @@
 %                        pseudocount can also be specified (default: 1)
 %
 % output:
-%   probabilities: a matrix containing the probabilities on the
-%                  test points. probabilities(i, k) gives
+%   probabilities: a matrix of posterior probabilities. The ith
+%                  column gives p(y = i | x, D) for each of the
+%                  indicated test points.
 %
-%                    Pr(x(test_ind(i), :) == k | D)
-%
+% See also models.
+
 % Copyright (c) Roman Garnett, 2014
 
-function probabilities = label_propagation(problem, train_ind, ...
-  observed_labels, test_ind, A, varargin)
+function probabilities = label_propagation_model(problem, train_ind, ...
+          observed_labels, test_ind, A, varargin)
 
   % parse optional inputs
   options = inputParser;
