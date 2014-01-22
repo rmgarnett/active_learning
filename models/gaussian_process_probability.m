@@ -1,4 +1,7 @@
-% binary gaussian process classifier.
+% A binary Gaussian process classifier. Requires the GPML toolkit
+% available here:
+%
+% http://www.gaussianprocess.org/gpml/code/matlab/doc
 %
 % function probabilities = gaussian_process_probability(problem, train_ind, ...
 %           observed_labels, test_ind, hyperparameters, inference_method, ...
