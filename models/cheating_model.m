@@ -38,8 +38,6 @@
 %
 % See also models.
 
-% Copyright (c) Roman Garnett, 2012--2014
-
 function probabilities = cheating_model(problem, ~, ~, test_ind, label_oracle)
 
   num_test = numel(test_ind);
@@ -50,3 +48,5 @@ function probabilities = cheating_model(problem, ~, ~, test_ind, label_oracle)
   end
 
 end
+
+% Copyright (c) Roman Garnett, 2012--2014

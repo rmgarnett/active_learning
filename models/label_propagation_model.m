@@ -47,8 +47,6 @@
 %
 % See also models.
 
-% Copyright (c) Roman Garnett, 2014
-
 function probabilities = label_propagation_model(problem, train_ind, ...
           observed_labels, test_ind, A, varargin)
 
@@ -119,3 +117,5 @@ function probabilities = label_propagation_model(problem, train_ind, ...
 
   probabilities = probabilities(test_ind, :);
 end
+
+% Copyright (c) Roman Garnett, 2014

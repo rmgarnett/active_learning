@@ -44,8 +44,6 @@
 %
 % See also models.
 
-% Copyright (c) Roman Garnett, 2011--2014
-
 function probabilities = knn_model(~, train_ind, observed_labels, ...
           test_ind, weights, prior_alpha, prior_beta)
 
@@ -64,3 +62,5 @@ function probabilities = knn_model(~, train_ind, observed_labels, ...
   probabilities = [probabilities, (1 - probabilities)];
 
 end
+
+% Copyright (c) Roman Garnett, 2011--2014

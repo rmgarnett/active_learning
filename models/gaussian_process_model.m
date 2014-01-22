@@ -35,8 +35,6 @@
 %
 % See also models.
 
-% Copyright (c) Roman Garnett, 2011--2014
-
 function probabilities = gaussian_process_model(problem, train_ind, ...
           observed_labels, test_ind, hyperparameters, inference_method, ...
           mean_function, covariance_function, likelihood)
@@ -55,3 +53,5 @@ function probabilities = gaussian_process_model(problem, train_ind, ...
   probabilities = [probabilities, (1 - probabilities)];
 
 end
+
+% Copyright (c) Roman Garnett, 2011--2014

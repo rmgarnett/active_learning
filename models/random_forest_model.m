@@ -28,8 +28,6 @@
 %
 % See also TreeBagger, models.
 
-% Copyright (c) Roman Garnett, 2011--2014
-
 function probabilities = random_forest_model(problem, train_ind, ...
           observed_labels, test_ind, num_trees, options)
 
@@ -44,3 +42,5 @@ function probabilities = random_forest_model(problem, train_ind, ...
   [~, probabilities] = predict(model, problem.points(test_ind, :));
 
 end
+
+% Copyright (c) Roman Garnett, 2011--2014
