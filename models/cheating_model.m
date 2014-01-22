@@ -1,33 +1,44 @@
-% "cheating" probability, always predicts a delta distribution for
-% each test point with mass on the output of the label oracle.
+% A "cheating" model, which always predicts a delta distribution for
+% each test point with mass on the output of a given label oracle.
 %
-% function probabilities = cheating_probability(problem, test_ind, label_oracle)
+% function probabilities = cheating_model(problem, train_ind, ...
+%           observed_labels, test_ind, label_oracle)
 %
 % inputs:
-%        problem: a struct describing the problem, containing fields:
+%           problem: a struct describing the problem, which must at
+%                    least contain the field:
 %
-%               points: an n x d matrix describing the avilable points
-%           num_points: the number of points
-%          num_classes: the number of classes
-%          num_queries: the number of queries to make
-%              verbose: whether to print messages after each query
-%                       (default: false)
+%             num_classes: the number of classes
 %
-%       test_ind: a list of indices into problem.points indicating
-%                 the test points
-%   label_oracle: a function taking an index into problem.points
-%                 and returning a label
+%         train_ind: a list of indices into problem.points indicating
+%                    the thus-far observed points
+%
+%                    Note: this input is ignored by cheating_model.
+%                    If desired, it can be replaced by an empty
+%                    matrix.
+%
+%   observed_labels: a list of labels corresponding to the
+%                    observations in train_ind
+%
+%                    Note: this input is ignored by cheating_model.
+%                    If desired, it can be replaced by an empty
+%                    matrix.
+%
+%          test_ind: a list of indices into problem.points indicating
+%                    the test points
+%      label_oracle: a handle to a label oracle. which takes an index
+%                    into problem.points and returns a label
 %
 % outputs:
-%   probabilites: a matrix of posterior probabilities.  the kth column
-%                 gives the posterior probabilities p(y = k | x, D)
-%                 for reach of the indicated test points; here
-%                 p(y = k | x, D) = 1 if the label oracle output k
+%   probabilites: a matrix of posterior probabilities. The ith column
+%                 gives the posterior probabilities p(y = i | x, D)
+%                 for each of the indicated test points; here
+%                 p(y = i | x, D) = 1 if the label oracle output i
 %                 for y; otherwise 0.
 %
-% copyright (c) roman garnett, 2012--2013
+% Copyright (c) Roman Garnett, 2012--2014
 
-function probabilities = cheating_probability(problem, test_ind, label_oracle)
+function probabilities = cheating_model(problem, ~, ~, test_ind, label_oracle)
 
   num_test = numel(test_ind);
 
