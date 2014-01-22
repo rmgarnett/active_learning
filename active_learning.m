@@ -18,7 +18,7 @@
 %                    the labeled points at start
 %   observed_labels: a (possibly empty) list of labels corresponding
 %                    to the observations in train_ind
-%      label_oracle: a handle to a label oracle. which takes an index
+%      label_oracle: a handle to a label oracle, which takes an index
 %                    into problem.points and returns a label
 %          selector: a handle to a point selector, which specifies
 %                    which points are eligible to query at a given time
