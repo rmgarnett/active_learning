@@ -2,7 +2,7 @@
 %
 % Requires the GPML toolkit available here:
 %
-% http://www.gaussianprocess.org/gpml/code/matlab/doc
+% <a>http://www.gaussianprocess.org/gpml/code/matlab/doc</a>
 %
 % function probabilities = gaussian_process_model(problem, train_ind, ...
 %           observed_labels, test_ind, hyperparameters, inference_method, ...
