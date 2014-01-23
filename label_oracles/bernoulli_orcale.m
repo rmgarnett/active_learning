@@ -1,4 +1,4 @@
-% BERNOULLI_ORACLE bernoulli oracle with given success probabilities.
+% BERNOULLI_ORACLE Bernoulli oracle with given success probabilities.
 %
 % This provides a label orcale that, conditioned on the queried point,
 % samples labels indepdendently from a Bernoulli with given success
