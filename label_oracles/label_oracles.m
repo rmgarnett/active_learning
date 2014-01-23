@@ -37,5 +37,5 @@
 % For convenience, the function get_label_oracle is provided for
 % easily and concisely constructing function handles to label oracles
 % for use, e.g., in active_learning.m.
-%
+
 % Copyright (c) Roman Garnett 2014
