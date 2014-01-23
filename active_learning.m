@@ -1,11 +1,54 @@
-% Performs active learning on a set of discrete points using a given
-% query strategy.
+% ACTIVE_LEARNING simulates an active learning experiment.
 %
-% function [chosen_ind, chosen_labels] = ...
+% This function performs active learning on a set of discrete points
+% using a given query strategy. An active-learning experiment is
+% simulated following the following procedure:
+%
+%   Given: initially labeled points x, corresponding labels y,
+%          budget B
+%
+%   for i = 1:B
+%     % find points available for labeling
+%     eligible_points = selector(x, y)
+%
+%     % decide on point to observe
+%     x_star = query_strategy(x, y, eligible_points)
+%
+%     % observe point
+%     y_star = label_oracle(x_star)
+%
+%     % add observation to training set
+%     x = [x x_star];
+%     y = [y y_star];
+%   end
+%
+% This function supports user-specified:
+%
+% * Selectors, which given the current training set, return a set of
+%   points currently eligible for labeling. See selectors.m for
+%   usage and available implementations.
+%
+% * Label oracles, which given a point, return a corresponding
+%   label. Label oracles may optionally be nondeterministic (see, for
+%   example, bernoulli_oracle). See label_oracles.m for usage and
+%   available implementations.
+%
+% * Query strategies, which given a training set and the selected
+%   eligible points, decides which point to observe next. See
+%   query_strategies.m for usage and available implementations.
+%
+% This function also supports arbitrary user-specified callbacks
+% called after each round of the experiment. This can be useful, for
+% example, for plotting the progress of the algorithm and/or printing
+% statistics such as test error online.
+%
+% Usage:
+%
+%   [chosen_ind, chosen_labels] = ...
 %       active_learning(problem, train_ind, observed_labels, label_oracle, ...
 %                       selector, query_strategy, callback)
 %
-% inputs:
+% Inputs:
 %           problem: a struct describing the problem, containing fields:
 %
 %                  points: an (n x d) data matrix for the available points
@@ -14,8 +57,9 @@
 %                 verbose: whether to print information regarding
 %                          each query (default: false)
 %
-%         train_ind: a (possibly empty) list of indices indicating
-%                    the labeled points at start
+%         train_ind: a (possibly empty) list of indices into
+%                    problem.points indicating the labeled points at
+%                    start
 %   observed_labels: a (possibly empty) list of labels corresponding
 %                    to the observations in train_ind
 %      label_oracle: a handle to a label oracle, which takes an index
@@ -31,10 +75,12 @@
 %
 %                    and anything returned will be ignored.
 %
-% outputs:
+% Outputs:
 %      chosen_ind: a list of indices of the chosen datapoints, in order
 %   chosen_labels: a list of the corresponding observed labels
 %
+% See also LABEL_ORACLES, SELECTORS, QUERY_STRATEGIES.
+
 % Copyright (c) Roman Garnett 2011--2014
 
 function [chosen_ind, chosen_labels] = ...
