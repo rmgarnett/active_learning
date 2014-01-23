@@ -1,8 +1,9 @@
-% selects a random subset of points.
+% RANDOM_SELECTOR selects a random subset of points.
 %
-% function test_ind = random_selector(problem, num_test)
+%   test_ind = random_selector(problem, train_ind, observed_labels, ...
+%                              num_test)
 %
-% inputs:
+% Inputs:
 %           problem: a struct describing the problem, which must at
 %                    least contain the field:
 %
@@ -21,11 +22,13 @@
 %
 %          num_test: the number of test points to select
 %
-% output:
-%    test_ind: a list of indices into problem.points indicating the
-%              points to test
+% Output:
+%   test_ind: a list of indices into problem.points indicating the
+%             points to consider for labeling
 %
-% copyright (c) roman garnett, 2011--2013
+% See also SELECTORS.
+
+% Copyright (c) Roman Garnett, 2011--2014
 
 function test_ind = random_selector(problem, num_test)
 

@@ -1,10 +1,11 @@
-% A selector that selects all points besides those in an identified
-% test set.
+% FIXED_TEST_SET_SELECTOR selects all points besides a given test set.
 %
-% function test_ind = fixed_test_set_selector(problem, train_ind, ...
-%           observed_labels, test_set_ind)
+% Usage:
 %
-% inputs:
+%   test_ind = fixed_test_set_selector(problem, train_ind, observed_labels, ...
+%           test_set_ind)
+%
+% Inputs:
 %           problem: a struct describing the problem, which must at
 %                    least contain the field:
 %
@@ -25,10 +26,12 @@
 %      test_set_ind: a list of indicies into problem.points
 %                    indicating the test set
 %
-% output:
-%    test_ind: a list of indices into problem.points indicating the
-%              points to consider for labeling
+% Output:
+%   test_ind: a list of indices into problem.points indicating the
+%             points to consider for labeling
 %
+% See also SELECTORS.
+
 % Copyright (c) Roman Garnett, 2011--2014
 
 function test_ind = fixed_test_set_selector(problem, ~, ~, test_set_ind)

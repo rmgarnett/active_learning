@@ -1,11 +1,15 @@
-% A meta-selector that returns the intersection of the test points
-% returned from each of a set of selectors. Note that this
+% INTERSECTION_SELECTOR takes the intersection of the output of selectors.
+%
+% This provides a meta-selector that returns the intersection of the
+% test points returned from each of a set of selectors. Note that this
 % intersection may be empty!
 %
-% function test_ind = intersection_selector(problem, train_ind, ...
-%           observed_labels, selectors)
+% Usage:
 %
-% inputs:
+%   test_ind = intersection_selector(problem, train_ind, observed_labels, ...
+%           selectors)
+%
+% Inputs:
 %           problem: a struct describing the problem, containing fields:
 %
 %                  points: an (n x d) data matrix for the available points
@@ -19,11 +23,13 @@
 %         selectors: a cell array of function handles to selectors
 %                    to intersect
 %
-% output:
-%    test_ind: a list of indices into problem.points indicating the
-%              points to consider for labeling. Each index in test_ind
-%              was selected by every provided selector.
+% Output:
+%   test_ind: a list of indices into problem.points indicating the
+%             points to consider for labeling. Each index in test_ind
+%             was selected by every provided selector.
 %
+% See also SELECTORS.
+
 % Copyright (c) Roman Garnett, 2013--2014
 
 function test_ind = intersection_selector(problem, train_ind, ...

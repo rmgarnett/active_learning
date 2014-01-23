@@ -1,18 +1,34 @@
-% selects all points.
+% IDENTITY_SELECTOR selects all points.
 %
-% function test_ind = identity_selector(problem)
+% Usage:
 %
-% inputs:
+%   test_ind = identity_selector(problem, observed_labels, train_ind)
+%
+% Inputs:
 %           problem: a struct describing the problem, which must at
 %                    least contain the field:
 %
 %              points: an (n x d) data matrix for the avilable points
 %
-% outputs:
-%    test_ind: a list of indices into problem.points indicating the
-%              points to test
+%         train_ind: a list of indices into problem.points indicating
+%                    the thus-far observed points
 %
-% copyright (c) roman garnett, 2011--2012
+%                    Note: this input is ignored by identity_selector.
+%                    If desired, it can be replaced by an empty matrix.
+%
+%   observed_labels: a list of labels corresponding to the
+%                    observations in train_ind
+%
+%                    Note: this input is ignored by identity_selector.
+%                    If desired, it can be replaced by an empty matrix.
+%
+% Output:
+%   test_ind: a list of indices into problem.points indicating the
+%             points to consider for labeling
+%
+% See also SELECTORS
+
+% Copyright (c) Roman Garnett, 2011--2014
 
 function test_ind = identity_selector(problem)
 

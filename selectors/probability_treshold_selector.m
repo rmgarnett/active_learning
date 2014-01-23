@@ -1,9 +1,15 @@
-% selects points with posterior probability above a specified threshold.
+% PROBABILITY_THRESHOLD_SELECTOR selects confident points.
 %
-% function test_ind = probability_treshold_selector(problem, ...
-%           train_ind, observed_labels, probability, threshold)
+% This provides a selector that selects points with at least one
+% class-membership probability above a specified threshold according
+% to a given model.
 %
-% inputs:
+% Usage:
+%
+%   test_ind = probability_treshold_selector(problem, train_ind, ...
+%           observed_labels, model, threshold)
+%
+% Inputs:
 %           problem: a struct describing the problem, containing fields:
 %
 %                   points: an n x d matrix describing the avilable points
@@ -16,11 +22,15 @@
 %                    observations in train_ind
 %       probability: a handle to a probability
 %
-% outputs:
-%    test_ind: an list of indices into problem.points indicating the
-%              points to test
+% Output:
+%   test_ind: a list of indices into problem.points indicating the
+%             points to consider for labeling. Each index in test_ind
+%             has at least one class-membership probability greater
+%             than the provided threshold.
 %
-% copyright (c) roman garnett, 2011--2013
+% See also SELECTORS, MODELS.
+
+% Copyright (c) Roman Garnett, 2011--2014
 
 function test_ind = probability_treshold_selector(problem, ...
           train_ind, observed_labels, probability, threshold)

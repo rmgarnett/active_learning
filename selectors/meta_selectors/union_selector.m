@@ -1,10 +1,13 @@
-% A meta-selector that returns the union of the test points returned
-% from each of a set of selectors.
+% UNION_SELECTOR takes the union of the output of selectors.
 %
-% function test_ind = union_selector(problem, train_ind, observed_labels, ...
-%           selectors)
+% This provides a meta-selector that returns the union of the test
+% points returned from each of a set of selectors.
 %
-% inputs:
+% Usage:
+%
+%   test_ind = union_selector(problem, train_ind, observed_labels, selectors)
+%
+% Inputs:
 %           problem: a struct describing the problem, containing fields:
 %
 %                  points: an (n x d) data matrix for the available points
@@ -18,11 +21,13 @@
 %         selectors: a cell array of function handles to selectors
 %                    to combine
 %
-% output:
-%    test_ind: a list of indices into problem.points indicating the
-%              points to consider for labeling. Each index in test_ind
-%              was selected by at least one of the provided selectors.
+% Output:
+%   test_ind: a list of indices into problem.points indicating the
+%             points to consider for labeling. Each index in test_ind
+%             was selected by at least one of the provided selectors.
 %
+% See also SELECTORS.
+
 % Copyright (c) Roman Garnett, 2014
 
 function test_ind = union_selector(problem, train_ind, observed_labels, ...
