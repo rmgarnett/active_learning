@@ -23,8 +23,8 @@
 %              each point in problem.points
 %
 % Output:
-%     label: an integer between 1 and problem.num_classes indicating
-%            the observed label
+%   label: an integer between 1 and problem.num_classes indicating the
+%          observed label
 %
 % See also LABEL_ORACLES.
 

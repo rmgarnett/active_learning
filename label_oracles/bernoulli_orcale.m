@@ -24,8 +24,8 @@
 %                  corresponding to the points in problem.points
 %
 % Output:
-%     label: an integer, either 1 or 2, indicating the observed
-%            label. "1" indicates success.
+%   label: an integer between 1 and problem.num_classes indicating the
+%          observed label
 %
 % See also LABEL_ORACLES, MULTINOMIAL_ORACLE.
 

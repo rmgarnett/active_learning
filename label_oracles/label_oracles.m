@@ -7,7 +7,7 @@
 %
 %   label = label_oracle(problem, query_ind, labels)
 %
-% inputs:
+% Inputs:
 %     problem: a struct describing the problem, containing the fields:
 %
 %            points: an (n x d) data matrix for the available points
@@ -16,9 +16,9 @@
 %   query_ind: an index into problem.points specifying the point to be
 %              queried
 %
-% output:
-%     label: an integer between 1 and problem.num_classes indicating
-%            the observed label
+% Output:
+%   label: an integer between 1 and problem.num_classes indicating the
+%          observed label
 %
 % The following general-purpose label oracles are provided in this
 % toolbox:
