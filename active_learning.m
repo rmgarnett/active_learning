@@ -114,8 +114,8 @@ function [chosen_ind, chosen_labels] = ...
               sprintf(['after %i steps, no points were selected. ' ...
                        'Ending run early!'], i));
 
-      chosen_ind    = chosen_ind(1:i);
-      chosen_labels = chosen_labels(1:i);
+      chosen_ind    = chosen_ind(1:(i - 1));
+      chosen_labels = chosen_labels(1:(i - 1));
       return;
     end
 
