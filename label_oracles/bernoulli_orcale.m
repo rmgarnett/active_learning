@@ -9,14 +9,16 @@
 %   label = bernoulli_oracle(problem, query_ind, probabilities)
 %
 % Inputs:
+%
 %         problem: a struct describing the problem, containing the
 %                  field:
 %
 %            points: an (n x d) data matrix for the available points
 %
-%                  Note: this input is ignored by bernoulli_oracle.
-%                  If desired, it can be replaced by an empty matrix.
-%                  The struct is documented for reference below.
+%                  Note: this input, part of the standard label oracle
+%                  API, is ignored by bernoulli_oracle. If desired,
+%                  for standalone use it can be replaced by an empty
+%                  matrix.
 %
 %       query_ind: an index into problem.points specifying the point
 %                  to be queried
@@ -24,12 +26,13 @@
 %                  corresponding to the points in problem.points
 %
 % Output:
+%
 %   label: an integer between 1 and problem.num_classes indicating the
 %          observed label
 %
 % See also LABEL_ORACLES, MULTINOMIAL_ORACLE.
 
-% Copyright (c) Roman Garnett 2013--2014
+% Copyright (c) 2013--2014 Roman Garnett.
 
 function label = bernoulli_oracle(~, query_ind, probabilities)
 
