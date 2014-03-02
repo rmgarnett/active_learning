@@ -24,16 +24,16 @@
 %
 % This function supports user-specified:
 %
-% * Selectors, which given the current training set, return a set of
-%   points currently eligible for labeling. See selectors.m for
-%   usage and available implementations.
+% * _Selectors,_ which given the current training set, return a set of
+%   points currently eligible for labeling. See selectors.m for usage
+%   and available implementations.
 %
-% * Label oracles, which given a point, return a corresponding
+% * _Label oracles,_ which given a point, return a corresponding
 %   label. Label oracles may optionally be nondeterministic (see, for
 %   example, bernoulli_oracle). See label_oracles.m for usage and
 %   available implementations.
 %
-% * Query strategies, which given a training set and the selected
+% * _Query strategies,_ which given a training set and the selected
 %   eligible points, decides which point to observe next. See
 %   query_strategies.m for usage and available implementations.
 %
@@ -81,7 +81,7 @@
 %
 % See also LABEL_ORACLES, SELECTORS, QUERY_STRATEGIES.
 
-% Copyright (c) Roman Garnett 2011--2014
+% Copyright (c) 2011--2014 Roman Garnett.
 
 function [chosen_ind, chosen_labels] = ...
       active_learning(problem, train_ind, observed_labels, label_oracle, ...
