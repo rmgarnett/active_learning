@@ -1,4 +1,4 @@
-% Partially abosrbing label propagation for graph classification.
+% LABEL_PROPAGATION_MODEL partially abosrbing label propagation.
 %
 % This is an implementation of the partially absorbing label
 % propagation algorithm described in:
@@ -8,26 +8,30 @@
 %   and Few Labels. (2013). Proceedings of the 5th Annual Asian
 %   Conference on Machine Learning (ACML 2013).
 %
-% function probabilities = label_propagation_model(problem, train_ind, ...
+% Usage:
+%
+%   probabilities = label_propagation_model(problem, train_ind, ...
 %           observed_labels, test_ind, A, varargin)
 %
-% required inputs:
-%           problem: a struct describing the problem, containing
-%                    the field:
+% Required inputs:
+%
+%           problem: a struct describing the problem, which must at
+%                    least contain the field:
 %
 %             num_classes: the number of classes
 %
-%         train_ind: a list of indices into indicating the training
-%                    nodes
+%         train_ind: a list of indices into A indicating the thus-far
+%                    observed nodes
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
-%          test_ind: a list of indices into A comprising the test
+%          test_ind: a list of indices into A indicating the test
 %                    nodes
 %                 A: a weighted adjacency matrix for the desired graph
 %                    containing transition probabilities. A should be
 %                    row-normalized.
 %
-% optional named arguments specified after requried inputs:
+% Optional name/value-pair arguments specified after requried inputs:
+%
 %      'num_iterations': the number of label propagation iterations to
 %                        perform (default: 200)
 %               'alpha': the absorbtion parameter to use in [0, 1]
@@ -40,12 +44,15 @@
 %         'pseudocount': if use_prior is set to true, a per-class
 %                        pseudocount can also be specified (default: 1)
 %
-% output:
+% Output:
+%
 %   probabilities: a matrix of posterior probabilities. The ith
 %                  column gives p(y = i | x, D) for each of the
 %                  indicated test points.
 %
-% See also models.
+% See also MODELS, GRAPH_WALK_SELECTOR.
+
+% Copyright (c) 2014 Roman Garnett.
 
 function probabilities = label_propagation_model(problem, train_ind, ...
           observed_labels, test_ind, A, varargin)
@@ -117,5 +124,3 @@ function probabilities = label_propagation_model(problem, train_ind, ...
 
   probabilities = probabilities(test_ind, :);
 end
-
-% Copyright (c) Roman Garnett, 2014

@@ -40,7 +40,7 @@
 %      label_oracle: a handle to a label oracle. which takes an index
 %                    into problem.points and returns a label
 %
-% Outputs:
+% Output:
 %
 %   probabilities: a matrix of posterior probabilities. The ith column
 %                  gives the posterior probabilities p(y = i | x, D)

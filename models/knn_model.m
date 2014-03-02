@@ -1,4 +1,4 @@
-% A binary weighted k-nn classifier.
+% KNN_MODEL binary weighted k-nn classifier.
 %
 % Assuming the problem has n points, and W is an (n x n) matrix of
 % pairwise weights, the probability of observing a "1" at y, given
@@ -11,20 +11,25 @@
 % specified hyperparameters, and S/F (for "successes"/"failures") are
 % defined as:
 %
-%   S = \sum_{x' \in D, y'   =  1} W(x, x'),
+%   S = \sum_{x' \in D, y'   =  1} W(x, x');
 %   F = \sum_{x' \in D, y' \neq 1} W(x, x').
 %
-% function probabilities = knn_model(problem, train_ind, observed_labels, ...
-%           test_ind, weights, prior_alpha, prior_beta)
+% Usage:
 %
-% inputs:
+%   probabilities = knn_model(problem, train_ind, observed_labels, ...
+%                             test_ind, weights, prior_alpha, prior_beta)
+%
+% Inputs:
+%
 %           problem: a struct describing the problem, containing the
 %                    field:
 %
 %              points: an (n x d) data matrix for the avilable points
 %
-%                    Note: this input is ignored by random_selector.
-%                    If desired, it can be replaced by an empty matrix.
+%                    Note: this input, part of the standard
+%                    probability model API, is ignored by
+%                    knn_model. If desired, for standalone use it can
+%                    be replaced by an empty matrix.
 %
 %         train_ind: a list of indices into problem.points indicating
 %                    the thus-far observed points
@@ -36,13 +41,16 @@
 %       prior_alpha: the prior value for \alpha
 %        prior_beta: the prior value for \beta
 %
-% outputs:
+% Output:
+%
 %   probabilities: a matrix of posterior probabilities. The first
 %                  column gives p(y = 1 | x, D) for each of the
 %                  indicated test points; the second column gives
 %                  p(y \neq 1 | x, D).
 %
-% See also models.
+% See also MODELS.
+
+% Copyright (c) 2011--2014 Roman Garnett.
 
 function probabilities = knn_model(~, train_ind, observed_labels, ...
           test_ind, weights, prior_alpha, prior_beta)
@@ -62,5 +70,3 @@ function probabilities = knn_model(~, train_ind, observed_labels, ...
   probabilities = [probabilities, (1 - probabilities)];
 
 end
-
-% Copyright (c) Roman Garnett, 2011--2014

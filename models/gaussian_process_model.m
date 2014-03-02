@@ -1,14 +1,18 @@
-% A binary Gaussian process classifier.
+% GP_MODEL a binary Gaussian process classifier.
 %
-% Requires the GPML toolkit available here:
+% This is an implementation of a Gaussian process (binary)
+% classifier. Requires the GPML toolkit available here:
 %
-% <a>http://www.gaussianprocess.org/gpml/code/matlab/doc</a>
+%    <a>http://www.gaussianprocess.org/gpml/code/matlab/doc</a>
 %
-% function probabilities = gaussian_process_model(problem, train_ind, ...
+% Usage:
+%
+%   probabilities = gaussian_process_model(problem, train_ind, ...
 %           observed_labels, test_ind, hyperparameters, inference_method, ...
 %           mean_function, covariance_function, likelihood)
 %
-% inputs:
+% Inputs:
+%
 %               problem: a struct describing the problem, which must
 %                        at least contain the field:
 %
@@ -27,19 +31,22 @@
 %   covariance_function: a GPML covariance function
 %            likelihood: a GPML likelihood
 %
-% output:
+% Output:
+%
 %   probabilities: a matrix of posterior probabilities. The first
 %                  column gives p(y = 1 | x, D) for each of the
 %                  indicated test points; the second column gives
 %                  p(y \neq 1 | x, D).
 %
-% See also models.
+% See also MODELS, GP.
+
+% Copyright (c) 2011--2014 Roman Garnett.
 
 function probabilities = gaussian_process_model(problem, train_ind, ...
           observed_labels, test_ind, hyperparameters, inference_method, ...
           mean_function, covariance_function, likelihood)
 
-  % transform labels to match what gpml expects
+  % transform labels to match what GPML expects
   observed_labels(observed_labels ~= 1) = -1;
 
   num_test = numel(test_ind);
@@ -50,8 +57,8 @@ function probabilities = gaussian_process_model(problem, train_ind, ...
           problem.points(test_ind, :), ones(num_test, 1));
 
   probabilities = exp(log_probabilities);
+
+  % return probabilities for "class 1" and "not class 1"
   probabilities = [probabilities, (1 - probabilities)];
 
 end
-
-% Copyright (c) Roman Garnett, 2011--2014
