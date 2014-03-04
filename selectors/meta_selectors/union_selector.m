@@ -8,6 +8,7 @@
 %   test_ind = union_selector(problem, train_ind, observed_labels, selectors)
 %
 % Inputs:
+%
 %           problem: a struct describing the problem, containing fields:
 %
 %                  points: an (n x d) data matrix for the available points
@@ -22,13 +23,14 @@
 %                    to combine
 %
 % Output:
+%
 %   test_ind: a list of indices into problem.points indicating the
 %             points to consider for labeling. Each index in test_ind
 %             was selected by at least one of the provided selectors.
 %
 % See also SELECTORS.
 
-% Copyright (c) Roman Garnett, 2014
+% Copyright (c) 2014 Roman Garnett.
 
 function test_ind = union_selector(problem, train_ind, observed_labels, ...
           selectors)

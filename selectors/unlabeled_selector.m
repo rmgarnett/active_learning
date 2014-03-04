@@ -1,10 +1,11 @@
-% UNLABELED_SELECTOR selects those points not yet observed.
+% UNLABELED_SELECTOR selects points not yet observed.
 %
 % Usage:
 %
 %   test_ind = unlabeled_selector(problem, train_ind, observed_labels)
 %
 % Inputs:
+%
 %           problem: a struct describing the problem, which must at
 %                    least contain the field:
 %
@@ -15,16 +16,19 @@
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
 %
-%                    Note: this input is ignored by unlabeled_selector.
-%                    If desired, it can be replaced by an empty matrix.
+%                    Note: this input, part of the standard selector
+%                    API, is ignored by unlabeled_selector. If
+%                    desired, for standalone use it can be replaced by
+%                    an empty matrix.
 %
 % Output:
+%
 %   test_ind: a list of indices into problem.points indicating the
 %             points to consider for labeling
 %
 % See also SELECTORS.
 
-% Copyright (c) Roman Garnett, 2013--2014
+% Copyright (c) 2013--2014 Roman Garnett.
 
 function test_ind = unlabeled_selector(problem, train_ind, ~)
 

@@ -9,22 +9,27 @@
 %   test_ind = graph_walk_selector(problem, train_ind, observed_labels, A)
 %
 % Inputs:
+%
 %           problem: a struct describing the problem, containing fields:
 %
 %                  points: an (n x d) data matrix for the available points
 %             num_classes: the number of classes
 %             num_queries: the number of queries to make
 %
-%                    Note: this input is ignored by graph_walk_selector.
-%                    If desired, it can be replaced by an empty matrix.
+%                    Note: this input, part of the standard selector
+%                    API, is ignored by graph_walk_selector. If
+%                    desired, for standalone use it can be replaced by
+%                    an empty matrix.
 %
 %         train_ind: a list of indices into problem.points indicating
 %                    the thus-far observed points
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
 %
-%                    Note: this input is ignored by graph_walk_selector.
-%                    If desired, it can be replaced by an empty matrix.
+%                    Note: this input, part of the standard selector
+%                    API, is ignored by graph_walk_selector. If
+%                    desired, for standalone use it can be replaced by
+%                    an empty matrix.
 %
 %                 A: the (n x n) adjacency matrix for the desired
 %                    graph. A nonzero entry for A(i, j) is interpreted
@@ -32,6 +37,7 @@
 %                    [i -> j].
 %
 % Output:
+%
 %   test_ind: a list of indices into problem.points indicating the
 %             points to consider for labeling. Each index in test_ind
 %             can be reached from the last observed point via an
@@ -39,7 +45,7 @@
 %
 % See also SELECTORS.
 
-% Copyright (c) Roman Garnett, 2013--2014
+% Copyright (c) 2013--2014 Roman Garnett.
 
 function test_ind = graph_walk_selector(~, train_ind, ~, A)
 
