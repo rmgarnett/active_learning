@@ -1,30 +1,43 @@
-% Convenience function for easily creating a function handle to a
-% label oracle. Given a handle to a label oracle and its additional
-% arguments (if any), returns a function handle for use in, e.g.,
-% active_learning.m.
+% GET_QUERY_STRATEGY creates a function handle to a query strategy.
+%
+% This is a convenience function for easily creating a function handle
+% to a query strategy. Given a handle to a query strategy and its
+% additional arguments (if any), returns a function handle for use in,
+% e.g., active_learning.m.
 %
 % Example:
 %
-%   label_oracle = get_label_oracle(@lookup_oracle, labels);
+%   query_strategy = get_query_strategy(@maximum_score, score_function);
 %
 % returns the following function handle:
 %
-%   @(problem, query_ind) lookup_oracle(problem, query_ind, labels)
+%   @(problem, train_ind, observed_labels, test_ind) ...
+%       maximum_score(problem, train_ind, observed_labels,
+%                     test_ind, score_function)
 %
 % This is primarily for improving code readability by avoiding
 % repeated verbose function handle declarations.
 %
-% inputs:
-%   label_oracle: a function handle to the desired label oracle
-%       varargin: any additional inputs to be bound to the label
-%                 oracle beyond those required by the standard
-%                 interface (problem, query_ind)
+% Usage:
 %
-% output:
-%   label_oracle: a function handle to the desired label oracle for
-%                 use in active_learning
+%   query_strategy = get_query_strategy(query_strategy, varargin)
 %
-% Copyright (c) Roman Garnett 2013--2014
+% Inputs:
+%
+%   query_strategy: a function handle to the desired query strategy
+%         varargin: any additional inputs to be bound to the query
+%                   strategy beyond those required by the standard
+%                   interface (problem, train_ind, observed_labels,
+%                   test_ind)
+%
+% Output:
+%
+%   query_strategy: a function handle to the desired query strategy
+%                   for use in active_learning
+%
+% See also QUERY_STRATEGIES.
+
+% Copyright (c) 2013--2014 Roman Garnett.
 
 function query_strategy = get_query_strategy(query_strategy, varargin)
 

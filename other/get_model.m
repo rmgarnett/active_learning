@@ -1,30 +1,42 @@
-% Convenience function for easily creating a function handle to a
-% label oracle. Given a handle to a label oracle and its additional
-% arguments (if any), returns a function handle for use in, e.g.,
+% GET_MODEL creates a function handle to a probability model.
+%
+% This is a convenience function for easily creating a function handle
+% to a model. Given a handle to a model and its additional arguments
+% (if any), returns a function handle for use in, e.g.,
 % active_learning.m.
 %
 % Example:
 %
-%   label_oracle = get_label_oracle(@lookup_oracle, labels);
+%   model = get_model(@knn_model, weights, prior_alpha, prior_beta);
 %
 % returns the following function handle:
 %
-%   @(problem, query_ind) lookup_oracle(problem, query_ind, labels)
+%   @(problem, train_ind, observed_labels, test_ind) ...
+%       knn_model(problem, train_ind, observed_labels, test_ind, ...
+%                 weights, prior_alpha, prior_beta)
 %
 % This is primarily for improving code readability by avoiding
 % repeated verbose function handle declarations.
 %
-% inputs:
-%   label_oracle: a function handle to the desired label oracle
-%       varargin: any additional inputs to be bound to the label
-%                 oracle beyond those required by the standard
-%                 interface (problem, query_ind)
+% Usage:
 %
-% output:
-%   label_oracle: a function handle to the desired label oracle for
-%                 use in active_learning
+%   model = get_model(model, varargin)
 %
-% Copyright (c) Roman Garnett 2013--2014
+% Inputs:
+%
+%      model: a function handle to the desired model
+%   varargin: any additional inputs to be bound to the model beyond
+%             those required by the standard interface (problem,
+%             train_ind, observed_labels, test_ind)
+%
+% Output:
+%
+%   model: a function handle to the desired model for use in
+%          active_learning
+%
+% See also MODELS.
+
+% Copyright (c) 2013--2014 Roman Garnett.
 
 function model = get_model(model, varargin)
 
