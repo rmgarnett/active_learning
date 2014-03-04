@@ -1,7 +1,7 @@
 % LOOKUP_ORACLE trivial lookup-table oracle with fixed labels.
 %
 % This provides a trivial lookup-table label oracle. Given a query
-% point, returns the corresponding label fromn a given list of fixed
+% point, returns the corresponding label from a given list of fixed
 % ground truth labels.
 %
 % Usage:
@@ -10,13 +10,14 @@
 %
 % Inputs:
 %
-%     problem: a struct describing the problem, containing the field:
+%     problem: a struct describing the problem, containing the fields:
 %
-%        points: an (n x d) data matrix for the available points
+%            points: an (n x d) data matrix for the available points
+%       num_classes: the number of classes%
 %
 %              Note: this input, part of the standard label oracle
 %              API, is ignored by lookup_oracle. If desired, for
-%              standalone use it can be replaced with an empty matrix.
+%              standalone use it can be replaced by an empty matrix.
 %
 %   query_ind: an index into problem.points specifying the point to be
 %              queried

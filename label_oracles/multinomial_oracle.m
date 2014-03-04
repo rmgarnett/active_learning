@@ -1,7 +1,7 @@
 % MULTINOMIAL_ORACLE multinomial oracle with given probabilities.
 %
-% This provides a label orcale that, conditioned on the queried point,
-% samples labels indepdendently from a multinomial with given marginal
+% This provides a label oracle that, conditioned on the queried point,
+% samples labels independently from a multinomial with given marginal
 % probabilities.
 %
 % Usage:

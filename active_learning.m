@@ -4,7 +4,8 @@
 % using a given query strategy. An active-learning experiment is
 % simulated following the following procedure:
 %
-%   Given: initially labeled points x, corresponding labels y,
+%   Given: initially labeled points x,
+%          corresponding labels y,
 %          budget B
 %
 %   for i = 1:B
@@ -18,8 +19,8 @@
 %     y_star = label_oracle(x_star)
 %
 %     % add observation to training set
-%     x = [x x_star];
-%     y = [y y_star];
+%     x = [x, x_star]
+%     y = [y, y_star]
 %   end
 %
 % This function supports user-specified:
@@ -49,6 +50,7 @@
 %                       selector, query_strategy, callback)
 %
 % Inputs:
+%
 %           problem: a struct describing the problem, containing fields:
 %
 %                  points: an (n x d) data matrix for the available points
@@ -76,6 +78,7 @@
 %                    and anything returned will be ignored.
 %
 % Outputs:
+%
 %      chosen_ind: a list of indices of the chosen datapoints, in order
 %   chosen_labels: a list of the corresponding observed labels
 %

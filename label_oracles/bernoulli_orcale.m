@@ -1,7 +1,7 @@
 % BERNOULLI_ORACLE Bernoulli oracle with given success probabilities.
 %
-% This provides a label orcale that, conditioned on the queried point,
-% samples labels indepdendently from a Bernoulli with given success
+% This provides a label oracle that, conditioned on the queried point,
+% samples labels independently from a Bernoulli with given success
 % probability. Here membership to class 1 is treated as "success."
 %
 % Usage:

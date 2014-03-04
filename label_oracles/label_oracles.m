@@ -27,11 +27,11 @@
 %
 %        lookup_oracle: a trivial lookup-table label oracle given a
 %                       fixed list of ground-truth labels
-%     bernoulli_oracle: a lable oracle that, conditioned on the
+%     bernoulli_oracle: a label oracle that, conditioned on the
 %                       queried point, samples labels independently
 %                       from a Bernoulli distribution with given
 %                       success probability
-%   multinomial_oracle: a lable oracle that, conditioned on the
+%   multinomial_oracle: a label oracle that, conditioned on the
 %                       queried point, samples labels independently
 %                       from a multinomial distribution with given
 %                       success probabilities
