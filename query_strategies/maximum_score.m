@@ -3,16 +3,17 @@
 % This is a trivial query strategy that calls a user-provided score
 % function on each of the points available for labeling and selects
 % the point with the maximum score.
-
+%
 % Several popular score functions are included in this software
 % package, see score_functions.m for more information.
 %
 % Usage:
 %
-% query_ind = maximum_score(problem, train_ind, observed_labels, ...
-%                           test_ind, score_function)
+%   query_ind = maximum_score(problem, train_ind, observed_labels, ...
+%                             test_ind, score_function)
 %
 % Inputs:
+%
 %           problem: a struct describing the problem, containing fields:
 %
 %                  points: an (n x d) data matrix for the available points
@@ -29,12 +30,13 @@
 %                    score_functions.m for interface)
 %
 % Output:
+%
 %   query_ind: an index into test_ind indicating the point to query
 %              next.
 %
 % See also: QUERY_STRATEGIES, SCORE_FUNCTIONS, UNCERTAINTY_SAMPLING.
 
-% Copyright (C) Roman Garnett, 2013--2014
+% Copyright (c) 2013--2014 Roman Garnett.
 
 function query_ind = maximum_score(problem, train_ind, observed_labels, ...
           test_ind, score_function)
