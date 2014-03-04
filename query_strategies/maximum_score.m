@@ -1,4 +1,4 @@
-% MAXIMUM_SCORE queries the point that maximizes a provided score function.
+% MAXIMUM_SCORE queries the point that maximizes a score function.
 %
 % This is a trivial query strategy that calls a user-provided score
 % function on each of the points available for labeling and selects
@@ -34,7 +34,7 @@
 %   query_ind: an index into test_ind indicating the point to query
 %              next.
 %
-% See also: QUERY_STRATEGIES, SCORE_FUNCTIONS, UNCERTAINTY_SAMPLING.
+% See also QUERY_STRATEGIES, SCORE_FUNCTIONS, UNCERTAINTY_SAMPLING.
 
 % Copyright (c) 2013--2014 Roman Garnett.
 
