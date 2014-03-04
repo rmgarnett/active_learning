@@ -32,7 +32,7 @@
 %
 % See also TREEBAGGER, MODELS.
 
-% Copyright (c) Roman Garnett, 2011--2014
+% Copyright (c) 2011--2014 Roman Garnett.
 
 function probabilities = random_forest_model(problem, train_ind, ...
           observed_labels, test_ind, num_trees, options)

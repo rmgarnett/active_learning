@@ -1,4 +1,4 @@
-% KNN_MODEL binary weighted k-nn classifier.
+% KNN_MODEL binary weighted k-NN classifier.
 %
 % Assuming the problem has n points, and W is an (n x n) matrix of
 % pairwise weights, the probability of observing a "1" at y, given

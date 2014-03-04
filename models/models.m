@@ -1,21 +1,39 @@
-% a probability function calculates the posterior probabilites for a
+% A model calculates the posterior class-membership probabilites for a
 % selected set of test points given the current labeled training
-% data. probability functions have the interface:
+% data.
 %
-% probabilities = ...
-%     probability_function(data, labels, train_ind, test_ind)
+% Models must satisfy the following interface:
 %
-% inputs:
-%        data: an (n x d) matrix of input data
-%      labels: an (n x 1) vector of labels
-%   train_ind: a list of indices into data/labels indicating the
-%              training points
-%    test_ind: a list of indices into data/labels indicating the
-%              test points
+%   probabilities = ...
+%       probability_function(problem, train_ind, observed_labels, test_ind)
 %
-% outputs:
-%   probabilites: a matrix of posterior probabilities.  the kth column
-%                 gives the posterior probabilities p(y = k | x, D)
-%                 for reach of the indicated test points
+% Inputs:
 %
-% copyright (c) roman garnett, 2011--2012
+%           problem: a struct describing the problem, containing fields:
+%
+%                  points: an (n x d) data matrix for the available points
+%             num_classes: the number of classes
+%
+%         train_ind: a list of indices into problem.points indicating
+%                    the thus-far observed points
+%   observed_labels: a list of labels corresponding to the
+%                    observations in train_ind
+%          test_ind: a list of indices into problem.points
+%                    indicating the test points
+%
+% Output:
+%
+%   probabilities: a matrix of posterior probabilities. The ith
+%                  column gives p(y = i | x, D) for each of the
+%                  indicated test points.
+%
+% The following models are provided in this toolbox:
+%
+%            cheating_model: a "cheating" model that queries a
+%                            label oracle
+%    gaussian_process_model: a binary Gaussian process classifier
+%                 knn_model: a weighted k-NN model
+%   label_propagation_model: partially absorbing label propagation
+%       random_forest_model: a random forest model
+
+% Copyright (c) 2011--2014 Roman Garnett.
