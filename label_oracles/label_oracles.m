@@ -9,7 +9,7 @@
 %
 % Inputs:
 %
-%     problem: a struct describing the problem, containing the fields:
+%     problem: a struct describing the problem, containing fields:
 %
 %            points: an (n x d) data matrix for the available points
 %       num_classes: the number of classes
