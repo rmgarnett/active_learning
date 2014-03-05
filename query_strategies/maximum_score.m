@@ -5,7 +5,7 @@
 % the point with the maximum score.
 %
 % Several popular score functions are included in this software
-% package, see score_functions.m for more information.
+% package; see score_functions.m for more information.
 %
 % Usage:
 %
@@ -34,7 +34,7 @@
 %   query_ind: an index into test_ind indicating the point to query
 %              next.
 %
-% See also QUERY_STRATEGIES, SCORE_FUNCTIONS, UNCERTAINTY_SAMPLING.
+% See also SCORE_FUNCTIONS, QUERY_STRATEGIES.
 
 % Copyright (c) 2013--2014 Roman Garnett.
 
