@@ -1,18 +1,31 @@
-% KNN_MODEL binary weighted k-NN classifier.
+% KNN_MODEL weighted k-NN classifier.
 %
-% Assuming the problem has n points, and W is an (n x n) matrix of
-% pairwise weights, the probability of observing a "1" at y, given
-% observations D = {(x, y)} is given by:
+% Suppose the problem has n points, and W is an (n x n) matrix of
+% pairwise weights. We assume the marginal label distribution at a
+% point x is a categorical distribution with probability vector p(x):
 %
-%   p(y = 1 | x, D, \alpha, \beta) = ...
-%                            E[ Beta(\alpha + S, \beta + F) ],
+%   p(y | x) = Categorical(p(x)).
 %
-% where Beta(., .) is the beta distribution, \alpha and \beta are
-% specified hyperparameters, and S/F (for "successes"/"failures") are
-% defined as:
+% We place identical Dirichlet priors on the p(x) vectors with
+% hyperparameter vector \alpha:
 %
-%   S = \sum_{x' \in D, y'   =  1} W(x, x');
-%   F = \sum_{x' \in D, y' \neq 1} W(x, x').
+%   p(p(x) | x, \alpha) = Dirichlet(\alpha).
+%
+% Finally, given observations D = {(X, Y)} and a point x, we update
+% the posterior probability vector p(x) by accumulating weighted
+% counts of the observations near x (where "near" is defined by the
+% weight matrix W):
+%
+%   p(p(x) | x, D, \alpha) = Dirichlet(\alpha + C(x)),
+%
+% where
+%
+%   C_i(x) = \sum_{x' \in D, y' = i} W(x, x').
+%
+% Now, given x and D, we output the Categorical distribution with
+% the posterior mean of p(x) given D:
+%
+%   p(y | x, D, \alpha) = Categorical( E[p(x) | x, D, \alpha] ).
 %
 % Usage:
 %
@@ -22,14 +35,10 @@
 % Inputs:
 %
 %           problem: a struct describing the problem, containing the
-%                    field:
+%                    fields:
 %
-%              points: an (n x d) data matrix for the avilable points
-%
-%                    Note: this input, part of the standard
-%                    probability model API, is ignored by
-%                    knn_model. If desired, for standalone use it can
-%                    be replaced by an empty matrix.
+%                  points: an (n x d) data matrix for the avilable points
+%             num_classes: the number of classes
 %
 %         train_ind: a list of indices into problem.points indicating
 %                    the thus-far observed points
@@ -38,35 +47,32 @@
 %          test_ind: a list of indices into problem.points indicating
 %                    the test points
 %           weights: an (n x n) matrix of weights
-%       prior_alpha: the prior value for \alpha
-%        prior_beta: the prior value for \beta
+%             alpha: the hyperparameter vector \alpha
+%                    (1 x problem.num_classes)
 %
 % Output:
 %
-%   probabilities: a matrix of posterior probabilities. The first
-%                  column gives p(y = 1 | x, D) for each of the
-%                  indicated test points; the second column gives
-%                  p(y \neq 1 | x, D).
+%   probabilities: a matrix of posterior probabilities. The ith
+%                  column gives p(y = i | x, D) for each of the
+%                  indicated test points.
 %
 % See also MODELS.
 
 % Copyright (c) 2011--2014 Roman Garnett.
 
-function probabilities = knn_model(~, train_ind, observed_labels, ...
-          test_ind, weights, prior_alpha, prior_beta)
+function probabilities = knn_model(problem, train_ind, observed_labels, ...
+          test_ind, weights, alpha)
 
-  % transform observed_labels to handle multi-class
-  positive_ind = (observed_labels == 1);
+  num_test = numel(test_ind);
+  probabilities = zeros(num_test, problem.num_classes);
 
-  successes = sum(weights(test_ind, train_ind( positive_ind)), 2);
-  failures  = sum(weights(test_ind, train_ind(~positive_ind)), 2);
+  % accumulate weighted number of successes for each class
+  for i = 1:problem.num_classes
+    probabilities(:, i) = alpha(i) + ...
+        sum(weights(test_ind, train_ind(observed_labels == i)), 2);
+  end
 
-  alpha = (prior_alpha + successes);
-  beta  = (prior_beta  + failures);
-
-  probabilities = alpha ./ (alpha + beta);
-
-  % return probabilities for "class 1" and "not class 1"
-  probabilities = [probabilities, (1 - probabilities)];
+  % normalize probabilities
+  probabilities = bsxfun(@times, probabilities, 1 ./ sum(probabilities, 2));
 
 end
