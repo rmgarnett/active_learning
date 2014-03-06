@@ -28,13 +28,13 @@
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
 %          test_ind: a list of indices into problem.points indicating
-%                    the test points
+%                    the points eligible for observation
 %             model: a function handle to a probability model
 %
 % Output:
 %
 %   query_ind: an index into test_ind indicating the point to query
-%              next.
+%              next
 %
 % See also MODELS, MARGINAL_ENTROPY, QUERY_STRATEGIES.
 
@@ -44,6 +44,7 @@ function query_ind = uncertainty_sampling(problem, train_ind, ...
           observed_labels, test_ind, model)
 
   score_function = get_score_function(@marginal_entropy, model);
+
   query_ind = argmax(problem, train_ind, observed_labels, test_ind, ...
                      score_function);
 
