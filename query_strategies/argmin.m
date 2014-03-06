@@ -25,14 +25,14 @@
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
 %          test_ind: a list of indices into problem.points indicating
-%                    the test points
+%                    the points eligible for observation
 %    score_function: a handle to a score function (see
 %                    score_functions.m for interface)
 %
 % Output:
 %
-%   query_ind: an index into test_ind indicating the point to query
-%              next.
+%   query_ind: an index into problem.points indicating the point to
+%              query next
 %
 % See also ARGMAX, SCORE_FUNCTIONS, QUERY_STRATEGIES.
 
