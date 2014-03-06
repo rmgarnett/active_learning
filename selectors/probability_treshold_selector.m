@@ -12,17 +12,17 @@
 % Inputs:
 %           problem: a struct describing the problem, containing fields:
 %
-%                   points: an n x d matrix describing the avilable points
-%              num_classes: the number of classes
-%              num_queries: the number of queries to make
+%                  points: an (n x d) data matrix for the available points
+%             num_classes: the number of classes
 %
 %         train_ind: a list of indices into problem.points
 %                    indicating the thus-far observed points
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
-%       probability: a handle to a probability
+%             model: a handle to a probability model
 %
 % Output:
+%
 %   test_ind: a list of indices into problem.points indicating the
 %             points to consider for labeling. Each index in test_ind
 %             has at least one class-membership probability greater
@@ -30,12 +30,12 @@
 %
 % See also SELECTORS, MODELS.
 
-% Copyright (c) Roman Garnett, 2011--2014
+% Copyright (c) 2011--2014 Roman Garnett.
 
 function test_ind = probability_treshold_selector(problem, ...
           train_ind, observed_labels, probability, threshold)
 
-  test_ind = (1:size(problem.points, 1))';
+  test_ind = identity_selector(problem, [], []);
 
   probabilities = probability(problem, train_ind, observed_labels, test_ind);
 
