@@ -36,7 +36,7 @@
 
 % Copyright (c) 2011--2014 Roman Garnett.
 
-function test_ind = identity_selector(problem)
+function test_ind = identity_selector(problem, ~, ~)
 
   test_ind = (1:size(problem.points, 1))';
 

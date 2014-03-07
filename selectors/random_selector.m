@@ -12,7 +12,8 @@
 %
 %              points: an (n x d) data matrix for the avilable points
 %
-%   num_test: the number of test points to select
+%         train_ind: a list of indices into problem.points indicating
+%                    the thus-far observed points
 %
 %                    Note: this input, part of the standard selector
 %                    API, is ignored by random_selector. If desired,
@@ -38,7 +39,7 @@
 
 % Copyright (c) 2011--2014 Roman Garnett.
 
-function test_ind = random_selector(problem, num_test)
+function test_ind = random_selector(problem, ~, ~, num_test)
 
   test_ind = randperm(size(problem.points, 1), num_test);
 
