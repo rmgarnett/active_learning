@@ -15,8 +15,8 @@
 %                  points: an (n x d) data matrix for the available points
 %             num_classes: the number of classes
 %
-%         train_ind: a list of indices into problem.points
-%                    indicating the thus-far observed points
+%         train_ind: a list of indices into problem.points indicating
+%                    the thus-far observed points
 %   observed_labels: a list of labels corresponding to the
 %                    observations in train_ind
 %             model: a handle to a probability model
@@ -32,12 +32,12 @@
 
 % Copyright (c) 2011--2014 Roman Garnett.
 
-function test_ind = probability_treshold_selector(problem, ...
-          train_ind, observed_labels, probability, threshold)
+function test_ind = probability_treshold_selector(problem, train_ind, ...
+          observed_labels, model, threshold)
 
   test_ind = identity_selector(problem, [], []);
 
-  probabilities = probability(problem, train_ind, observed_labels, test_ind);
+  probabilities = model(problem, train_ind, observed_labels, test_ind);
 
   test_ind = find(any(probabilities >= threshold), 2);
 
