@@ -33,7 +33,7 @@
 %   scores: a vector of marginal entropies for each point specified by
 %           test_ind
 %
-% See also: SCORE_FUNCTIONS, MODELS, UNCERTAINTY_SAMPLING.
+% See also SCORE_FUNCTIONS, MODELS, UNCERTAINTY_SAMPLING.
 
 % Copyright (c) 2013--2014 Roman Garnett.
 

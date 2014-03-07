@@ -35,7 +35,7 @@
 %
 %   scores: a vector of margins for each point specified by test_ind
 %
-% See also: SCORE_FUNCTIONS, MODELS, MARGIN_SAMPLING.
+% See also SCORE_FUNCTIONS, MODELS, MARGIN_SAMPLING.
 
 % Copyright (c) 2014 Roman Garnett.
 

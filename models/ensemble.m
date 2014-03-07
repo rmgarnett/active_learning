@@ -70,7 +70,7 @@
 % and must return a length-|M| vector of weights corresponding to the
 % models in models.
 %
-% See also: MODELS, QUERY_BY_COMMITTEE.
+% See also MODELS, QUERY_BY_COMMITTEE.
 
 % Copyright (c) 2014 Roman Garnett.
 
