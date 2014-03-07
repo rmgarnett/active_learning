@@ -1,20 +1,20 @@
-Active Learning Toolkit for MATLAB
+Active Learning Toolbox for MATLAB
 ==================================
 
-This software package provides a toolkit for testing pool-based
+This software package provides a toolbox for testing pool-based
 active-learning algorithms in MATLAB.
 
 Active Learning
 ---------------
 
-Specifically, we consider the
-following scenario. There is a pool of datapoints ![X][1]. We may
-successively select a point ![x in X][2] to observe. Each observation
-reveals a discrete, integer-valued label ![y in L][3] for
-![x][4]. This labeling process might be nondeterministic; we might
-choose the same point ![x][4] twice and observe different labels each
-time. In active learning, we typically assume we have a budget ![B][5]
-that limits the number of points we may observe.
+Specifically, we consider the following scenario. There is a pool of
+datapoints ![X][1]. We may successively select a point ![x in X][2] to
+observe. Each observation reveals a discrete, integer-valued label
+![y in L][3] for ![x][4]. This labeling process might be
+nondeterministic; we might choose the same point ![x][4] twice and
+observe different labels each time. In active learning, we typically
+assume we have a budget ![B][5] that limits the number of points we
+may observe.
 
 Our goal is to iteratively build a set of observations
 
@@ -51,10 +51,10 @@ Of course, there are countless goals besides minimizing generalization
 error and numerous other strategies besides the highly myopic
 uncertainty sampling. Indeed, many active learning scenerios might not
 involve probability models at all. Providing a highly adaptable and
-extensible toolkit for conducting arbitrary pool-based active learning
+extensible toolbox for conducting arbitrary pool-based active learning
 experiments is the goal of this project.
 
-Using this Toolkit
+Using this Toolbox
 ------------------
 
 The most-important function is `active_learning`, which simulates an
@@ -105,7 +105,7 @@ statistics such as test error online.
 Selectors
 ---------
 
-A `selector` considers the current labeled dataset and indicates which
+A _selector_ considers the current labeled dataset and indicates which
 of the unlabeled points should be considered for observation at this
 time.
 
