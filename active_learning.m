@@ -88,7 +88,7 @@
 
 function [chosen_ind, chosen_labels] = ...
       active_learning(problem, train_ind, observed_labels, label_oracle, ...
-                      selector, query_strategy)
+                      selector, query_strategy, callback)
 
   % set verbose to false if not defined
   verbose = isfield(problem, 'verbose') && problem.verbose;
