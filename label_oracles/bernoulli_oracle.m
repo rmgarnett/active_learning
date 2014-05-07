@@ -1,6 +1,6 @@
 % BERNOULLI_ORACLE Bernoulli oracle with given success probabilities.
 %
-% This provides a label oracle that, conditioned on the queried point,
+% This provides a label oracle that, conditioned on queried point(s),
 % samples labels independently from a Bernoulli with given success
 % probability. Here membership to class 1 is treated as "success."
 %
@@ -20,15 +20,15 @@
 %                  for standalone use it can be replaced by an empty
 %                  matrix.
 %
-%       query_ind: an index into problem.points specifying the point
-%                  to be queried
+%       query_ind: an index into problem.points specifying the
+%                  point(s) to be queried
 %   probabilities: a length-n vector of success probabilities
 %                  corresponding to the points in problem.points
 %
 % Output:
 %
-%   label: an integer between 1 and problem.num_classes indicating the
-%          observed label
+%   label: a list of integers between 1 and problem.num_classes
+%          indicating the observed label(s)
 %
 % See also LABEL_ORACLES, MULTINOMIAL_ORACLE.
 
@@ -36,6 +36,6 @@
 
 function label = bernoulli_oracle(~, query_ind, probabilities)
 
-  label = 1 + (rand > probabilities(query_ind));
+  label = 1 + (rand(size(query_ind(:))) > probabilities(query_ind));
 
 end

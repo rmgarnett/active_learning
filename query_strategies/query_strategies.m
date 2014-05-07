@@ -22,15 +22,15 @@
 %
 % Output:
 %
-%   query_ind: an index into problem.points indicating the point to
-%              query next (query_ind will always be a member of the
-%              set point points in test_ind)
+%   query_ind: an index into problem.points indicating the point(s) to
+%              query next (every entry in query_ind will always be
+%              a member of the set of points in test_ind)
 %
 % The following query strategies are provided in this toolbox:
 %
-%                     argmax: samples the point maximizing a given
+%                     argmax: samples the point(s) maximizing a given
 %                             score function
-%                     argmin: samples the point minimizing a given
+%                     argmin: samples the point(s) minimizing a given
 %                             score function
 %   expected_error_reduction: samples the point giving lowest
 %                             expected loss on unlabeled points

@@ -1,8 +1,8 @@
-% ARGMIN queries the point that minimizes a score function.
+% ARGMIN queries the point(s) that minimizes a score function.
 %
 % This is a trivial query strategy that calls a user-provided score
 % function on each of the points available for labeling and selects
-% the point with the minimum score.
+% the point(s) with the minimum score.
 %
 % Several popular score functions are included in this software
 % package; see score_functions.m for more information.
@@ -10,7 +10,7 @@
 % Usage:
 %
 %   query_ind = argmin(problem, train_ind, observed_labels, test_ind, ...
-%                      score_function)
+%                      score_function, num_points)
 %
 % Inputs:
 %
@@ -28,10 +28,12 @@
 %                    the points eligible for observation
 %    score_function: a handle to a score function (see
 %                    score_functions.m for interface)
+%        num_points: (optional) the number of points to return
+%                    (default: 1)
 %
 % Output:
 %
-%   query_ind: an index into problem.points indicating the point to
+%   query_ind: an index into problem.points indicating the point(s) to
 %              query next
 %
 % See also ARGMAX, SCORE_FUNCTIONS, QUERY_STRATEGIES.
@@ -39,11 +41,23 @@
 % Copyright (c) 2014 Roman Garnett.
 
 function query_ind = argmin(problem, train_ind, observed_labels, ...
-          test_ind, score_function)
+          test_ind, score_function, num_points)
+
+  % by default query a single point
+  if (nargin < 6)
+    num_points = 1;
+  end
 
   scores = score_function(problem, train_ind, observed_labels, test_ind);
 
-  [~, best_ind] = min(scores);
+  % only call sort if needed
+  if (num_points == 1)
+    [~, best_ind] = min(scores);
+  else
+    [~, best_ind] = sort(scores, 'ascend');
+    best_ind = best_ind(1:num_points);
+  end
+
   query_ind = test_ind(best_ind);
 
 end

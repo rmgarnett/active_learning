@@ -8,13 +8,13 @@ Active Learning
 ---------------
 
 Specifically, we consider the following scenario. There is a pool of
-datapoints ![X][1]. We may successively select a point ![x in X][2] to
-observe. Each observation reveals a discrete, integer-valued label
-![y in L][3] for ![x][4]. This labeling process might be
-nondeterministic; we might choose the same point ![x][4] twice and
-observe different labels each time. In active learning, we typically
-assume we have a budget ![B][5] that limits the number of points we
-may observe.
+datapoints ![X][1]. We may successively select a set of points
+![x in X][2] to observe. Each observation reveals a discrete,
+integer-valued label ![y in L][3] for ![x][4]. This labeling process
+might be nondeterministic; we might choose the same point ![x][4]
+twice and observe different labels each time. In active learning, we
+typically assume we have a budget ![B][5] that limits the number of
+points we may observe.
 
 Our goal is to iteratively build a set of observations
 
@@ -68,13 +68,13 @@ active learning experiment using the following procedure:
       % find points available for labeling
       eligible_points = selector(x, y)
 
-      % decide on point to observe
+      % decide on point(s) to observe
       x_star = query_strategy(x, y, eligible_points)
 
-      % observe point
+      % observe point(s)
       y_star = label_oracle(x_star)
 
-      % add observation to training set
+      % add observation(s) to training set
       X = [X, x_star]
       Y = [Y, y_star]
     end
@@ -86,13 +86,15 @@ The implementation supports user-specified:
   and available implementations.
 
 * _Query strategies,_ which given a training set and the selected
-  eligible points, decides which point to observe next. See
-  `query_strategies.m` for usage and available implementations.
+  eligible points, decides which point(s) to observe next. Note that a
+  query strategy can return multiple points, allowing for batch
+  observations. See `query_strategies.m` for usage and available
+  implementations.
 
-* _Label oracles,_ which given a point, return a corresponding
-  label. Label oracles may optionally be nondeterministic (see, for
-  example, `bernoulli_oracle`). See `label_oracles.m` for usage and
-  available implementations.
+* _Label oracles,_ which given a set of points, return a set of
+  corresponding labels. Label oracles may optionally be
+  nondeterministic (see, for example, `bernoulli_oracle`). See
+  `label_oracles.m` for usage and available implementations.
 
 Each of these are provided as function handles satisfying a desired
 API, described below.
@@ -177,14 +179,14 @@ Query strategies must satisfy the following interface:
 
 ### Output: ###
 
-* `query_ind`: an index into `problem.points` indicating the point to
-   query next (`query_ind` will always be a member of the set point
-   points in `test_ind`)
+* `query_ind`: an index into `problem.points` indicating the point(s)
+   to query next (every entry in `query_ind` will always be a member
+   of the set of points in `test_ind`)
 
 The following query strategies are provided in this toolbox:
 
-* `argmax`: samples the point maximizing a given score function
-* `argmin`: samples the point minimizing a given score function
+* `argmax`: samples the point(s) maximizing a given score function
+* `argmin`: samples the point(s) minimizing a given score function
 * `expected_error_reduction`: samples the point giving lowest
    expected loss on unlabeled points
 * `margin_sampling`: samples the point with the smallest margin
@@ -195,14 +197,14 @@ The following query strategies are provided in this toolbox:
 Label Oracles
 -------------
 
-_Label oracles_ are functions that, given a point chosen to be
-queried, returns a corresponding label. In general, they need not be
-deterministic, which is especially interesting when points can be
-queried multiple times.
+_Label oracles_ are functions that, given a set of points chosen to be
+queried, returns a set of corresponding labels. In general, they need
+not be deterministic, which is especially interesting when points can
+be queried multiple times.
 
 Label oracles must satisfy the following interface:
 
-    label = label_oracle(problem, query_ind, labels)
+    label = label_oracle(problem, query_ind)
 
 ### Inputs: ###
 
@@ -211,13 +213,13 @@ Label oracles must satisfy the following interface:
   *      `points`: an ![(n x d)][13] data matrix for the available points
   * `num_classes`: the number of classes
 
-* `query_ind`: an index into `problem.points` specifying the point to be
+* `query_ind`: an index into `problem.points` specifying the point(s) to be
    queried
 
 ### Output: ###
 
-* `label`: an integer between 1 and `problem.num_classes` indicating the
-   observed label
+* `label`: a list of integers between 1 and `problem.num_classes`
+   indicating the observed label(s)
 
 The following general-purpose label oracles are provided in this
 toolbox:
@@ -225,10 +227,10 @@ toolbox:
 * `lookup_oracle`: a trivial lookup-table label oracle given a fixed
    list of ground-truth labels
 * `bernoulli_oracle`: a label oracle that, conditioned on the queried
-   point, samples labels independently from a Bernoulli distribution
+   point(s), samples labels independently from a Bernoulli distribution
    with given success probability
 * `multinomial_oracle`: a label oracle that, conditioned on the
-   queried point, samples labels independently from a multinomial
+   queried point(s), samples labels independently from a multinomial
    distribution with given success probabilities
 
 [1]: http://latex.codecogs.com/svg.latex?%5Cmathcal%7BX%7D

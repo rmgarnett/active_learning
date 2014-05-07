@@ -12,13 +12,13 @@
 %     % find points available for labeling
 %     eligible_points = selector(x, y)
 %
-%     % decide on point to observe
+%     % decide on point(s) to observe
 %     x_star = query_strategy(x, y, eligible_points)
 %
-%     % observe point
+%     % observe point(s)
 %     y_star = label_oracle(x_star)
 %
-%     % add observation to training set
+%     % add observation(s) to training set
 %     x = [x, x_star]
 %     y = [y, y_star]
 %   end
@@ -29,14 +29,16 @@
 %   points currently eligible for labeling. See selectors.m for usage
 %   and available implementations.
 %
-% * _Label oracles,_ which given a point, return a corresponding
-%   label. Label oracles may optionally be nondeterministic (see, for
-%   example, bernoulli_oracle). See label_oracles.m for usage and
-%   available implementations.
-%
 % * _Query strategies,_ which given a training set and the selected
-%   eligible points, decides which point to observe next. See
-%   query_strategies.m for usage and available implementations.
+%   eligible points, decides which point(s) to observe next. Note that
+%   a query strategy can return multiple points, allowing for batch
+%   observations. See query_strategies.m for usage and available
+%   implementations.
+%
+% * _Label oracles,_ which given a set of points, return a set of
+%   corresponding labels. Label oracles may optionally be
+%   nondeterministic (see, for example, bernoulli_oracle). See
+%   label_oracles.m for usage and available implementations.
 %
 % This function also supports arbitrary user-specified callbacks
 % called after each round of the experiment. This can be useful, for
@@ -93,8 +95,8 @@ function [chosen_ind, chosen_labels] = ...
   % set verbose to false if not defined
   verbose = isfield(problem, 'verbose') && problem.verbose;
 
-  chosen_ind    = zeros(problem.num_queries, 1);
-  chosen_labels = zeros(problem.num_queries, 1);
+  chosen_ind    = [];
+  chosen_labels = [];
 
   for i = 1:problem.num_queries
     if (verbose)
@@ -117,24 +119,32 @@ function [chosen_ind, chosen_labels] = ...
               ['after %i steps, no points were selected. ' ...
                'Ending run early!'], i);
 
-      chosen_ind    = chosen_ind(1:(i - 1));
-      chosen_labels = chosen_labels(1:(i - 1));
       return;
     end
 
-    % select location of next observation from the given list
-    chosen_ind(i) = query_strategy(problem, train_ind, observed_labels, test_ind);
+    % select location(s) of next observation(s) from the given list
+    this_chosen_ind = ...
+        query_strategy(problem, train_ind, observed_labels, test_ind);
 
-    % observe label at chosen location
-    chosen_labels(i) = label_oracle(problem, chosen_ind(i));
+    % observe label(s) at chosen location(s)
+    this_chosen_labels = label_oracle(problem, this_chosen_ind);
 
-    % update lists with new observation
-    train_ind       = [train_ind; chosen_ind(i)];
-    observed_labels = [observed_labels; chosen_labels(i)];
+    % update lists with new observation(s)
+    chosen_ind      = [chosen_ind; this_chosen_ind];
+    train_ind       = [train_ind;  this_chosen_ind];
+
+    chosen_labels   = [chosen_labels;   this_chosen_labels];
+    observed_labels = [observed_labels; this_chosen_labels];
     if (verbose)
-      fprintf('done. Point %i chosen (label: %i), took: %.2fs.\n', ...
-              chosen_ind(i),    ...
-              chosen_labels(i), ...
+      num_observations = numel(this_chosen_ind);
+      format_string = repmat('%i ', [1, num_observations]);
+      format_string = format_string(1:(end - 1));
+
+      fprintf(sprintf('done. Point(s) chosen: %s (label(s): %s), took: %%.2fs.\n', ...
+                      format_string, ...
+                      format_string), ...
+              this_chosen_ind,    ...
+              this_chosen_labels, ...
               toc);
     end
 

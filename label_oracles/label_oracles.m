@@ -1,7 +1,7 @@
-% Label oracles are functions that, given a point chosen to be
-% queried, returns a corresponding label. In general, they need not be
-% deterministic, which is especially interesting when points can be
-% queried multiple times.
+% Label oracles are functions that, given a set of point(s) chosen to
+% be queried, returns a list of corresponding label(s). In general,
+% they need not be deterministic, which is especially interesting when
+% points can be queried multiple times.
 %
 % Label oracles must satisfy the following interface:
 %
@@ -14,13 +14,13 @@
 %            points: an (n x d) data matrix for the available points
 %       num_classes: the number of classes
 %
-%   query_ind: an index into problem.points specifying the point to be
-%              queried
+%   query_ind: an index into problem.points specifying the point(s) to
+%              be queried
 %
 % Output:
 %
-%   label: an integer between 1 and problem.num_classes indicating the
-%          observed label
+%   label: a list of integers between 1 and problem.num_classes
+%          indicating the observed label(s)
 %
 % The following general-purpose label oracles are provided in this
 % toolbox:
@@ -28,11 +28,11 @@
 %        lookup_oracle: a trivial lookup-table label oracle given a
 %                       fixed list of ground-truth labels
 %     bernoulli_oracle: a label oracle that, conditioned on the
-%                       queried point, samples labels independently
+%                       queried point(s), samples labels independently
 %                       from a Bernoulli distribution with given
 %                       success probability
 %   multinomial_oracle: a label oracle that, conditioned on the
-%                       queried point, samples labels independently
+%                       queried point(s), samples labels independently
 %                       from a multinomial distribution with given
 %                       success probabilities
 %
