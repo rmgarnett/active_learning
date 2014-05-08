@@ -40,8 +40,8 @@
 %
 % Output:
 %
-%   expected_loss: the lookahead-step expected losses for the points
-%                  in test_ind
+%   expected_losses: the one-step lookahead expected losses for the
+%                    points in test_ind
 %
 % See also LOSS_FUNCITONS, EXPECTED_LOSS_LOOKAHEAD, MODELS, SCORE_FUNCTIONS.
 
