@@ -14,8 +14,8 @@
 % where i ranges over the possible labels.
 %
 % Here this expectation is computed naively by augmenting the dataset
-% D with (x, i) for each class i and weigting the resulting losses by
-% the probabiliy that y = i.
+% D with (x, i) for each class i and weighting the resulting losses by
+% the probability that y = i.
 %
 % Usage:
 %
@@ -26,7 +26,7 @@
 %
 %           problem: a struct describing the problem, containing fields:
 %
-%                  points: an n x d matrix describing the avilable points
+%                  points: an n x d matrix describing the available points
 %             num_classes: the number of classes
 %
 %         train_ind: a list of indices into problem.points
@@ -35,7 +35,7 @@
 %                    observations in train_ind
 %          test_ind: a list of indices into problem.points indicating
 %                    the points eligible for observation
-%             model: a handle to probability model to use
+%             model: a handle to the probability model to use
 %              loss: a handle to the loss function to use
 %
 % Output:
@@ -43,7 +43,7 @@
 %   expected_losses: the one-step lookahead expected losses for the
 %                    points in test_ind
 %
-% See also LOSS_FUNCITONS, EXPECTED_LOSS_LOOKAHEAD, MODELS, SCORE_FUNCTIONS.
+% See also LOSS_FUNCTIONS, EXPECTED_LOSS_LOOKAHEAD, MODELS, SCORE_FUNCTIONS.
 
 % Copyright (c) 2011--2014 Roman Garnett.
 
