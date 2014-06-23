@@ -3,8 +3,9 @@
 % typically used in active learning to, e.g., sample the point that,
 % after being incorporated into the current set of observations,
 % minimizes the expected final loss. Loss functions will typically not
-% be used directly but rather by a score function computing such
-% expected losses (e.g., expected_loss_naive,
+% be used directly but rather by a score function computing expected
+% losses (e.g., expected_loss_naive, expected_loss_lookahead) or
+% expected utilities (e.g., expected_loss_naive,
 % expected_loss_lookahead).
 %
 % Loss and utility functions must satisfy the following interface:
@@ -40,6 +41,7 @@
 %
 %   utility: the utility associated with the given set of observations
 %
-% See also EXPECTED_LOSS_NAIVE, EXPECTED_LOSS_LOOKAHEAD.
+% See also EXPECTED_LOSS_NAIVE, EXPECTED_LOSS_LOOKAHEAD,
+% EXPECTED_UTILITY_NAIVE, EXPECTED_UTILITY_LOOKAHEAD.
 
 % Copyright (c) 2014 Roman Garnett.
