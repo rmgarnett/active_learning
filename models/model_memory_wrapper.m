@@ -1,6 +1,5 @@
-function probabilities = probability_memory_wrapper(train_ind, ...
-                                                    observed_labels, ...
-                                                    test_ind, probability)
+function probabilities = model_memory_wrapper(problem, train_ind, ...
+          observed_labels, test_ind, model)
 
   persistent last_train_ind last_observed_labels last_test_ind last_probabilities;
 
@@ -12,7 +11,7 @@ function probabilities = probability_memory_wrapper(train_ind, ...
     return;
   end
 
-  probabilities = probability(train_ind, observed_labels, test_ind);
+  probabilities = model(problem, train_ind, observed_labels, test_ind);
 
   last_train_ind       = train_ind;
   last_observed_labels = observed_labels;
