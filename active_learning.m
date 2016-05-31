@@ -132,7 +132,8 @@ function [chosen_ind, chosen_labels] = ...
     end
 
     % observe label(s) at chosen location(s)
-    this_chosen_labels = label_oracle(problem, this_chosen_ind);
+    this_chosen_labels = ...
+        label_oracle(problem, train_ind, observed_labels, this_chosen_ind);
 
     % update lists with new observation(s)
     chosen_ind      = [chosen_ind; this_chosen_ind];

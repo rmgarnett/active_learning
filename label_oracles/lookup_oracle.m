@@ -6,23 +6,31 @@
 %
 % Usage:
 %
-%   label = lookup_oracle(problem, query_ind, labels)
+%   label = lookup_oracle(problem, train_ind, observed_labels, ...
+%                         query_ind, labels)
 %
 % Inputs:
 %
-%     problem: a struct describing the problem, containing the fields:
+%           problem: a struct describing the problem, containing the
+%                    fields:
 %
-%            points: an (n x d) data matrix for the available points
-%       num_classes: the number of classes%
+%                  points: an (n x d) data matrix for the avilable points
+%             num_classes: the number of classes
 %
-%              Note: this input, part of the standard label oracle
-%              API, is ignored by lookup_oracle. If desired, for
-%              standalone use it can be replaced by an empty matrix.
+%         train_ind: a list of indices into problem.points indicating
+%                    the thus-far observed points
+%   observed_labels: a list of labels corresponding to the
+%                    observations in train_ind
 %
-%   query_ind: an index into problem.points specifying the point(s) to
-%              be queried
-%      labels: a length-n vector of ground-truth class labels for
-%              each point in problem.points
+%                    Note: the above inputs, part of the standard
+%                    label oracle API, are ignored by lookup_oracle. If
+%                    desired, for standalone use it can be replaced by
+%                    an empty matrix.
+%
+%         query_ind: an index into problem.points specifying the
+%                    point(s) to be queried
+%            labels: a length-n vector of ground-truth class labels
+%                    for each point in problem.points
 %
 % Output:
 %
@@ -31,9 +39,9 @@
 %
 % See also LABEL_ORACLES.
 
-% Copyright (c) 2013--2014 Roman Garnett.
+% Copyright (c) 2013--2016 Roman Garnett.
 
-function label = lookup_oracle(~, query_ind, labels)
+function label = lookup_oracle(~, ~, ~, query_ind, labels)
 
   label = labels(query_ind);
 

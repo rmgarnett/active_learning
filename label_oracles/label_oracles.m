@@ -5,17 +5,22 @@
 %
 % Label oracles must satisfy the following interface:
 %
-%   label = label_oracle(problem, query_ind, labels)
+%   label = label_oracle(problem, train_ind, observed_labels, query_ind)
 %
 % Inputs:
 %
-%     problem: a struct describing the problem, containing fields:
+%           problem: a struct describing the problem, containing the
+%                    fields:
 %
-%            points: an (n x d) data matrix for the available points
-%       num_classes: the number of classes
+%                  points: an (n x d) data matrix for the avilable points
+%             num_classes: the number of classes
 %
-%   query_ind: an index into problem.points specifying the point(s) to
-%              be queried
+%         train_ind: a list of indices into problem.points indicating
+%                    the thus-far observed points
+%   observed_labels: a list of labels corresponding to the
+%                    observations in train_ind
+%         query_ind: an index into problem.points specifying the
+%                    point(s) to be queried
 %
 % Output:
 %
@@ -40,4 +45,4 @@
 % easily and concisely constructing function handles to label oracles
 % for use, e.g., in active_learning.m.
 
-% Copyright (c) 2014 Roman Garnett.
+% Copyright (c) 2014--2016 Roman Garnett.

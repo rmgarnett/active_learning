@@ -11,7 +11,9 @@
 %
 % returns the following function handle:
 %
-%   @(problem, query_ind) lookup_oracle(problem, query_ind, labels)
+%   @(problem, query_ind) ...
+%       lookup_oracle(problem, train_ind, observed_labels, query_ind, ...
+%                     labels)
 %
 % This is primarily for improving code readability by avoiding
 % repeated verbose function handle declarations.
@@ -34,11 +36,12 @@
 %
 % See also LABEL_ORACLES.
 
-% Copyright (c) 2013--2014 Roman Garnett.
+% Copyright (c) 2013--2016 Roman Garnett.
 
 function label_oracle = get_label_oracle(label_oracle, varargin)
 
-  label_oracle = @(problem, query_ind) ...
-                 label_oracle(problem, query_ind, varargin{:});
+  label_oracle = @(problem, train_ind, observed_labels, query_ind) ...
+      label_oracle(problem, train_ind, observed_labels, query_ind, ...
+                   varargin{:});
 
 end
