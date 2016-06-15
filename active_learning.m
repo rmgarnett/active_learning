@@ -98,8 +98,9 @@ function [chosen_ind, chosen_labels] = ...
   chosen_ind    = [];
   chosen_labels = [];
 
-  % track number of points selected
-  problem.num_selected = 0;
+  % store number of initial training points (this can be used to track
+  % the number of points selected thus far)
+  problem.num_initial = numel(train_ind);
 
   for i = 1:problem.num_queries
     if (verbose)
@@ -144,10 +145,6 @@ function [chosen_ind, chosen_labels] = ...
 
     chosen_labels   = [chosen_labels;   this_chosen_labels];
     observed_labels = [observed_labels; this_chosen_labels];
-
-    % track number of points selected
-    problem.num_selected = problem.num_selected + numel(this_chosen_ind);
-
     if (verbose)
       num_observations = numel(this_chosen_ind);
       observation_format_string = repmat('%i ', [1, num_observations]);
