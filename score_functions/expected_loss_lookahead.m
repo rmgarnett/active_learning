@@ -53,6 +53,11 @@
 %
 %                  points: an n x d matrix describing the avilable points
 %             num_classes: the number of classes
+%        num_initial_data: (optional) number of initial observations 
+%                          presumably provided at the start of an active
+%                          learning loop. If this field exists, the
+%                          lookahead will be limited to the active learning
+%                          budget, avoiding looking ahead more than needed
 %
 %         train_ind: a list of indices into problem.points
 %                    indicating the thus-far observed points
@@ -68,7 +73,9 @@
 %                    element of this array will be used.
 %         lookahead: the number of steps to look ahead. If
 %                    lookahead == 0, then random expected losses are
-%                    returned.
+%                    returned. Recall that if problem.num_initial_data 
+%                    is provided, the computed lookahead might be smaller
+%                    than requested.
 %
 % Output:
 %
@@ -84,6 +91,14 @@ function expected_losses = expected_loss_lookahead(problem, train_ind, ...
           lookahead)
 
   num_test = numel(test_ind);
+  
+  % limit the lookahead to avoid considering more steps than what is 
+  % allowed by the budget. lookahead <= number of remaining queries
+  if isfield(problem, 'num_initial_data')
+      remaining_queries = problem.num_queries - ...
+          (size(observed_labels,1) - problem.num_initial_data);
+      lookahead = min(remaining_queries, lookahead);
+  end
 
   % for zero-step lookahead, return random expected losses
   if (lookahead == 0)

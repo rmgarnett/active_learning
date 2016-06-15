@@ -60,6 +60,10 @@
 %             num_queries: the number of queries to make
 %                 verbose: whether to print information regarding
 %                          each query (default: false)
+%        num_initial_data: (optional) number of initial observations 
+%                          provided in (train_ind, observed_lables) [see
+%                          below]. If the user does not provide this
+%                          information, it will be automatically created.
 %
 %         train_ind: a (possibly empty) list of indices into
 %                    problem.points indicating the labeled points at
@@ -95,6 +99,24 @@ function [chosen_ind, chosen_labels] = ...
   % set verbose to false if not defined
   verbose = isfield(problem, 'verbose') && problem.verbose;
 
+  % check if train_ind and observed_labels have
+  % same number of observations 
+  if numel(train_ind) ~= size(observed_labels,1)
+      error('Number of training examples (features,labels) do not match.')
+  end
+  
+  % check if num_initial_data exists and is correct,
+  % create/fix it otherwise.
+  has_num_initial_data = isfield(problem, 'num_initial_data');
+  if ~(has_num_initial_data && ...
+          problem.num_initial_data == numel(train_ind)),
+     problem.num_initial_data = numel(train_ind);
+     if has_num_initial_data
+         warning(['problem.size_initial_data provided was incorret. ', ...
+             'Overriding initial information'])
+     end
+  end
+
   chosen_ind    = [];
   chosen_labels = [];
 
@@ -107,7 +129,7 @@ function [chosen_ind, chosen_labels] = ...
       tic;
       fprintf('point %i:', i);
     end
-
+    
     % get list of points to consider for querying this round
     test_ind = selector(problem, train_ind, observed_labels);
     if (verbose)
