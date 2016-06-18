@@ -41,7 +41,7 @@
 % Copyright (c) 2013--2014 Roman Garnett.
 
 function query_ind = argmax(problem, train_ind, observed_labels, ...
-          test_ind, score_function)
+          test_ind, score_function, num_points)
 
   % by default query a single point
   if (nargin < 6)
