@@ -4,8 +4,7 @@
 %
 % Models must satisfy the following interface:
 %
-%   probabilities = ...
-%       probability_function(problem, train_ind, observed_labels, test_ind)
+%   probabilities = model(problem, train_ind, observed_labels, test_ind)
 %
 % Inputs:
 %
@@ -36,4 +35,4 @@
 %   label_propagation_model: partially absorbing label propagation
 %       random_forest_model: a random forest model
 
-% Copyright (c) 2011--2014 Roman Garnett.
+% Copyright (c) 2011--2016 Roman Garnett.

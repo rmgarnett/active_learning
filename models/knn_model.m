@@ -30,7 +30,7 @@
 % Usage:
 %
 %   probabilities = knn_model(problem, train_ind, observed_labels, ...
-%                             test_ind, weights, prior_alpha, prior_beta)
+%                             test_ind, weights, alpha)
 %
 % Inputs:
 %

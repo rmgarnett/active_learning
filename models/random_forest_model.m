@@ -1,4 +1,4 @@
-% RANDM_FOREST_MODEL a random forest classifier.
+% RANDOM_FOREST_MODEL a random forest classifier.
 %
 % Requires the TreeBagger class in the MATLAB Statistics Toolbox.
 %
@@ -32,7 +32,7 @@
 %
 % See also TREEBAGGER, MODELS.
 
-% Copyright (c) 2011--2014 Roman Garnett.
+% Copyright (c) 2011--2016 Roman Garnett.
 
 function probabilities = random_forest_model(problem, train_ind, ...
           observed_labels, test_ind, num_trees, options)

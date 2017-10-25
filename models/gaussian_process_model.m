@@ -1,4 +1,4 @@
-% GP_MODEL a binary Gaussian process classifier.
+% GAUSSIAN_PROCESS_MODEL a binary Gaussian process classifier.
 %
 % This is an implementation of a Gaussian process (binary)
 % classifier. Requires the GPML toolkit available here:
@@ -40,7 +40,7 @@
 %
 % See also MODELS, GP.
 
-% Copyright (c) 2011--2014 Roman Garnett.
+% Copyright (c) 2011--2016 Roman Garnett.
 
 function probabilities = gaussian_process_model(problem, train_ind, ...
           observed_labels, test_ind, hyperparameters, inference_method, ...
